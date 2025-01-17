@@ -1,0 +1,89 @@
+{{define "voice-2-text"}}
+<div id="voice-to-text-tab-div" class="mx-10 hidden">
+    <div class="flex justify-center">
+        <form hx-post="/voice-2-text" hx-swap="outerHTML" enctype="multipart/form-data" class="form-control">
+            <div class="join join-horizontal">
+                <input type="file" class="file-input file-input-primary file-input-bordered border-0 w-full" accept="audio/*" />
+            </div>
+            <button type="submit" class="btn btn-primary">Upload<span class="material-symbols-outlined text-2xl text-accent">upload</span></button>
+        </form>
+    </div>
+    <div class="divider"></div>
+    <div class="flex justify-center">
+        <figure>
+            <figcaption>Listen to the T-Rex:</figcaption>
+            <audio controls src="/web/files/test.wav">
+                <a href="/web/files/test.wav"> Download audio </a>
+            </audio>
+        </figure>
+    </div>
+    <div class="flex justify-center">
+        <div class="join join-horizontal">
+            <button class="btn join-item btn-primary" onclick="playAudio()">Play Audio</button>
+            <button class="btn join-item btn-secondary" onclick="pauseAudio()">Pause Audio</button>
+        </div>
+    </div>
+</div>
+{{end}}
+
+{{define "stt"}}
+<div id="voice-to-text-tab-div" class="mx-10 hidden mt-10 bg-transparent/80 py-6">
+    <div class="flex items-center justify-center mx-16">
+        <div class="flex-auto w-1/3 text-center">
+            <h2 class="font-effect-fire-animation my-5">Audio Recorder</h2>
+            <div class="join">
+                <button id="startBtn" class="join-item btn btn-info"><span class="material-symbols-outlined text-3xl text-white hover:scale-125">mic</span></button>
+                <button id="pauseBtn" class="join-item btn btn-warning" disabled><span id="ipause" class="material-symbols-outlined text-3xl text-white hover:scale-125">pause</span></button>
+                <button id="stopBtn" class="join-item btn btn-error" disabled><span class="material-symbols-outlined text-3xl text-white hover:scale-125">stop</span></button>
+            </div>
+        </div>
+        <div class="divider divider-horizontal divider-error">OR</div>
+        <div class="flex-auto w-1/3 text-center">
+            <input form="uploader1" type="file" id="audioFile" name="file" class="file-input file-input-primary file-input-bordered border-0" accept="audio/*" />
+        </div>
+    </div>
+    <div class="flex w-full justify-center my-6 mx-auto bg-opacity-10">
+        <div id="ac" class="p-10 rounded-2xl border-2 shadow-2xl" hidden></div>
+    </div>
+
+    <div class="relative p-3 w-2/3 border rounded-lg bg-secondary shadow-lg mx-auto">
+        <form id="uploader1" class="form-control pb-10" hx-post="/api/v1/stt" hx-swap="innerHTML" hx-target="#resultSTT" hx-encoding="multipart/form-data" hx-indicator="#htmx-indicator" hx-confirm="Are you sure?">
+            <!-- <button type="submit" id="btnSubmitV2T" class="absolute btn rounded-3xl bg-gradient-to-br from-success to-blue-600 hover:to-70% text-base-100 font-extrabold">Speech-to-text<span class="material-symbols-outlined text-2xl text-accent">upload</span></button> -->
+            <div>
+                <button type="submit" id="btnSubmitV2T" onclick="$('#resultSTT').show(1000).addClass('skeleton')" class="btn btn-sm w-full md:btn-md md:w-44 rounded-3xl bg-gradient-to-br from-success to-blue-600 hover:to-70% text-base-100 font-extrabold">
+                    <span id="htmx-indicator" class="loading loading-spinner text-primary" hidden></span>Speech-to-text<span class="material-symbols-outlined text-2xl text-accent">upload</span>
+                </button>
+                <div class="join join-horizontal md:ml-10 mx-auto border-2 border-separate border-accent-content/20 p-2" id="joinModels">
+                    <input id="r1" class="btn btn-sm rounded-3xl" type="radio" name="optionModel" value="openai" aria-label="OpenAI Whisper" />
+                    <input id="r2" class="btn btn-sm rounded-3xl" type="radio" name="optionModel" value="local" aria-label="Local Whisper" />
+                </div>
+            </div>
+        </form>
+        <div id="textOutput" class="mt-8 text-gray-800">
+            <p id="resultSTT" class="bg-gray-600 textarea textarea-bordered text-accent-content break-words" hidden>Your transcribed text will appear here ...</p>
+        </div>
+    </div>
+</div>
+{{end}}
+
+{{define "tts"}}
+<div id="text-to-voice-tab-div" class="mx-10 hidden mt-10 bg-transparent/80 py-6">
+    <div class="flex justify-center">
+        <form id="uploader1" hx-post="/voice-2-text" hx-swap="outerHTML" hx-encoding="multipart/form-data" class="form-control">
+            <input type="file" id="audioFile2" name="file" class="file-input file-input-primary file-input-bordered border-0 w-full" accept="audio/*" />
+            <button type="submit" id="btnSubmitV2T" class="btn btn-primary btn-disabled">Upload<span class="material-symbols-outlined text-2xl text-accent">upload</span></button>
+        </form>
+
+    </div>
+    <!-- Audio Player -->
+    <div id="audioPlayerDiv" class="flex justify-center mt-4 hidden">
+        <figure id="fig1" class="shadow-2xl rounded-3xl bg-accent/50 border-2 border-accent border-opacity-50 p-5">
+            <figcaption class="text-accent-content text-center font-bold font-mono">Listen your Audio before upload</figcaption>
+            <audio id="audioPlayer" controls>Your browser does not support the audio element.
+                <!-- <a href="">Download audio</a> -->
+            </audio>
+            <!-- <a href="/uploads/audio.mp3" download="NEW_AUDIO.mp3">Download audio</a> -->
+        </figure>
+    </div>
+</div>
+{{end}}

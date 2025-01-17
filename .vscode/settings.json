@@ -1,0 +1,173 @@
+{
+    "editor.fontSize": 12,
+    "files.encoding": "utf8",
+    "editor.autoClosingBrackets": "always",
+    "prettier.printWidth": 180,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+    },
+    "editor.quickSuggestions": {
+        "strings": "on",
+        "comments": "on",
+        "other": "on"
+    },
+    "editor.quickSuggestionsDelay": 1,
+    "go.addTags": {
+        "tags": "json,xml",
+        "options": "json=omitempty",
+        "promptForTags": true,
+        "transform": "camelcase",
+        "template": ""
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features",
+        "editor.formatOnSave": false
+    },
+    "editor.formatOnSaveExclude": [
+        "**/ai_index.html"
+    ],
+    "[go]": {
+        "editor.insertSpaces": false,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "golang.go"
+    },
+    "go.testFlags": [
+        "-v"
+    ],
+    "go.autocompleteUnimportedPackages": true,
+    "editor.snippetSuggestions": "bottom",
+    "editor.suggest.preview": true,
+    "gopls": {
+        "ui.semanticTokens": true
+    },
+    "go.buildOnSave": "off",
+    "go.installDependenciesWhenBuilding": true,
+    "go.gotoSymbol.includeImports": true,
+    "go.gotoSymbol.includeGoroot": true,
+    "go.useLanguageServer": true,
+    "[markdown]": {
+        "editor.formatOnSave": false,
+        // "editor.autoIndent": ,
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
+    "markdown.extension.preview.autoShowPreviewToSide": false,
+    "markdownlint.run": "onSave",
+    "markdownlint.config": {
+        "MD007": {
+            "indent": 4
+        },
+        "MD022": false,
+        "MD022/blanks-around-headings/blanks-around-headers": false,
+        "no-inline-html": {
+            "allowed_elements": [
+                "pre"
+            ]
+        },
+        "ul-indent": {
+            "indent": 4
+        },
+        "blanks-around-headers": false,
+        "blanks-around-headings": false,
+    },
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "GO-AI-OLDTEST",
+            "database": "ai",
+            "username": "goai",
+            "password": "goai"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5444,
+            "driver": "PostgreSQL",
+            "name": "GO-AI-Local",
+            "database": "ai",
+            "username": "goai",
+            "password": "goai"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 54322,
+            "driver": "PostgreSQL",
+            "name": "GO-AI-DEV",
+            "database": "goai",
+            "username": "goai",
+            "password": "goai"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:go-ai}/db/user_storage/db.sqlite",
+            "name": "db-db.sqlite"
+        }
+    ],
+    "rest-client.enableTelemetry": false,
+    "rest-client.defaultHeaders": {
+        "Content-Type": "application/json",
+    },
+    "rest-client.previewOption": "exchange",
+    "rest-client.previewResponseInUntitledDocument": false,
+    "rest-client.logLevel": "verbose",
+    "rest-client.followredirect": true,
+    "rest-client.previewColumn": "beside",
+    // "rest-client.previewResponsePanelTakeFocus": true,
+    "rest-client.environmentVariables": {
+        "$shared": {},
+        "$sample": {
+            "url": "http://localhost:5550",
+            "token": "123456",
+            "username": "dmykolen",
+            "password": "admin"
+        },
+        "DEV": {
+            "url": "http://ai.dev.ict",
+        }
+    },
+    "rest-client.fontSize": 10,
+    "go-template.patterns": [
+        "**/*.{ts,js,html}"
+    ],
+    "excalidraw.image": {
+        "exportScale": 1,
+        "exportWithBackground": true,
+        "exportWithDarkMode": true
+    },
+    "markdown-mermaid.darkModeTheme": "forest",
+    "markdown-mermaid.languages": [
+        "mermaid",
+        "markdown"
+    ],
+    "tailwindCSS.experimental.configFile": "./web/tailwind.config.js",
+    "github.copilot.enable": {
+        "*": true,
+    },
+    "github.copilot.editor.enableCodeActions": true,
+    "github.copilot.editor.enableAutoCompletions": true,
+    "oracle-format.sqlcl": "/home/dmykolen/sqlcl/bin/sql",
+    "github.copilot.chat.inlineChatCompletionTrigger.enabled": true,
+    "github.copilot.chat.temporalContext.enabled": true,
+    "continue.enableDebugLogs": true
+}

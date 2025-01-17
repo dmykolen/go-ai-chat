@@ -1,0 +1,557 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>AI Interface</title>
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+        <link rel="stylesheet" href="dist/tailwind.css">
+        <script defer="defer" src="dist/runtime.66f183f5c4c9fe1b1727.js"></script>
+        <script defer="defer" src="dist/main.c8fb0b980bec7ef46c13.js"></script>
+        <link href="dist/vendors.561e64fc84d039a9d867.css" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    </head>
+
+    <body class="bg-[url('/img/robot_image_3.png')] bg-center bg-cover bg-scroll h-screen overflow-x-hidden overscroll-x-none">
+        <div class="min-h-12 h-1 absolute top-0 z-20 bg-gradient-to-r from-25% from-primary navbar to-35%">
+            <div class="flex-1">
+
+                <div class="indicator">
+                    <span class="indicator-item indicator-start mx-7 my-2"><img class="rounded-full w-6 h-6" src="/img/gifs/ua_flag.gif" alt="Image"></span>
+                    <a id="typeBrand" href="" class="btn hover:scale-110 btn-ghost no-animation hover:bg-transparent normal-case text-2xl font-mono transition-all ease-in opacity-75 delay-100 text-base-100/50">Lifecell</a>
+                </div>
+            </div>
+            <div class="flex-none">
+                <div class="dropdown dropdown-left">
+                    <label class="btn btn-ghost btn-circle avatar">
+                        <div class="w-auto rounded-full text-4xl">
+                            <label class="swap swap-flip">
+                                <input type="checkbox" name="" id="">
+                                <div class="swap-on">😎</div>
+                                <div class="swap-off">🥷🏽</div>
+                            </label>
+                        </div>
+                    </label>
+                    <ul class="shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-44 z-20">
+                        <li id="logout-li" class="">
+                            <a href="/logout" class="bg-gradient-to-r border-0 btn btn-outline btn-primary p-3 rounded-xl font-mono text-primary-content/60 transition-all duration-500 relative">
+                                Logout
+                                <span class="absolute flex hover:animate-bounce text-4xl w-full">🏃🏽‍♂️</span>
+                            </a>
+                        </li>
+                        <li id="login-li" style="display: none;">
+
+                            <button class="bg-gradient-to-r border-0 btn btn-outline btn-primary rounded-xl font-mono text-primary-content/60 transition-all duration-500 relative" id="showModal" hx-get="/login_form_only" hx-trigger="click[checkLoginSection()]" hx-target="#content" hx-swap="afterbegin transition:true settle:200ms">
+                                Login
+                                <span class="absolute flex inset-2 text-4xl w-full hover:rotate-45 duration-300 ease-in-out transform transition">👋</span>
+                            </button>
+                        </li>
+                        <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60 btn-disabled" disabled="">Profile</button></li>
+                        <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60" disabled="">Settings</button></li>
+                        <li class="divide-accent"></li>
+                        <li>
+                            <div class="dropdown dropdown-bottom flex justify-center p-0 hover:bg-base-100/0 btn btn-ghost">
+                                <button tabindex="0" role="button" class="btn mx-auto w-full bg-primary/25 ring-0 btn-circle ring-offset-1 ring-offset-primary shadow-lg shadow-pink-500/40" onclick="toggleHidden(this.nextElementSibling)">
+                                    Theme
+                                    <svg width="12px" height="12px" class="h-2 w-2 fill-current opacity-60 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+                                        <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                                    </svg>
+                                </button>
+                                <div tabindex="0" id="dataThemeChanger" data-choose-theme="" data-key="admin-panel" class="join join-vertical dropdown-content hidden z-50 p-0 mt-2">
+
+                                    <input type="radio" data-set-theme="ua" name="theme-buttons" class="btn theme-controller join-item" aria-label="UA💙" value="ua">
+                                    <input type="radio" data-set-theme="dim" name="theme-buttons" class="btn theme-controller join-item" aria-label="dim" value="dim">
+                                    <input type="radio" data-set-theme="forest" name="theme-buttons" class="btn theme-controller join-item" aria-label="forest" value="forest">
+                                    <input type="radio" data-set-theme="sunset" name="theme-buttons" class="btn theme-controller join-item" aria-label="sunset" value="sunset">
+
+
+
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleHidden(element) {
+                console.log("THIS:", this);
+                console.log("Element:", element);
+                element.classList.toggle("hidden");
+            }
+            function checkLoginSection() {
+                let isExists = document.getElementById('loginSection') && true || false;
+                console.log(`Check login section exists=[${isExists}]! Do HTMX request, If not exists`);
+                if (isExists) {
+
+
+                    $('#loginModal').show();
+                }
+                return !isExists;
+            }
+        </script> <div class="flex">
+            <input type="checkbox" id="drawer-toggle" class="relative sr-only peer">
+            <label for="drawer-toggle" id="drawer-toggle-label" class="absolute bg-transparent/40 duration-500 inline-block left-0 peer-checked:left-1/4 peer-checked:rotate-180 px-2 py-4 rounded-lg top-20 transition-all cursor-pointer hover:scale-125 hover:bg-gradient-to-b hover:from-yellow-400 hover:to-sky-600">
+                <div class="w-4 h-1 mb-1 -rotate-45 bg-white rounded-lg bg-black"></div>
+                <div class="w-4 h-1 rotate-45 bg-white rounded-lg bg-black"></div>
+            </label>
+            <div class="fixed top-0 left-0 z-20 w-1/4 h-full transition-all duration-500 transform -translate-x-full shadow-black shadow-lg peer-checked:translate-x-0">
+                <div class="px-6 py-4 bg-black">
+                    <h2 class="text-2xl font-extrabold font-mono link-secondary leading-6">MENU</h2>
+                    <p class="text-gray-500"></p>
+                </div>
+                <div class="bg-base-300 h-full">
+                    <ul class="join join-vertical mx-auto px-4 py-6 space-y-2 text-sm w-full list-none">
+                        <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/">START PAGE</a></li>
+
+
+                        <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/voip">VoIP</a></li>
+                        <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/vectordb-admin">VectorDB</a></li>
+                        <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/am">Access Management</a></li>
+                        <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/am2">Access Management <span class="badge badge-accent">NEW</span></a></li>
+                        <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+            .roboto-condensed-font {
+                font-family: "Roboto Condensed", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+            }
+        </style>
+        <main id="content" class="h-dvh overflow-y-hidden">
+            <div class="my-1 text-center">
+                <h1 class="text-5xl font-bold"><span id="typed2" class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent/70 animate-gradient">VoIP</span></h1>
+            </div>
+
+
+
+
+            <div id="chat-grid-tab-div" class="grid grid-cols-4 h-full pb-16">
+                <div id="chat-div" class="backdrop-blur bg-black/80 border-b border-t border-white/10 col col-end-5 col-start-1 md:mt-4 mockup-window mt-3 mx-16 mx-5 pt-1 shadow-2xl shadow-black text-sm" hx-ext="debug" style="">
+                    <div class="-mt-7 flex flex-col items-center justify-center px-4">
+                        <div class="grid grid-cols-3 w-full">
+                            <div class="join join-horizontal justify-self-center col-start-2 space-x-1">
+                              <div id="btn-new-chat" class="btn join-item border-b-accent hover:bg-primary-to-secondary hover:text-accent-content hover:scale-110 btn-xs w-28 text-slate-300 transition-all duration-300 delay-100 ease-out">NEW CHAT</div>
+                              <div id="btn-hst" class="btn join-item border-b-accent hover:bg-primary-to-secondary hover:text-accent-content hover:scale-110 btn-xs w-28 text-slate-300 transition-all duration-300 delay-100 ease-out" hx-get="/api/v1/users//chats/shortinfo" hx-trigger="click[checkCondition()]" hx-target="#chat-hst-container" hx-swap="none">CHAT HISTORY</div>
+                            </div>
+                            <div id="btn-options" class="justify-self-end max-w-8">
+                                <label class="btn btn-outline btn-xs border-0 text-white bg-transparent/50 swap swap-rotate">
+
+                                    <input type="checkbox">
+
+                                    <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                        <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"></path>
+                                    </svg>
+
+                                    <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                        <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"></polygon>
+                                    </svg>
+                                </label>
+                            </div>
+                        </div>
+                        <form hx-post="/api/v1/ask-ai-voip" hx-target="#chat-msg" hx-swap="none" hx-ext="json-enc" class="flex items-center form-control my-2 w-3/4">
+                            <input id="id-chat-input" type="text" name="chatID" value="" hidden="">
+                            <input id="tab-id" type="text" name="tabId" value="" hidden="">
+                            <input id="msisdn-chat-input" type="text" name="msisdn" value="" hidden="">
+                            <div class="join join-horizontal flex w-full">
+                                <textarea id="chat-send-input" rows="1" type="search" name="userRequest" placeholder="Type here" class="textarea textarea-ghost border-0 bg-transparent/80 join-item text-xs tracking-tight p-1 font-mono resize-none m-0 hover:resize-y w-full min-h-12 max-h-40 focus:outline-0 focus:border-primary-focus link-accent focus:caret-indigo-600 focus:border-0 focus:ring-0" style="height: 0px;"></textarea>
+                                <button id="chat-send" class="btn join-item bg-gradient-to-br btn-outline border-0 text-white from-primary to-accent transition-all duration-500 hover:translate-x-1 hover:shadow-lg hover:shadow-neutral-300/20">SEND</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="mx-10 overflow-y-scroll">
+                        <div id="chat-hst-container" class="overflow-y-scroll" style="display: none;">
+                        </div>
+
+                        <div id="chat-msg" class="overflow-y-scroll roboto-condensed-font" style=""><div class="chat chat-start"><div class="chat-image avatar"><div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div></div><div class="chat-header font-bold text-base-content/50">user</div><div class="chat-bubble chat-bubble-primary whitespace-pre-wrap bg-black text-accent min-h-[2rem]"><div class="bg-clip-text bg-gradient-to-tr font-bold from-primary text-transparent to-secondary whitespace-pre-wrap">WHat does mean error 409?</div></div><div class="chat-footer"><time class="opacity-50 text-base-content/50 text-xs">2025-01-06 19:20:01.861</time></div></div><div class="chat chat-end"><div class="chat-image avatar"><div class="w-10 rounded-full border-2 border-accent text-4xl"><img src="http://ai.dev.ict:7558/img/robot_image_3.png"></div></div><div class="chat-header font-bold text-base-content/50">assistant</div><div class="chat-bubble prose"><p>Помилка 409 означає, що на балансах номера та контракту закінчились гроші. Вам необхідно поповнити рахунок або звернутись до свого менеджера для підвищення кредитного ліміту. Звертатися до технічної підтримки не потрібно.</p>
+        </div><div class="chat-footer">
+                <time class="opacity-50 text-base-content/50 text-xs">2025-01-06 19:19:10.331</time>
+                <form class="flex" hx-post="/api/v1/rate" hx-trigger="click" hx-include="[name=chatRating],#id-chat-input" hx-swap="none" hx-vals="js:{chatIdx: evalHTMX_rating(event)}" hx-ext="json-enc">
+                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-secondary/20 hover:bg-indigo-500 hover:scale-125" value="1" onclick="starClick($(this))">
+                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-secondary/20 hover:bg-indigo-500 hover:scale-125" value="2" onclick="starClick($(this))">
+                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-secondary/20 hover:bg-indigo-500 hover:scale-125" value="3" onclick="starClick($(this))">
+                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-secondary/20 hover:bg-indigo-500 hover:scale-125" value="4" onclick="starClick($(this))">
+                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-secondary/20 hover:bg-indigo-500 hover:scale-125" value="5" onclick="starClick($(this))">
+                </form>
+            </div></div></div>
+                    </div>
+                </div>
+
+
+                <div id="options-div" class="flex flex-col h-[100%] overflow-y-scroll p-3 rounded-ss-box text-secondary text-sm" style="display: none;">
+
+                    <div id="results2" class="border flex flex-col h-2/3 max-w-[100%] mockup-phone mt-2 p-4 place-items-center shadow-black shadow-lg overflow-y-scroll cursor-zoom-in" onclick="$(this).toggleClass('absolute overflow-y-scroll cursor-zoom-in cursor-zoom-out scale-125 top-[15%] left-[30%]',200,'swing')" style="">
+                        <div class="camera"></div>
+                        <div class="display">
+                            <div class="flex flex-col h-dvh overflow-scroll phone-2 pt-7 text-xs">
+                                <div class="flex flex-col input space-y-2" aria-hidden="true">
+                        <label for="msisdn" class="-mt-2 badge badge-accent badge-outline badge-xs label self-start z-20">MSISDN</label>
+                        <input id="msisdn" name="msisdn" type="text" class="border-0 input input-xs max-w-[55%] placeholder:italic placeholder:text-slate-400 self-center" hx-get="/ws/account" hx-indicator="#searchSpinner" hx-trigger="keyup[target.value.length > 11] changed delay:500ms" hx-target="#results" minlength="12" placeholder="Type here...">
+                        <span id="searchSpinner" class="htmx-indicator loading loading-spinner loading-sm text-secondary"></span>
+                    </div><pre class=""><code id="results" class="font-mono leading-0 text-wrap tracking-tighter"><span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">"billingId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"3833331"</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"statusCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACT/SUSPW"</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"tariffCode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"CRP_RMF_IP_PBX_FIX_30"</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"msisdn"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"380930164453"</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"contractNo"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"300070023"</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"useCommonMain"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"ifEnoughMoney"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"balances"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Line_CM_Usage"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Line_Main"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Line_SpendingLimit"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">-99</span>
+          <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"services"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"GLOBAL_FEES"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"CDA"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service CDA"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Basics"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"S_MO_SHORT_NUMBER"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Service «Call for short numbers»"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"GSM_Network_Service"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"S_INRENATIONAL"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Voice international"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"GSM_Network_Service"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"S_VOICE_OUT"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Voice outgoing"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"GSM_Network_Service"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"S_VOICE_IN"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Voice incoming"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"GSM_Network_Service"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"S_SMS_IN"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Sms incoming"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"GSM_Network_Service"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"S_SMS_OUT"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Sms outgoing"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"USE_COMMON_MAIN"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"USE_COMMON_MAIN"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"service Use common main"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"CRP_RMF_IP_PBX_FIX_30"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"CRP_RMF_IP_PBX_FIX_30"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ACTIVE"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Desc"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"tariff CRP_RMF_IP_PBX_FIX_30"</span>
+            <span class="hljs-punctuation">}</span>
+          <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">"contract"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"BillingID"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"3833316"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"No"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"300070023"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Balances"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"Common_Debt"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"Common_Main"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">-400.26</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"CreditLimit"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">700</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Managers"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+              <span class="hljs-attr">"KA_CONSULTANT"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"marianna.sukhova@lifecell.com.ua"</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-attr">"SALES_EXPERT"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"denys.pyatnytskyy@lifecell.com.ua"</span>
+            <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"ContactPersons"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+              <span class="hljs-punctuation">{</span>
+                <span class="hljs-attr">"FIO"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+                  <span class="hljs-attr">"givenNames"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"chetverykova"</span><span class="hljs-punctuation">,</span>
+                  <span class="hljs-attr">"middleNames"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xxxxx"</span><span class="hljs-punctuation">,</span>
+                  <span class="hljs-attr">"familyNames"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"natalia"</span>
+                <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Birth"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1710885600000</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Email"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"natalia.chetverykova@pe.lifecell.com.ua"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Phone"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"380635555555"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"PhoneLifecell"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"380631111111"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"LineMsisdn"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"380637775522"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"ContactType"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Responsible"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Position"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Super VOIP xxxxxx"</span>
+              <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+              <span class="hljs-punctuation">{</span>
+                <span class="hljs-attr">"FIO"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+                  <span class="hljs-attr">"givenNames"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Dmytro"</span><span class="hljs-punctuation">,</span>
+                  <span class="hljs-attr">"middleNames"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xxxxx"</span><span class="hljs-punctuation">,</span>
+                  <span class="hljs-attr">"familyNames"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Mykolenko"</span>
+                <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Birth"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">751500000000</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Email"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"mkolenko.d@gmail.com"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Phone"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"380932107489"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"PhoneLifecell"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"380632107489"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"LineMsisdn"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">""</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"ContactType"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Trusted"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-attr">"Position"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Super VOIP dovirenui"</span>
+              <span class="hljs-punctuation">}</span>
+            <span class="hljs-punctuation">]</span>
+          <span class="hljs-punctuation">}</span>
+        <span class="hljs-punctuation">}</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+
+
+        <script src="js/json-process.js"></script>
+
+        <script>
+            let inputObject = {"Title":"VoIP","Login":"dmykolen","UriBtnSend":"/api/v1/ask-ai-voip","UriBtnHistory":"/api/v1/users//chats/shortinfo","Authenticated":true,"EnvDev":false}
+            const username = "dmykolen";
+            const BtnText_HST = "CHAT HISTORY";
+            const fePathRegex = /\/fe\/users\/\w+\/chats\/\w+/;
+            let jsonObj = null;
+            let isPermitHTMXRequest = false;
+            function checkCondition() {
+                console.log(`checkCondition => btn-hst:text=[${$('#btn-hst').text()}] isPermitHtmxRequest=${isPermitHTMXRequest}`);
+                return isPermitHTMXRequest;
+            }
+
+            function newChatStart() {
+                $('#chat-hst-container').hide('puff', 500 );
+                $('#chat-msg').hide('puff', 500, function(){
+                    $(this).empty();
+                });
+                $('#id-chat-input').val(null)
+                isPermitHTMXRequest = false;
+                $("#chat-msg").show('puff', 700);
+                $('#btn-hst').text(BtnText_HST);
+                $('#tab-id').val(getConnectionId())
+            }
+
+            function chatBeautifull() {
+                $('.chat.chat-end>div.chat-bubble').each((i, v) => { v.innerHTML = mdParse(v.textContent) })
+            }
+
+            function chatJSONConvertToDataTable() {
+                $('.chat.chat-end>div.chat-bubble').each(function(){
+                    if (isValidJSON($(this).text())) {
+                        console.log("isValidJSON = true")
+                        addTableToChatFromJSON($(this))
+                    }
+                })
+            }
+
+            function toHtml(item) {
+                return `
+          <div class="group flex flex-row space-x-2 sm:w-full lg:w-2/3 justify-center z-20">
+            <div class="flex flex-col space-y-4 bg-base-200 rounded-lg p-2 w-[75%] hover:shadow-neon-blue hover:scale-110 transition duration-300">
+                <div>
+                    <div class="text-ellipsis font-mono font-bold overflow-auto text-nowrap text-xs tracking-tighter">${item.name}</div>
+                    <div class="truncate overflow-auto text-nowrap text-xs select-all text-slate-300/80 tracking-tighter">${item.id}</div>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="badge badge-xs badge-warning self-end">${item.createdTime}</div>
+                    <div class="btn btn-square btn-outline btn-xs w-8 h-8 group-hover:duration-300 hover:delay-100 transition-all invisible group-hover:visible" hx-get="/fe/users/${username}/chats/${item.id}" hx-trigger="click" hx-target="#chat-msg"><span class="material-symbols-outlined">play_arrow</span></div>
+                </div>
+              </div>
+          </div>`;
+            }
+
+            function addListener_rightSidebar() {
+                $("#options-div").hide("drop", { direction: "right" }, "fast");
+                let isOpenedOptions = false
+                $('#btn-options').on('click', function () {
+                    console.log("btn-options clicked");
+
+                    if (isOpenedOptions) {
+                        $("#options-div").hide("drop", { direction: "right" }, 200, function () {
+                            $('#chat-div').switchClass("mx-8 col-end-4", "mx-16 col-end-5");
+                            isOpenedOptions = false;
+                        });
+                    } else {
+                        $('#chat-div').switchClass("mx-16 col-end-5", "mx-8 col-end-4", 200, "easeInOutQuad", function () {
+                            $("#options-div").show("slide", { direction: "right" }, 300);
+                            isOpenedOptions = true;
+                        });
+                    }
+                });
+            }
+
+            function addListener_btn_history() {
+                $('#btn-hst').on('click', function () {
+                    console.log("btn-hst clicked");
+                    countClick(BtnText_HST);
+                    $(this).text(function (index, currentvalue) {
+                        if (currentvalue === BtnText_HST) {
+                            isPermitHTMXRequest = true;
+                            $("#chat-msg").hide();
+                            $("#chat-hst-container").html(`<div class="toast toast-center toast-middle"><div class="alert alert-warning"><span>Loading...</span></div></div>`);
+                            return '❌'
+                        } else {
+                            isPermitHTMXRequest = false;
+                            $("#chat-hst-container").hide();
+                            $("#chat-msg").show('puff', 700);
+                            return BtnText_HST
+                        };
+                    });
+                });
+            }
+
+            function addListener_htmx_settle(e) {
+                if (e.detail.pathInfo.requestPath.includes("account")) {
+                    console.log(">>>htmx:afterSettle => TRIGGER::parse_account_json! EVT:", e);
+                    e.target.innerHTML = hlJSON(JSONIndent(e.detail.xhr.responseText));
+                } else if (fePathRegex.test(e.detail.pathInfo.requestPath)) {
+                    chatBeautifull();
+                    chatJSONConvertToDataTable();
+                    setTimeout(() => {
+                        addCopyBtnToCodeElems();
+                    }, 100);
+                }
+            }
+
+            function addListener_htmx_history(e) {
+                if (e.detail.requestConfig.path.includes("/api/v1/users")) {
+                    console.info('>>>htmx:afterRequest [/api/v1/users] TRIGGER history response parse');
+                    if (e.detail.xhr.status != 200) {
+                        $("#chat-hst-container").html(`<div class="toast toast-center toast-middle"><div class="alert alert-error"><span>Http ERROR: ${e.detail.xhr.message}</span></div></div>`);
+                    } else {
+                        jsonObj = JSON.parse(e.detail.xhr.responseText);
+                        console.log(`Got ${jsonObj?.data?.length ?? 'NULL'} chats`);
+                        let resultHTML = "";
+                        jsonObj.data?.forEach((item) => { resultHTML += toHtml(item); });
+                        console.debug(resultHTML);
+                        $("#chat-hst-container").html(`<div class="flex flex-col space-y-1 p-4 h-full w-full place-items-center">` + resultHTML + `</div>`).show("drop", { direction: "up" }, "slow");
+                        htmx.process($("#chat-hst-container")[0]);
+                    }
+                } else if (fePathRegex.test(e.detail.requestConfig.path)) {
+                    $("#btn-hst").click();
+                }
+            }
+
+            function ____watchContinuasly_on_node() {
+
+        const targetNode = document.getElementById("chat-msg");
+
+
+        const config = { childList: true};
+
+
+        const callback = (mutationList, observer) => {
+          for (const mutation of mutationList) {
+            console.log('Watch on[chat-msg] -> MUTATION:', mutation)
+            if (mutation.type === "childList") {
+              console.log("A child node has been added or removed.");
+            } else if (mutation.type === "attributes") {
+              console.log(`The ${mutation.attributeName} attribute was modified.`);
+            }
+          }
+        };
+
+
+        const observer = new MutationObserver(callback);
+
+
+        observer.observe(targetNode, config);
+            }
+
+            function watchContinuasly_on_node() {
+
+            const targetNode = document.getElementById("chat-msg");
+
+
+            const config = { childList: true };
+
+
+
+
+            const callback = (mutationList, observer) => {
+                let uuid;
+                console.log('mutationList=>', mutationList);
+                for (const mutation of mutationList) {
+                    if (uuid) {
+                        return;
+                    }
+                    console.log('Watch on[chat-msg] -> MUTATION:', mutation);
+                    if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+                        mutation.addedNodes.forEach(node => {
+                            console.debug('mutation child node:', node);
+                            if (node.nodeType === Node.ELEMENT_NODE && node.nodeName == "DIV" && !uuid) {
+                                uuid = $(node).find('#chat-id-div').text() || false;
+                                if (uuid) {
+                                    console.info('>>>> MUTATION => SET chat id=[%s]', uuid)
+                                    $("#id-chat-input").val(uuid);
+                                }
+                            }
+                        });
+                    } else if (mutation.type === "attributes") {
+                        console.log(`The ${mutation.attributeName} attribute was modified.`);
+                    }
+                }
+            };
+
+
+            const observer = new MutationObserver(callback);
+
+
+            observer.observe(targetNode, config);
+        }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log("Document ready!");
+                addListener_rightSidebar();
+                addListener_btn_history();
+
+                newChatStart();
+
+                $('#btn-new-chat').click(function(){
+                    console.log('CLICKED #btn-new-chat')
+                    newChatStart();
+                })
+
+                $(document).on({
+                    'htmx:afterRequest': addListener_htmx_history,
+                    'htmx:afterSettle': addListener_htmx_settle
+                });
+
+                watchContinuasly_on_node();
+
+                $("#chat-btn").on('click', function () {
+                    $(window).scrollTop($('#chat-div').offset().top);
+                });
+            });
+        </script> <script src="js/app.js"></script><script defer="defer" src="js/htmx.js"></script><script src="js/typing_words.js"></script><script defer="defer">const pt_AWI = "AI Web Interface";
+
+                const pageProps = {"Title":"VoIP","Login":"dmykolen","UriBtnSend":"/api/v1/ask-ai-voip","UriBtnHistory":"/api/v1/users//chats/shortinfo","Authenticated":true,"EnvDev":false};
+                const pageTitle = "VoIP";
+                var es = null;
+                document.addEventListener('DOMContentLoaded', function () {
+                    console.log(`Document ready! pageTitle=${pageTitle}`);
+                    userAuthCheck(es);
+                    sideBar();
+                    controlTextArea();
+                    addListener_btn_send();
+                    if (pageTitle == pt_AWI) {
+                        InitSTT();
+                    }
+                })</script><script defer="defer" src="dist/json-enc.js"></script></body>
+</html>

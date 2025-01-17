@@ -1,0 +1,94 @@
+<!-- {"code":200,"message":"OK","data":{"id":"cd54ff58-fcda-4509-8540-26d2955f9241","name":"","createdTime":1712843315341,"messages":[{"role":"system","content":"You will be provided with a document delimited by triple quotes and a question. Your task is to answer the question using the provided document. If the document does not contain the information needed to answer this question then simply write: \"Insufficient information.\""},{"role":"user","content":"\"\"\"# Налаштування SipDroid (OC Android)\n\nДодаткову документацію по SipDroid можна знайти за посиланням(http://www.sipdroid.org/).\nСпочатку необхідно створити нові SIP налаштування.\n\n\nAuthorization Username: вказуємо номер тільки у форматі \"380...\". Вказуємо пароль, який ви отримали при підписанні контракту. Якщо номер використовує \"Авторизацію за IP адресою\", то вказуємо будь-яке значення. В полі Server вказуємо сервер csbc.lifecell.ua та порт залежно від типу підключення. Обираємо протокол TLS.\n\n\nВ аудіо кодеках обраємо тільки кодеки PCMU та PCMA.\n\"\"\"\n\nQuestion: Why i got 401 error?"},{"role":"assistant","content":"Insufficient information."}]}} -->
+<!-- https://chatgpt.com/share/0e5a2036-b0b5-4300-899a-448c4da31390 -->
+
+<div class="flex justify-center text-xs">
+    <button id="chat-id-div" class="badge badge-xs badge-outline badge-secondary" onclick="my_modal_5.showModal()">{{.ID}}</button>
+    {{/*millisToTS .CreatedTime*/}}
+</div>
+
+<dialog id="my_modal_5" class="modal">
+    <div class="modal-box px-4">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="font-bold text-lg badge badge-warning animate-pulse">DEBUG</h3>
+        <div class="mockup-code bg-primary text-primary-content">
+            <pre class="text-xs"><code class="font-mono leading-0 text-wrap tracking-tighter">{{convertToJSONPretty .}}</code></pre>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<script>
+    function evalHTMX_rating(e) {
+        console.info('START /rating HTMX request! Evt =>', e)
+        // Find the closest parent element with the class 'chat-end'
+        let chatEndElement = e.target.closest('.chat-end');
+
+        // If no such element is found, return -1 (indicating an error or not found)
+        if (!chatEndElement) {
+            return -1;
+        }
+        let allChatEnds = Array.from(document.querySelectorAll('.chat'));
+        let index = allChatEnds.indexOf(chatEndElement);
+
+        console.log(`Total 'chat-end' elements = ${allChatEnds.length}; IDX_CURRENT=${index}`)
+        return index;
+    }
+
+</script>
+
+{{- range .Messages -}}
+{{- if eq .Role "user"}}
+<div class="chat chat-start">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+    </div>
+    <div class="chat-header font-bold text-base-content/50">
+        {{.Role}}
+        {{ if .Time }}<time class="opacity-50 pl-4 text-xs">{{.Time}}</time>{{end}}
+    </div>
+    <!-- <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">{{extractQuestion .Content}}</div> -->
+    <div class="chat-bubble chat-bubble-primary whitespace-pre-wrap bg-black text-accent min-h-[2rem]">{{extractQuestion .Content}}</div>
+</div>
+{{- end -}}
+
+{{- if eq .Role "assistant"}}
+<div class="chat chat-end">
+    <div class="chat-image avatar">
+        <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+    </div>
+    <div class="chat-header font-bold text-base-content/50">
+        {{.Role}}
+        {{ if .Time }}<time class="opacity-50 pl-4 text-xs">{{.Time}}</time>{{end}}
+    </div>
+    <div class="chat-bubble p-2 whitespace-pre-wrap">{{.Content}}</div>
+    <div class="chat-footer opacity-75">
+        <div class="rating" hx-post="/rate" hx-include="[name=chatRating],#id-chat-input" hx-swap="none" hx-vals='js:{chatIdx: evalHTMX_rating(event)}' hx-ext='json-enc'>
+            <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="1" />
+            <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="2" />
+            <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="3" />
+            <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="4" />
+            <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="5" />
+        </div>
+    </div>
+</div>
+{{end -}}
+
+{{- if eq .Role "system" }}
+<div class="chat chat-start text-xs delay-100 duration-300 ease-in transform transition-all" ondblclick="$(this).toggleClass('scale-125')">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-info text-4xl">⚙️</div>
+    </div>
+    <div class="chat-header font-bold text-base-content/50">{{.Role}}</div>
+    <div class="chat-bubble chat-bubble-info">{{.Content}}</div>
+</div>
+{{- end -}}
+
+{{- end -}}
+
+<script>
+    console.log(`FINISH load golang template CHAT. Total in chat Messages=${$('#chat-msg>.chat').length}`)
+</script>

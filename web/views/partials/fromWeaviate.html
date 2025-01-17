@@ -1,0 +1,106 @@
+<div class="hover:bg-black hover:font-extrabold hover:scale-125 sticky top-[90%] w-16 z-10 hover:translate-x-2 hover:translate-y-2 hover:rotate-[360deg] duration-300 transition-all">
+    <div class="hover:opacity-100 opacity-70">
+        <div class="stat-title text-sm">VectorDB</div>
+        <div class="stat-value text-3xl">{{len .}}</div>
+        <div class="stat-desc">Objects</div>
+    </div>
+</div>
+
+<style>
+    .card.htmx-swapping button {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+    }
+</style>
+
+<div id="docs" class="grid grid-cols-1 xl:grid-cols-2 gap-4" hx-confirm="Are you sure you want to delete this item?" hx-target="closest .card" hx-swap="outerHTML swap:1s transition:true">
+    {{range .}}
+    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+        <div class="card-body p-3">
+            <div class="card-actions justify-end absolute right-4">
+                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                    <button hx-delete="/api/vdb/v1/objects/{{.Additional.id}}" class="bg-clip-text bg-gradient-to-tr btn btn-square btn-xs delay-100 from-primary hover:scale-110 hover:shadow-md hover:shadow-pink-500 text-transparent to-secondary"><i class="small material-icons">delete_forever</i></button>
+                </div>
+            </div>
+            <div class="card-title max-w-lg mr-20">
+                <span class="text-sm truncate">{{.Title}}</span>
+                <div class="relative group">
+                    <button class="z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 text-xs shadow-md shadow-pink-500/20 transition-all group-hover:shadow-lg group-hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                        <div class="chat-start">
+                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                <div class="overflow-x-auto shadow-md">
+                                    <table class="table table-xs">
+                                        <tbody class="font-bold">
+                                            <tr class="border-0">
+                                                <td>DateCreation</td>
+                                                <td class="text-xs font-normal badge badge-xs badge-warning">{{.TimeCreationString}}</td>
+                                            </tr>
+                                            <tr class="border-0">
+                                                <td>DateUpdate</td>
+                                                <td class="text-xs font-normal badge badge-xs badge-warning">{{.TimeUpdString}}</td>
+                                            </tr>
+                                            <tr class="border-0">
+                                                <td>ChunkNo</td>
+                                                <td class="text-xs font-normal badge badge-xs badge-error">{{.ChunkNo}}</td>
+                                            </tr>
+                                            <tr class="border-0">
+                                                <td>Category</td>
+                                                <td class="text-xs font-normal badge badge-xs badge-success">{{.Category}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{if .Additional}}<div class="badge badge-secondary">{{.Additional.id}}</div>{{end}}
+            <div class="card-actions justify-end hidden">
+                <a href="{{.GenerateURL}}" target="_blank" class="btn btn-primary">Open Link</a>
+            </div>
+            <div class="collapse collapse-plus mt-8 bg-base-200 grid-cols-1">
+                <input type="checkbox" class="peer" />
+                <div class="bg-gradient-to-br collapse-title from-primary h-10 min-h-10 peer-checked:bg-gradient-to-r peer-checked:bg-purple-600 peer-checked:from-red-500 peer-checked:text-secondary-content text-slate-300 to-secondary/50">Click me to show/hide content</div>
+                <div class="collapse-content p-1 text-xs peer-checked:text-secondary-content peer-checked:my-1 peer-checked:p-1">
+                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                        <div class="tooltip tooltip-secondary text-sm ease-in-out hover:scale-125 transition-all duration-300 delay-100" data-tip="Copy!">💾</div>
+                    </span>
+                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 from-teal-200 rounded-lg">
+                        <pre><code class="m-2">{{.Content}}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{end}}
+</div>
+<script>
+    $('.copy-button').click(function () {
+        console.debug('copying', $(this));
+        // Find the parent .collapse-content div
+        var collapseDiv = $(this).closest('.collapse-content');
+
+        // Get the code element within it
+        var code = collapseDiv.find('code')[0];
+
+        // Select the code content
+        var range = document.createRange();
+        range.selectNodeContents(code);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+
+        // Copy selection
+        document.execCommand('copy');
+
+        // Remove selection
+        window.getSelection().removeAllRanges();
+
+        $(this).text('✅')
+        setTimeout(() => {
+            $(this).text('📋')
+        }, 500);
+
+    });
+</script>

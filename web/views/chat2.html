@@ -1,0 +1,96 @@
+<div class="flex justify-center text-xs">
+    <button id="chat-id-div" class="badge badge-xs badge-outline badge-secondary" onclick="my_modal_5.showModal()">{{.id}}</button>
+    {{/*millisToTS .CreatedTime*/}}
+</div>
+
+<dialog id="my_modal_5" class="modal">
+    <div class="modal-box px-4">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="font-bold text-lg badge badge-warning animate-pulse">DEBUG</h3>
+        <div class="mockup-code">
+            <pre class="text-xs"><code class="font-mono leading-0 tracking-tighter">{{convertToJSONPretty .}}</code></pre>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+{{- range .messages -}}
+{{- if eq .role "user"}}
+<div class="chat chat-start">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+    </div>
+    <div class="chat-header font-bold text-base-content/50">{{.role}}</div>
+    <!-- <div class="chat-header font-bold text-base-content/50">{{$.Login}}</div> -->
+    <!-- <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">{{extractQuestion .content}}</div> -->
+    <div class="chat-bubble chat-bubble-primary whitespace-pre-wrap bg-black text-accent min-h-[2rem]"><div class="bg-clip-text bg-gradient-to-tr font-bold from-primary text-transparent to-secondary whitespace-pre-wrap">{{extractQuestion .content}}</div></div>
+    <div class="chat-footer">
+        {{ if .time }}<time class="opacity-50 text-base-content/50 text-xs">{{.time}}</time>{{end}}
+    </div>
+</div>
+{{- end -}}
+
+{{- if eq .role "assistant"}}
+<div class="chat chat-end">
+    <div class="chat-image avatar">
+        <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+    </div>
+    <div class="chat-header font-bold text-base-content/50">{{.role}}</div>
+    <!-- <div class="chat-bubble p-2 whitespace-pre-wrap leading-normal">{{.content}}</div> -->
+    <div class="chat-bubble prose sm:prose-md">{{.content}}</div>
+    <div class="chat-footer">
+        {{ if .time }}<time class="opacity-50 text-base-content/50 text-xs">{{.time}}</time>{{end}}
+        <form class="flex" hx-post="/api/v1/rate" hx-trigger="click" hx-include="[name=chatRating],#id-chat-input" hx-swap="none" hx-vals='js:{chatIdx: evalHTMX_rating(event)}' hx-ext='json-enc'>
+            <input type="radio" name="chatRating" class="form-control btn btn-sm hover:bg-secondary/80 hover:border-2 hover:rotate-45 duration-300 hover:scale-125 mask mask-star-2 {{if eq .rating 1.0}}bg-secondary{{else}}bg-secondary/20{{end}}" value="1" />
+            <input type="radio" name="chatRating" class="form-control btn btn-sm hover:bg-secondary/80 hover:border-2 hover:rotate-45 duration-300 hover:scale-125 mask mask-star-2 {{if eq .rating 2.0}}bg-secondary{{else}}bg-secondary/20{{end}}" value="2" />
+            <input type="radio" name="chatRating" class="form-control btn btn-sm hover:bg-secondary/80 hover:border-2 hover:rotate-45 duration-300 hover:scale-125 mask mask-star-2 {{if eq .rating 3.0}}bg-secondary{{else}}bg-secondary/20{{end}}" value="3" />
+            <input type="radio" name="chatRating" class="form-control btn btn-sm hover:bg-secondary/80 hover:border-2 hover:rotate-45 duration-300 hover:scale-125 mask mask-star-2 {{if eq .rating 4.0}}bg-secondary{{else}}bg-secondary/20{{end}}" value="4" />
+            <input type="radio" name="chatRating" class="form-control btn btn-sm hover:bg-secondary/80 hover:border-2 hover:rotate-45 duration-300 hover:scale-125 mask mask-star-2 {{if eq .rating 5.0}}bg-secondary{{else}}bg-secondary/20{{end}}" value="5" />
+        </form>
+    </div>
+</div>
+{{end -}}
+
+{{- if eq .role "system" }}
+<div class="chat chat-start text-xs delay-100 duration-300 ease-in transform transition-all" ondblclick="$(this).toggleClass('scale-125')">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-info text-4xl">⚙️</div>
+    </div>
+    <div class="chat-header font-bold text-base-content/50">{{.role}}</div>
+    <div class="chat-bubble chat-bubble-info">{{.content}}</div>
+</div>
+{{- end -}}
+
+{{- end -}}
+
+<!--
+<script>
+    $(document).ready(function() {
+      $('input[name="chatRating"]').change(function() {
+        var selectedValue = $(this).val();
+        $('input[name="chatRating"]').each(function() {
+          if ($(this).val() != selectedValue) {
+            $(this).prop('checked', false);
+          }
+        });
+        $(this).prop('checked', true);
+        console.log(`clicked!!! is_checked=${$(this).is(':checked')} prop=${$(this).prop('checked')} attr=${$(this).attr('checked')}`, $(this));
+      });
+    });
+  </script> -->
+
+<script>
+    console.log(`FINISH load golang template CHAT. Total in chat Messages=${$('#chat-msg>.chat').length}`)
+
+    $('.chat-footer>form>input.bg-secondary').prevAll().switchClass("bg-secondary/20", "bg-secondary", 1000, "easeInOutQuad");
+    $('input[name="chatRating"]').click(function(){
+        console.log(`clicked!!! is_checked=${$(this).is(':checked')} prop=${$(this).prop('checked')} attr=${$(this).attr('checked')}`, $(this));
+        starClick($(this))
+        console.log(`clicked!!! is_checked=${$(this).is(':checked')} prop=${$(this).prop('checked')} attr=${$(this).attr('checked')}`, $(this));
+    });
+
+</script>

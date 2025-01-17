@@ -1,0 +1,157 @@
+basePath: /
+definitions:
+  models.AIRequest:
+    description: Request body for user AI requests
+    properties:
+      chatId:
+        description: '@Description Chat ID associated with the AI request, can be
+          empty if creating a new chat'
+        example: 123e4567-e89b-12d3-a456-426614174000
+        type: string
+      userRequest:
+        example: What is the weather today?
+        type: string
+    type: object
+  models.AIResponse:
+    description: Response body for user AI requests
+    properties:
+      chatId:
+        description: '@Description Chat ID associated with the AI request'
+        example: 123e4567-e89b-12d3-a456-426614174000
+        type: string
+      status:
+        description: '@Description Status of the AI request'
+        example: success
+        type: string
+    type: object
+  models.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+host: ai.dev.ict:7557
+info:
+  contact:
+    email: dima@swagger.io
+    name: API Support
+  description: This is LIFECELL KnowledgeBase
+  title: LIFECELL KnowledgeBase API
+  version: "1.0"
+paths:
+  /ask-ai-voip:
+    post:
+      consumes:
+      - application/json
+      description: Handle requests from client with question about VoIP
+      parameters:
+      - description: Request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AIRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Ask AI VoIP
+      tags:
+      - AI
+  /ask-db:
+    post:
+      consumes:
+      - application/json
+      description: Handle requests from client with question about database
+      parameters:
+      - description: Request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AIRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Ask DB
+      tags:
+      - AI
+  /chatgpt:
+    post:
+      consumes:
+      - application/json
+      description: Handle ChatGPT requests
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      tags:
+      - AI
+  /users/{username}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user by their username, optionally including their
+        chats.
+      parameters:
+      - description: Username
+        in: path
+        name: username
+        required: true
+        type: string
+      - default: false
+        description: Include Chats
+        in: query
+        name: with_chats
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with user data.
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: 'Error: Bad request.'
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: 'Error: User not found.'
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: 'Error: Internal server error.'
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get user by username
+      tags:
+      - users
+swagger: "2.0"

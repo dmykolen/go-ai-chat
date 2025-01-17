@@ -1,0 +1,78 @@
+{{define "musicPlayer"}}
+<div class="divider"></div>
+<div class="flex justify-center">
+    <button class="btn btn-primary" onclick="playAudio()">Play Audio</button>
+</div>
+<div class="flex justify-center">
+    <button class="btn btn-primary" onclick="pauseAudio()">Pause Audio</button>
+</div>
+{{end}}
+
+{{template "partials/theme" . }}
+
+<div class="mx-auto p-4 text-center">
+    <h1 class="text-5xl font-bold text-center mb-10 title">AI Web Interface</h1>
+
+    <div class="join w-4/6">
+        <button class="btn join-item border-4 hover:border-b-warning focus:border-b-warning w-1/3 mr-1" onclick="showDiv('chat-div')">Chat with AI</button>
+        <button class="btn join-item border-4 hover:border-b-warning focus:border-b-warning w-1/3 mr-1" onclick="showDiv('voice-to-text-div')">Voice to Text</button>
+        <button class="btn join-item border-4 hover:border-b-warning focus:border-b-warning w-1/3 mr-1" onclick="showDiv('text-to-voice-div')">Text to Voice</button>
+    </div>
+
+    <!-- Chat with AI -->
+    <div id="chat-div" class="w-full">
+        <div class="mockup-browser border w-2/3 mx-auto mt-2">
+            <form hx-post="/chat-endpoint" hx-swap="outerHTML" hx-ext='json-enc' class="my-2">
+                <div class="join border-2 border-primary w-4/5">
+                    <input class="join-item input w-11/12 focus-visible:bg-transparent/30" type="search" name="msg" placeholder="Type your message..." draggable="true">
+                    <button class="join-item btn border-r-0 text-accent" type="submit">Send</button>
+                </div>
+            </form>
+            <div id="chat" class="bg-base-300 max-h-96 overflow-auto">
+                <div class="chat chat-start">
+                    <div class="chat-bubble chat-bubble-primary">What kind of nonsense is this</div>
+                </div>
+                <div class="chat chat-start">
+                    <div class="chat-bubble chat-bubble-primary">Put me on the Council and not make me a Master!??</div>
+                </div>
+                <div class="chat chat-end">
+                    <div class="chat-bubble chat-bubble-accent">To be on the Council at your age.</div>
+                </div>
+                {{template "partials/aiResponseBig" . }}
+                <div class="chat chat-start">
+                    <div class="chat-bubble chat-bubble-primary">That's never been done in the history of the Jedi. It's insulting!</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- Voice to Text -->
+    <div id="voice-to-text-div" class="hidden">
+        <form hx-post="/voice-2-text2" hx-swap="outerHTML">
+            <input type="file" name="audioFile" accept="audio/*" class="input input-bordered">
+            <!-- Add code for recording voice -->
+            <button type="submit" class="btn btn-info">Convert</button>
+        </form>
+        <div class="divider"></div>
+        <form hx-post="/voice-2-text" hx-swap="outerHTML" hx-encoding="multipart/form-data" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Select an audio file:</label>
+                <input type="file" name="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs form-control-file" />
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        {{template "musicPlayer" . }}
+    </div>
+
+    <!-- Text to Voice -->
+    <div id="text-to-voice-div" class="hidden">
+        <form hx-post="/text-2-voice" hx-swap="outerHTML">
+            <input type="text" name="text" placeholder="Enter text" class="input input-bordered">
+            <button type="submit" class="btn btn-warning">Convert</button>
+        </form>
+    </div>
+
+</div>

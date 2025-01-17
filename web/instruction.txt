@@ -1,0 +1,53 @@
+## Quick start
+
+1. Clone this repository
+2. Install dependencies
+    ```bash
+    npm install
+    ```
+3. Build the project
+    - 
+    ```bash
+    npm run build
+    ```
+
+
+## Install dependencies
+
+```bash
+npm install --save-dev webpack webpack-cli
+npm install --save-dev @babel/core @babel/preset-env babel-loader
+npm install -g http-server
+npm install -g browserify
+
+npm install --save-dev webpack webpack-cli webpack-dev-server style-loader css-loader
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+npm install tailwindcss daisyui htmx.org@latest datatables.net datatables.net-dt highlight.js jquery @tailwindcss/forms @tailwindcss/typography marked marked-highlight browserify
+```
+
+## Include styles
+
+> npx tailwindcss init -p
+
+```html
+<head>
+...
+    <link rel="stylesheet" href="../dist/tailwind.css">
+    <link rel="stylesheet" href="../dist/datatables.css">
+    <link rel="stylesheet" href="../dist/highlight.css">
+...
+</head>
+```
+
+## Include scripts
+
+```html
+<body>
+...
+    <script src="dist/bundle.js"></script>
+    <script type="module" src="src/scripts/md-format.js"></script>
+...
+</body>
+```
+
+

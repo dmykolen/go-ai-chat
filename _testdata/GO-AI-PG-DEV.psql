@@ -1,0 +1,60 @@
+INSERT INTO "users" ("username","email","password","role","last_login_time") VALUES ('test','','XDDDDDD','XXX')
+INSERT INTO "users" ("username","email","password","role") VALUES ('test',null,'XDDDDDD','XXX')
+
+
+select * from users u left join chats c on u.id = c.user_id;
+select * from users u left join chats c on u.id = c.user_id WHERE username = 'dmykolen';
+select * from users u left join chats c on u.id = c.user_id WHERE username = 'nchetver';
+
+INSERT INTO chats (id, user_id, chat)
+VALUES (
+    'id:bigint',
+    'user_id:bigint',
+    'chat:jsonb'
+  );
+
+select * from chats;
+SELECT * FROM chats WHERE chat ->> 'id' = '937bcc28-abcc-42e1-92a1-0000000';
+
+UPDATE chats
+SET chat = jsonb_set(chat, '{messages,3,content}', '"This is second message"'::jsonb)
+WHERE id = 4;
+
+UPDATE chats
+SET chat = jsonb_set(chat, '{messages,3,rating}', '4'::jsonb)
+WHERE id = 4;
+
+
+INSERT INTO chats (id, user_id, chat)
+VALUES (
+    5,
+    1,
+    '{
+      "id": "937bcc28-abcc-42e1-92a1-0000000",
+      "name": "",
+      "messages": [
+        {
+          "role": "user",
+          "content": "мені потрібен список твоїх можливостей"
+        },
+        {
+          "role": "assistant",
+          "content": "Я можу допомогти вам з наступним",
+          "rating": 1
+        },
+        {
+          "role": "user",
+          "content": "Я хочу знайти 20 останніх зареєстрованих клієнтів(код, дата, імʼя, вік)"
+        },
+        {
+          "role": "assistant",
+          "content": "Для того, щоб знайти 20 останніх зареєстрованих клієнтів",
+          "rating": 4
+        }
+      ],
+      "createdTime": 1721063858507,
+      "lastUpdateTime": 1721064125363
+    }'::jsonb
+);
+
+commit;

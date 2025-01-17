@@ -1,0 +1,80 @@
+<!-- <div class="navbar bg-gradient-to-r from-primary/25 to-80% to-secondary/50 absolute via-purple-600 -mt-2"> -->
+<div class="min-h-12 h-1 absolute top-0 z-20 bg-gradient-to-r from-25% from-primary navbar to-35%">
+    <div class="flex-1">
+        <!-- <a id="typeBrand" href="" class="btn hover:scale-110 btn-ghost no-animation hover:bg-transparent normal-case text-2xl font-mono transition-all ease-in opacity-75 delay-100 text-base-100/50"></a> -->
+        <div class="indicator">
+            <span class="indicator-item indicator-start mx-7 my-2"><img class="rounded-full w-6 h-6" src="/img/gifs/ua_flag.gif" alt="Image" /></span>
+            <a id="typeBrand" href="" class="btn hover:scale-110 btn-ghost no-animation hover:bg-transparent normal-case text-2xl font-mono transition-all ease-in opacity-75 delay-100 text-base-100/50">Lifecell AI</a>
+        </div>
+    </div>
+    <div class="flex-none">
+        <div class="dropdown dropdown-left">
+            <label class="btn btn-ghost btn-circle avatar">
+                <div class="w-auto rounded-full text-4xl">
+                    <label class="swap swap-flip">
+                        <input type="checkbox" name="" id="">
+                        <div class="swap-on">😎</div>
+                        <div class="swap-off">🥷🏽</div>
+                    </label>
+                </div>
+            </label>
+            <ul class="shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-44 z-20">
+                <li id="logout-li" class="hidden">
+                    <a href="/logout" class="bg-gradient-to-r border-0 btn btn-outline btn-primary p-3 rounded-xl font-mono text-primary-content/60 transition-all duration-500 relative">
+                        Logout
+                        <span class="absolute flex hover:animate-bounce text-4xl w-full">🏃🏽‍♂️</span>
+                    </a>
+                </li>
+                <li id="login-li">
+                    <!-- <button class="bg-gradient-to-b border-0 btn btn-outline btn-primary rounded-xl font-mono text-primary-content/60" id="showModal" onclick="$('#loginModal').toggleClass('hidden')"> -->
+                    <button class="bg-gradient-to-r border-0 btn btn-outline btn-primary rounded-xl font-mono text-primary-content/60 transition-all duration-500 relative" id="showModal" hx-get="/login_form_only" hx-trigger="click[checkLoginSection()]" hx-target="#content" hx-swap="afterbegin transition:true settle:200ms">
+                        Login
+                        <span class="absolute flex inset-2 text-4xl w-full hover:rotate-45 duration-300 ease-in-out transform transition">👋</span>
+                    </button>
+                </li>
+                <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60 btn-disabled" disabled>Profile</button></li>
+                <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60" disabled>Settings</button></li>
+                <li class="divide-accent"></li>
+                <li>
+                    <div class="dropdown dropdown-bottom flex justify-center p-0 hover:bg-base-100/0 btn btn-ghost">
+                        <button tabindex="0" role="button" class="btn mx-auto w-full bg-primary/25 ring-0 btn-circle ring-offset-1 ring-offset-primary shadow-lg shadow-pink-500/40" onclick="toggleHidden(this.nextElementSibling)">
+                            Theme
+                            <svg width="12px" height="12px" class="h-2 w-2 fill-current opacity-60 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+                                <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                            </svg>
+                        </button>
+                        <div tabindex="0" id="dataThemeChanger" data-choose-theme data-key="admin-panel" class="join join-vertical dropdown-content hidden z-50 p-0 mt-2">
+                            <!-- <input type="radio" data-set-theme="default" name="theme-buttons" class="btn theme-controller join-item" aria-label="Default" value="default" /> -->
+                            <input type="radio" data-set-theme="ua" name="theme-buttons" class="btn theme-controller join-item" aria-label="UA💙" value="ua" />
+                            <input type="radio" data-set-theme="dim" name="theme-buttons" class="btn theme-controller join-item" aria-label="dim" value="dim" />
+                            <input type="radio" data-set-theme="forest" name="theme-buttons" class="btn theme-controller join-item" aria-label="forest" value="forest" />
+                            <input type="radio" data-set-theme="sunset" name="theme-buttons" class="btn theme-controller join-item" aria-label="sunset" value="sunset" />
+                            <!-- <input type="radio" data-set-theme="bumblebee" name="theme-buttons" class="btn theme-controller join-item" aria-label="bumblebee" value="bumblebee" /> -->
+                            <!-- <input type="radio" data-set-theme="mytheme" name="theme-buttons" class="btn theme-controller join-item" aria-label="mytheme" value="mytheme" /> -->
+                            <!-- <input type="radio" data-set-theme="cupcake" name="theme-buttons" class="btn theme-controller join-item" aria-label="cupcake" value="cupcake" /> -->
+                            <!-- <input type="radio" data-set-theme="cyberpunk" name="theme-buttons" class="btn theme-controller join-item" aria-label="cyberpunk" value="cyberpunk" /> -->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleHidden(element) {
+        console.log("THIS:", this);
+        console.log("Element:", element);
+        element.classList.toggle("hidden");
+    }
+    function checkLoginSection() {
+        let isExists = document.getElementById('loginSection') && true || false;
+        console.log(`Check login section exists=[${isExists}]! Do HTMX request, If not exists`);
+        if (isExists) {
+            // $('#loginModal').removeAttr('style');
+            // $('#loginModal').toggleClass('hidden', 300);
+            $('#loginModal').show();
+        }
+        return !isExists;
+    }
+</script>

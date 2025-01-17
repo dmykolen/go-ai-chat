@@ -1,0 +1,324 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+    .roboto-condensed-font {
+        font-family: "Roboto Condensed", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+</style>
+<main id="content" class="h-dvh overflow-y-hidden">
+    <div class="my-1 text-center">
+        <h1 class="text-5xl font-bold"><span id="typed2" class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent/70 animate-gradient">{{.Title}}</span></h1>
+    </div>
+
+    <!-- TABs -->
+    {{if eq .Title "AI Web Interface"}}
+    <div class="text-center h-10">
+        <div class="join w-4/6">
+            <button id="chat-grid-btn" class="btn join-item border-4 hover:border-b-warning mr-1 w-1/3" onclick="showDiv(0)"><span class="duration-300 hover:scale-125 w-full">Chat with AI🤖</span></button>
+            <button id="voice-to-text-btn" class="btn join-item border-4 hover:border-b-warning mr-1 w-1/3" onclick="showDiv(1)"><span class="duration-300 hover:scale-125 w-full">Voice to Text 🎤</span></button>
+            <button id="text-to-voice-btn" class="btn join-item border-4 hover:border-b-warning mr-1 w-1/3" onclick="showDiv(2)"><span class="duration-300 hover:scale-125 w-full">Text to Voice📖</span></button>
+        </div>
+    </div>
+    {{end}}
+
+    <div id="chat-grid-tab-div" class="grid grid-cols-4 h-full {{if eq .Title "AI Web Interface" }}pb-24{{else}}pb-16{{end}}">
+        <div id="chat-div" class="backdrop-blur bg-black/80 border-b border-t border-white/10 col-end-5 col-start-1 md:mt-4 mockup-window mt-3 mx-5 lg:mx-32 pt-1 shadow-black shadow-2xl text-sm" hx-ext="debug">
+            <div class="-mt-7 flex flex-col items-center justify-center px-4">
+                <div class="grid grid-cols-3 w-full">
+                    <div class="join join-horizontal justify-self-center col-start-2 space-x-1">
+                      <div id="btn-new-chat" class="btn join-item border-b-accent hover:bg-primary-to-secondary hover:text-accent-content hover:scale-110 btn-xs w-28 text-slate-300 transition-all duration-300 delay-100 ease-out">NEW CHAT</div>
+                      <div id="btn-hst" class="btn join-item border-b-accent hover:bg-primary-to-secondary hover:text-accent-content hover:scale-110 btn-xs w-28 text-slate-300 transition-all duration-300 delay-100 ease-out" hx-get="{{.UriBtnHistory}}" hx-trigger="click[checkCondition()]" hx-target="#chat-hst-container" hx-swap="none">CHAT HISTORY</div>
+                    </div>
+                    <div id="btn-options" class="justify-self-end max-w-8">
+                        <label class="btn btn-outline btn-xs border-0 text-white bg-transparent/50 swap swap-rotate">
+                            <!-- this hidden checkbox controls the state -->
+                            <input type="checkbox" />
+                            <!-- hamburger icon -->
+                            <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+                            </svg>
+                            <!-- close icon -->
+                            <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+                <form hx-post="{{.UriBtnSend}}" hx-target="#chat-msg" hx-swap="none" hx-ext='json-enc' class="flex items-center form-control my-2 w-3/4">
+                    <input id="id-chat-input" type="text" name="chatID" value="" hidden />
+                    <input id="tab-id" type="text" name="tabId" value="" hidden />
+                    <input id="msisdn-chat-input" type="text" name="msisdn" value="" hidden />
+                    <div class="join join-horizontal flex w-full">
+                        <textarea id="chat-send-input" rows="1" type="search" name="userRequest" placeholder="Type here" class="textarea textarea-ghost border-0 bg-transparent/80 join-item text-xs tracking-tight p-1 font-mono resize-none m-0 hover:resize-y w-full min-h-12 max-h-40 focus:outline-0 focus:border-primary-focus link-accent focus:caret-indigo-600 focus:border-0 focus:ring-0"></textarea>
+                        <button id="chat-send" class="btn join-item bg-gradient-to-br btn-outline border-0 text-white from-primary to-accent transition-all duration-500 hover:translate-x-1 hover:shadow-lg hover:shadow-neutral-300/20">SEND</button>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="mx-10 overflow-y-scroll">
+                <div id="chat-hst-container" class="overflow-y-scroll">
+                </div>
+
+                <div id="chat-msg" class="overflow-y-scroll roboto-condensed-font">
+                </div>
+            </div>
+        </div>
+        <!-- options menu. By default hidden. Show on click button "btn-options". Weight should be not more than 1/4 of screen  -->
+        <!-- <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/path-params.js"></script> -->
+        <div id="options-div" class="flex flex-col rounded-ss-box text-secondary overflow-y-scroll text-sm bg-black/80 h-[100%] p-3" style="display: none;">
+            <div class="artboard-demo flex flex-row input justify-around pl-1">
+                <label for="msisdn" class="badge badge-accent label">MSISDN</label>
+                <input id="msisdn" name="msisdn" type="text" class="border-0 input input-xs max-w-[55%] placeholder:italic placeholder:text-slate-400" hx-get="/ws/account" hx-indicator="#searchSpinner" hx-trigger="keyup[target.value.length > 11] changed delay:500ms" hx-target="#results" minlength="12" placeholder="Type here..." />
+                <span id="searchSpinner" class="htmx-indicator loading loading-spinner loading-sm text-secondary"></span>
+            </div>
+            <div id="results2" class="border mockup-phone mt-2 p-4 shadow-black shadow-lg overflow-y-scroll max-w-[100%] cursor-zoom-in" onclick="$(this).toggleClass('absolute overflow-y-scroll cursor-zoom-in cursor-zoom-out scale-125 top-[15%] left-[30%]',200,'swing')">
+                <div class="camera"></div>
+                <div class="display =">
+                    <div class="artboard overflow-scroll phone-2 pt-7 text-xs">
+                        <pre><code id="results" class="font-mono leading-0 text-wrap tracking-tighter"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ if eq .Title "AI Web Interface" }}
+    {{template "stt" .}}
+    {{template "tts" .}}
+    <script>
+        const allDivs = ["chat-grid-", "voice-to-text-", "text-to-voice-"];
+        function showDiv(idx) {
+            console.log(idx, " => ", allDivs[idx]);
+            $("[id$='tab-div']").hide(400)
+            $("[id$='-btn']").removeClass("border-b-warning");
+            $("#" + allDivs[idx] + "tab-div").toggle(300)
+            $("#" + allDivs[idx] + "btn").toggleClass("border-b-warning");
+        }
+    </script>
+    {{end}}
+</main>
+
+
+<script src="js/json-process.js"></script>
+
+<script>
+    let inputObject = {{.}}
+    const username = "{{.Login}}";
+    const BtnText_HST = "CHAT HISTORY";
+    const fePathRegex = /\/fe\/users\/\w+\/chats\/\w+/;
+    let jsonObj = null;
+    let isPermitHTMXRequest = false;
+    function checkCondition() {
+        console.log(`checkCondition => btn-hst:text=[${$('#btn-hst').text()}] isPermitHtmxRequest=${isPermitHTMXRequest}`);
+        return isPermitHTMXRequest;
+    }
+
+    function newChatStart() {
+        $('#chat-hst-container').hide('puff', 500 );
+        $('#chat-msg').hide('puff', 500, function(){
+            $(this).empty();
+        });
+        $('#id-chat-input').val(null)
+        isPermitHTMXRequest = false;
+        $("#chat-msg").show('puff', 700);
+        $('#btn-hst').text(BtnText_HST);
+        $('#tab-id').val(getConnectionId())
+    }
+
+    function chatBeautifull() {
+        $('.chat.chat-end>div.chat-bubble').each((i, v) => { v.innerHTML = mdParse(v.textContent) })
+    }
+
+    function chatJSONConvertToDataTable() {
+        $('.chat.chat-end>div.chat-bubble').each(function(){
+            if (isValidJSON($(this).text())) {
+                console.log("isValidJSON = true")
+                addTableToChatFromJSON($(this))
+            }
+        })
+    }
+
+    function toHtml(item) {
+        return `
+  <div class="group flex flex-row space-x-2 sm:w-full lg:w-2/3 justify-center z-20">
+    <div class="flex flex-col space-y-4 bg-base-200 rounded-lg p-2 w-[75%] hover:shadow-neon-blue hover:scale-110 transition duration-300">
+        <div>
+            <div class="text-ellipsis font-mono font-bold overflow-auto text-nowrap text-xs tracking-tighter">${item.name}</div>
+            <div class="truncate overflow-auto text-nowrap text-xs select-all text-slate-300/80 tracking-tighter">${item.id}</div>
+        </div>
+        <div class="flex flex-row justify-between">
+            <div class="badge badge-xs badge-warning self-end">${item.createdTime}</div>
+            <div class="btn btn-square btn-outline btn-xs w-8 h-8 group-hover:duration-300 hover:delay-100 transition-all invisible group-hover:visible" hx-get="/fe/users/${username}/chats/${item.id}" hx-trigger="click" hx-target="#chat-msg"><span class="material-symbols-outlined">play_arrow</span></div>
+        </div>
+      </div>
+  </div>`;
+    }
+
+    function addListener_rightSidebar() {
+        $("#options-div").hide("drop", { direction: "right" }, "fast");
+        let isOpenedOptions = false
+        $('#btn-options').on('click', function () {
+            console.log("btn-options clicked");
+
+            if (isOpenedOptions) {
+                $("#options-div").hide("drop", { direction: "right" }, 200, function () {
+                    $('#chat-div').switchClass("mx-8 col-end-4", "mx-16 col-end-5");
+                    isOpenedOptions = false;
+                });
+            } else {
+                $('#chat-div').switchClass("mx-16 col-end-5", "mx-8 col-end-4", 200, "easeInOutQuad", function () {
+                    $("#options-div").show("slide", { direction: "right" }, 300);
+                    isOpenedOptions = true;
+                });
+            }
+        });
+    }
+
+    function addListener_btn_history() {
+        $('#btn-hst').on('click', function () {
+            console.log("btn-hst clicked");
+            countClick(BtnText_HST);
+            $(this).text(function (index, currentvalue) {
+                if (currentvalue === BtnText_HST) {
+                    isPermitHTMXRequest = true;
+                    $("#chat-msg").hide();
+                    $("#chat-hst-container").html(`<div class="toast toast-center toast-middle"><div class="alert alert-warning"><span>Loading...</span></div></div>`);
+                    return '❌'
+                } else {
+                    isPermitHTMXRequest = false;
+                    $("#chat-hst-container").hide();
+                    $("#chat-msg").show('puff', 700);
+                    return BtnText_HST
+                };
+            });
+        });
+    }
+
+    function addListener_htmx_settle(e) {
+        if (e.detail.pathInfo.requestPath.includes("account")) {
+            console.log(">>>htmx:afterSettle => TRIGGER::parse_account_json! EVT:", e);
+            e.target.innerHTML = hlJSON(JSONIndent(e.detail.xhr.responseText));
+        } else if (fePathRegex.test(e.detail.pathInfo.requestPath)) {
+            chatBeautifull();
+            chatJSONConvertToDataTable();
+            setTimeout(() => {
+                addCopyBtnToCodeElems();
+            }, 100);
+        }
+    }
+
+    function addListener_htmx_history(e) {
+        if (e.detail.requestConfig.path.includes("/api/v1/users")) {
+            console.info('>>>htmx:afterRequest [/api/v1/users] TRIGGER history response parse');
+            if (e.detail.xhr.status != 200) {
+                $("#chat-hst-container").html(`<div class="toast toast-center toast-middle"><div class="alert alert-error"><span>Http ERROR: ${e.detail.xhr.message}</span></div></div>`);
+            } else {
+                jsonObj = JSON.parse(e.detail.xhr.responseText);
+                console.log(`Got ${jsonObj?.data?.length ?? 'NULL'} chats`);
+                let resultHTML = "";
+                jsonObj.data?.forEach((item) => { resultHTML += toHtml(item); });
+                console.debug(resultHTML);
+                $("#chat-hst-container").html(`<div class="flex flex-col space-y-1 p-4 h-full w-full place-items-center">` + resultHTML + `</div>`).show("drop", { direction: "up" }, "slow");
+                htmx.process($("#chat-hst-container")[0]);
+            }
+        } else if (fePathRegex.test(e.detail.requestConfig.path)) {
+            $("#btn-hst").click();
+        }
+    }
+
+    function ____watchContinuasly_on_node() {
+        // Select the node that will be observed for mutations
+const targetNode = document.getElementById("chat-msg");
+
+// const config = { attributes: true, childList: true, subtree: true };
+const config = { childList: true};
+
+// Callback function to execute when mutations are observed
+const callback = (mutationList, observer) => {
+  for (const mutation of mutationList) {
+    console.log('Watch on[chat-msg] -> MUTATION:', mutation)
+    if (mutation.type === "childList") {
+      console.log("A child node has been added or removed.");
+    } else if (mutation.type === "attributes") {
+      console.log(`The ${mutation.attributeName} attribute was modified.`);
+    }
+  }
+};
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
+    }
+
+    function watchContinuasly_on_node() {
+    // Select the node that will be observed for mutations
+    const targetNode = document.getElementById("chat-msg");
+
+    // Configuration for the observer (observe child nodes)
+    const config = { childList: true };
+
+
+
+    // Callback function to execute when mutations are observed
+    const callback = (mutationList, observer) => {
+        let uuid;
+        console.log('mutationList=>', mutationList);
+        for (const mutation of mutationList) {
+            if (uuid) {
+                return;
+            }
+            console.log('Watch on[chat-msg] -> MUTATION:', mutation);
+            if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+                mutation.addedNodes.forEach(node => {
+                    console.debug('mutation child node:', node);
+                    if (node.nodeType === Node.ELEMENT_NODE && node.nodeName == "DIV" && !uuid) {
+                        uuid = $(node).find('#chat-id-div').text() || false;
+                        if (uuid) {
+                            console.info('>>>> MUTATION => SET chat id=[%s]', uuid)
+                            $("#id-chat-input").val(uuid);
+                        }
+                    }
+                });
+            } else if (mutation.type === "attributes") {
+                console.log(`The ${mutation.attributeName} attribute was modified.`);
+            }
+        }
+    };
+
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(callback);
+
+    // Start observing the target node for configured mutations
+    observer.observe(targetNode, config);
+}
+
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Document ready!");
+        addListener_rightSidebar();
+        addListener_btn_history();
+
+        newChatStart();
+
+        $('#btn-new-chat').click(function(){
+            console.log('CLICKED #btn-new-chat')
+            newChatStart();
+        })
+
+        $(document).on({
+            'htmx:afterRequest': addListener_htmx_history,
+            'htmx:afterSettle': addListener_htmx_settle
+        });
+
+        watchContinuasly_on_node();
+
+        $("#chat-btn").on('click', function () {
+            $(window).scrollTop($('#chat-div').offset().top);
+        });
+    });
+</script>

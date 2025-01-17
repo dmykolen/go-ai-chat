@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  app-dima-dev:
+    container_name: dima-go-ai-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.multi-stage
+      args:
+        GITLAB_USER: ${GITLAB_USER}
+        GITLAB_ACCESS_TOKEN: ${GITLAB_ACCESS_TOKEN}
+        GOPROXY_ARTIFACTORY: ${GOPROXY_ARTIFACTORY}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      postgresql-dima-dev:
+        condition: service_healthy
+        restart: true
+      weaviate-dima-dev:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - .env.local.dev
+    environment:
+      - GIT_SSL_NO_VERIFY=true
+      - HTTP_PROXY=${HTTP_PROXY}
+      - HTTPS_PROXY=${HTTP_PROXY}
+      - GITLAB_USER=${GITLAB_USER}
+      - GITLAB_ACCESS_TOKEN=${GITLAB_ACCESS_TOKEN}
+      - GOINSECURE=*
+      - GONOPROXY=*.dev.ict
+      - GONOSUMDB=*.dev.ict
+      - GOPRIVATE=*.dev.ict
+      - GOPROXY=direct
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DB_URL_TM_CIM=${DB_URL_TM_CIM}
+      - WEAVIATE_HOST=ai.dev.ict
+      - GO_AI_PORT=8080
+      - APP_LOG_LVL=debug
+      - APP_LOG_TO_TERM=true
+      - APP_LOG_COLOR=true
+      - LDAP_ADM_PASS=${LDAP_ADM_PASS}
+      - LDAP_BASE=${LDAP_BASE}
+      - LDAP_URL=${LDAP_URL}
+      - LDAP_ADM_USER=${LDAP_ADM_USER}
+      - CONFLUENCE_TOKEN=${CONFLUENCE_TOKEN}
+      - POSTGRES_PORT=5444
+    ports:
+      - 7557:8080
+    volumes:
+      - ./_testdata/history_example.db:/app/history_example.db
+      - ./web/static/js:/app/js:ro
+      - ./web/views:/app/views:ro
+      # - .:/app
+  weaviate-dima-dev:
+    container_name: wv-dima-dev
+    build:
+      context: .
+      dockerfile: services/weaviate/docker/dev/weaviate_prom_graphana/Dockerfile
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    ports:
+      - 8082:8080
+      - 2112:2112
+    restart: on-failure:0
+    volumes:
+    - weaviate-db-dev:/var/lib/weaviate
+    environment:
+      OPENAI_APIKEY: $OPENAI_APIKEY
+      QUERY_DEFAULTS_LIMIT: 10
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-openai'
+      ENABLE_MODULES: 'text2vec-openai'
+      LOG_LEVEL: 'trace'
+      LOG_FORMAT: 'text'
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  postgresql-dima-dev:
+    container_name: pg-dima-dev
+    image: artifactory.dev.ict/docker-virtual/postgres:latest
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    ports:
+      - 5444:5432
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB_NAME
+    volumes:
+      - pg-db-dima-dev:/var/lib/postgresql/data
+volumes:
+  pg-db-dima-dev:
+  weaviate-db-dev:

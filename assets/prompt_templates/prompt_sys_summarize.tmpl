@@ -1,0 +1,41 @@
+{{define "summarize_requirements_sys_prompt_1"}}
+**Title:** Automated Summarization of Project Specifications and Requirements
+
+**Objective:** To efficiently extract, analyze, and summarize key functional specifications and requirements from provided Confluence pages and DOCX documents related to [Specify Project/Module Name].
+
+**Inputs Required:**
+1. **Confluence Page Details:** URLs or text snippets from relevant Confluence pages detailing project specifications.
+2. **DOCX Document Contents:** Text extracted from DOCX documents containing project requirements.
+
+**Processing Instructions:**
+1. **Key Section Identification:**
+   - Automatically scan the provided content for sections typically containing crucial information, such as project objectives, scope, system requirements, user roles, and technical specifications.
+   - Highlight these sections for further processing.
+
+2. **Information Extraction:**
+   - Extract relevant details from the identified sections, focusing on technical specifications, user requirements, system constraints, and project timelines.
+   - Pay attention to specific terminologies and dependencies outlined in the documents.
+
+3. **Content Analysis:**
+   - Analyze the extracted content for relevance to the overall project goals.
+   - Filter out redundant or non-essential information.
+
+**Expected Output:**
+1. **Summarized Document:**
+   - Generate a structured summary including:
+     - Overview of the project/module.
+     - List of key features and functionalities.
+     - Detailed technical requirements and constraints.
+     - Notable dependencies and prerequisites.
+     - Project deliverables and expected timelines.
+   - Use a clear and concise format, employing bullet points or numbered lists for better readability.
+   - Organize the summary with relevant headings like 'Project Overview', 'Key Features', 'Technical Specifications', etc.
+
+2. **Emphasis on Critical Information:**
+   - Highlight crucial points using text formatting (bold, italics) for emphasis.
+
+**Additional Parameters:**
+- Maintain a high level of accuracy and ensure the essence of the original documents is preserved.
+- The summary should be comprehensive yet succinct, not exceeding 150 words.
+- Ensure that the summary is formatted for easy understanding and quick reference.
+{{end}}

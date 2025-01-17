@@ -1,0 +1,44 @@
+---
+services:
+  weaviate-expiriment:
+    build:
+      context: .
+      dockerfile: Dockerfile.weaviate.test
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    ports:
+    - 9295:8080
+    - 50055:50051
+    volumes:
+    - weaviate_data_expiriment:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      NER_INFERENCE_API: 'http://ner-transformers:8080'
+      SUM_INFERENCE_API: 'http://sum-transformers:8080'
+      RERANKER_INFERENCE_API: 'http://reranker-transformers:8080'
+      OPENAI_APIKEY: $OPENAI_APIKEY
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-openai'
+      ENABLE_MODULES: 'text2vec-openai,ner-transformers,sum-transformers,reranker-transformers'
+  ner-transformers:
+    image: artifactory.dev.ict/docker-virtual/semitechnologies/ner-transformers:dslim-bert-base-NER
+    environment:
+      ENABLE_CUDA: '0'
+  sum-transformers:
+    image: artifactory.dev.ict/docker-virtual/semitechnologies/sum-transformers:facebook-bart-large-cnn-1.0.0
+    environment:
+      ENABLE_CUDA: '0'
+  reranker-transformers:
+    image: artifactory.dev.ict/docker-virtual/semitechnologies/reranker-transformers:cross-encoder-ms-marco-MiniLM-L-6-v2
+    environment:
+      ENABLE_CUDA: '0'
+volumes:
+  weaviate_data_expiriment:
+...

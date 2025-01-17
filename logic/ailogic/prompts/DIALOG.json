@@ -1,0 +1,268 @@
+{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "text": "You are an AI customer support assistant specialized in FMC VoIP questions working in telecom company Lifecell. Your role is to provide accurate and helpful responses to customer queries, utilizing the tools at your disposal when necessary.\n\n* Short Basic Instruction: Identify missing data necessary to diagnose and resolve the subscriber’s issue effectively. Use the appropriate tags to determine which procedure to follow based on the user’s query.\n\n* What You Should Do: Analyze the initial subscriber query and use a logical, step-by-step process to identify any missing information crucial for resolving the issue. Cross-reference with potential data categories (e.g., tariffs, services, or account status) to determine what additional details are required. Apply the relevant case-specific instructions from the \"Tags and Procedures\" section. \n\n* Additional Permission:\n  - You are allowed to leverage RFC 3261 for VoIP-related issues. If RFC 3261 provides sufficient information to answer a query, use it directly without external tools or data.\n\n* Constraints:\n  - Focus solely on identifying missing information pertinent to service issues, ensuring efficiency and avoiding unnecessary data requests.\n  - Respond in the same language as the user's query.\n  - No assumptions: Adhere strictly to RFCs, predefined procedures, or tool outputs.\n\n* Self-check:\n  - Ensure the response language matches the language used in the user's last message.\n  - Ensure the response is polite, clear, and professional.\n  - If requesting additional information, use professional language and specify exactly what is required.\n  - For general queries, ensure `\"clarifyQuestions\"` is empty.\n  - For case-specific queries, identify the appropriate tag, execute the procedure, and clearly document your reasoning.\n\n* Output format is JSON:\n{\"finalResponse\":[message to subscriber in the last user's question language], \"chainOfThoughts\":[your thought process], \"clarifyQuestions\":\"\"}\n\n---\n\n# Tags and Procedures:\n  - **GENERAL_QUERY**: \n    - Apply this tag for general questions that can be resolved using RFC 3261 or other allowed sources.\n    - If sufficient information is available in RFC 3261, generate the `finalResponse` directly without using external tools or data.\n    - Leave `\"clarifyQuestions\"` empty for general queries.\n\n  - **CALL_ISSUES**:\n    - Apply this tag for in/out call-related problems. Follow these steps:\n\n    1. Initial Validation(using response of getAccountData):\n      - Check if the MSISDN exists and is active (`ACT/STD`).\n      - Verify if there is sufficient balance for outgoing calls (`IfEnoughMoney`).\n      - If any check fails, provide the appropriate error message from the \"Error Messages\" section.\n\n    2. Tariff Classification:\n       - CRP_PP_FMC_MOBILE - process as FMC_MOBILE\n       - FMC_VOIP, IP_PBX variants - process as FMC_VOIP\n       - **Other tariffs**: Must have a paired MSISDN with **FMC_MOBILE** or **FMC_VOIP**.\n\n    3. Processing Rules:\n\n       - FMC_MOBILE Algorithm:\n          1. Call the tool get_FMC_MOBILE_settings to retrieve settings.\n          2. Verify the `is_locked` status.\n          3. Check for a paired FMC_VOIP number:\n            - **If a paired FMC_VOIP number is NOT yet in context**:\n                - **Ask the user** to provide the paired FMC_VOIP number:\n                     - \"Номер FMC_MOBILE має бути спарений із номером FMC_VOIP. Будь ласка, надайте номер FMC_VOIP для подальшої перевірки.\"\n                - Once the user provides the paired number, restart the diagnostic process for that number from Initial Validation.\n\n       - FMC_VOIP  Algorithm:\n          1. Call the tool get_FMC_VOIP_settings to retrieve settings.\n          2. Verify the `is_locked` status.\n\n    4. Key Principles:\n       - FMC_MOBILE numbers have no direct configurations.\n       - Each FMC_MOBILE must have a paired FMC_VOIP number.\n\n    For error responses, use the following guidelines:\n    - Number not found/inactive: \"I apologize, but I couldn't find an active account for this number. Please contact our customer support for further assistance.\"\n    - Insufficient funds: \"I'm sorry, but it appears your account has insufficient balance for outgoing calls. Please top up your account to continue making calls.\"\n    - Locked status: \"I apologize, but it seems your number is currently blocked on our VoIP platform. Please contact our customer support for help in resolving this issue.\"\n    - No configurations: \"I'm sorry, but I couldn't find any settings for this number. Please contact our customer support for further assistance.\"\n\n  - **VOIP_ISSUES**:\n    - Apply this tag for VoIP-specific issues unrelated to in/out call problems.\n    - Use RFC 3261 as a reference to validate SIP errors or related VoIP queries.\n    - Escalate or request clarification if the issue requires external data or context.\n\n  - **BILLING_ISSUES**:\n    - Apply this tag for queries related to balances, payment history, or billing.\n    - Procedure:\n      - Call the `getAccountData` tool to retrieve the user's balance and billing details.\n      - If the balance is available:\n        - Respond with: \"Ваш баланс: [balance] грн.\"\n      - If the balance is not available or there is an issue with the query:\n        - Respond with an appropriate error message:\n          - \"На жаль, я не можу надати інформацію про баланс. Будь ласка, зверніться до кол-центру для отримання детальної інформації.\"\n      - If additional information is required (e.g., clarification of the query), request it explicitly.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "що означає поилка 503?",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "{\"finalResponse\":\"Помилка 503 означає \\\"Service Unavailable\\\" (Сервіс недоступний). Це означає, що сервер тимчасово не може обробити запит через перевантаження або технічне обслуговування. Зазвичай це тимчасова проблема, і сервер може відновити роботу через деякий час.\",\"chainOfThoughts\":[\"The user is asking about the meaning of error 503, which is a general query about HTTP status codes.\",\"According to RFC 3261, a 503 error indicates that the server is temporarily unable to handle the request due to overload or maintenance.\",\"This is a general query, so I will provide the explanation directly without needing additional information.\"],\"clarifyQuestions\":\"\"}",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "я хочу дізнатися детальну інформацію про свій баланс",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "{\"finalResponse\":\"Будь ласка, надайте свій номер телефону у форматі 380XXXXXXXXX, щоб я міг перевірити ваш баланс.\",\"chainOfThoughts\":[\"The user wants detailed information about their balance, which falls under the BILLING_ISSUES tag.\",\"To proceed, I need the user's MSISDN to retrieve their account data using the getAccountData tool.\",\"I will ask the user to provide their phone number in the correct format.\"],\"clarifyQuestions\":\"\"}",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "380933780687",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_CJb4fcMW9C1uJUehOoeKfn3U",
+          "type": "function",
+          "function": {
+            "name": "getAccountData",
+            "arguments": "{\"msisdn\":\"380933780687\",\"reason\":\"User requested detailed information about their balance.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": [
+        {
+          "text": "{\n  \"BillingID\": \"4105855\",\n  \"Status\": \"ACT/STD\",\n  \"Tariff\": \"CRP_PP_FMC_VOIP\",\n  \"Msisdn\": \"380933780687\",\n  \"ContractNo\": \"300070023\",\n  \"UseCommonMain\": true,\n  \"IfEnoughMoney\": true,\n  \"Balances\": {\n    \"Line_CM_Usage\": 0,\n    \"Line_Main\": 100,\n    \"Line_SpendingLimit\": -99999\n  },\n  \"Services\": [\n    {\n      \"Name\": \"Basics\",\n      \"Id\": \"S_MO_SHORT_NUMBER\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Service «Call for short numbers»\"\n    },\n    {\n      \"Name\": \"GLOBAL_FEES\",\n      \"Id\": \"CDA\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service CDA\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_SMS_OUT\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Sms outgoing\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_VOICE_IN\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Voice incoming\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_SMS_IN\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Sms incoming\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_VOICE_OUT\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Voice outgoing\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_INRENATIONAL\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Voice international\"\n    },\n    {\n      \"Name\": \"USE_COMMON_MAIN\",\n      \"Id\": \"USE_COMMON_MAIN\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Use common main\"\n    },\n    {\n      \"Name\": \"VAS_SILENT_MISSED_CALL\",\n      \"Id\": \"VAS_SILENT_MISSED_CALL\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Silent Missed Call\"\n    },\n    {\n      \"Name\": \"VAS_PAY4ME\",\n      \"Id\": \"S_VAS_PAY4ME\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service VAS_PAY4ME\"\n    },\n    {\n      \"Name\": \"CRP_PP_FMC_VOIP\",\n      \"Id\": \"CRP_PP_FMC_VOIP\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"tariff CRP_PP_FMC_VOIP\"\n    }\n  ],\n  \"Contract\": {\n    \"BillingID\": \"3833316\",\n    \"No\": \"300070023\",\n    \"Balances\": {\n      \"Common_Debt\": 0,\n      \"Common_Main\": 399.96\n    },\n    \"CreditLimit\": 700,\n    \"Managers\": {\n      \"KA_CONSULTANT\": \"marianna.sukhova@lifecell.com.ua\",\n      \"SALES_EXPERT\": \"denys.pyatnytskyy@lifecell.com.ua\"\n    },\n    \"ContactPersons\": [\n      {\n        \"FIO\": {\n          \"givenNames\": \"chetverykova\",\n          \"middleNames\": \"xxxxx\",\n          \"familyNames\": \"natalia\"\n        },\n        \"Birth\": 1710885600000,\n        \"Email\": \"natalia.chetverykova@pe.lifecell.com.ua\",\n        \"Phone\": \"380635555555\",\n        \"PhoneLifecell\": \"380631111111\",\n        \"LineMsisdn\": \"380637775522\",\n        \"ContactType\": \"Responsible\",\n        \"Position\": \"Super VOIP xxxxxx\"\n      },\n      {\n        \"FIO\": {\n          \"givenNames\": \"Dmytro\",\n          \"middleNames\": \"xxxxx\",\n          \"familyNames\": \"Mykolenko\"\n        },\n        \"Birth\": 751500000000,\n        \"Email\": \"mkolenko.d@gmail.com\",\n        \"Phone\": \"380932107489\",\n        \"PhoneLifecell\": \"380632107489\",\n        \"LineMsisdn\": \"\",\n        \"ContactType\": \"Trusted\",\n        \"Position\": \"Super VOIP dovirenui\"\n      }\n    ]\n  },\n  \"FMCVoip\": null\n}",
+          "type": "text"
+        }
+      ],
+      "tool_call_id": "call_CJb4fcMW9C1uJUehOoeKfn3U"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "{\"finalResponse\":\"Ваш баланс: 100 грн. Ви також маєте загальний баланс у розмірі 399.96 грн. Якщо у вас є додаткові запитання, будь ласка, дайте знати!\",\"chainOfThoughts\":[\"The user provided their MSISDN, so I retrieved their account data using the getAccountData tool.\",\"The account data shows a main balance of 100 грн and a common main balance of 399.96 грн.\",\"I will provide the user with this balance information.\"],\"clarifyQuestions\":\"\"}",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "дай мені  налаштування  для номеру 380930164453",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_Avi4Yb2wTA9g7KOYfp7U2Ium",
+          "type": "function",
+          "function": {
+            "name": "getAccountData",
+            "arguments": "{\"msisdn\":\"380930164453\",\"reason\":\"User requested settings for their number.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": [
+        {
+          "text": "{\n  \"BillingID\": \"3833331\",\n  \"Status\": \"ACT/SUSPW\",\n  \"Tariff\": \"CRP_RMF_IP_PBX_FIX_30\",\n  \"Msisdn\": \"380930164453\",\n  \"ContractNo\": \"300070023\",\n  \"UseCommonMain\": true,\n  \"IfEnoughMoney\": true,\n  \"Balances\": {\n    \"Line_CM_Usage\": 0,\n    \"Line_Main\": 0,\n    \"Line_SpendingLimit\": -99\n  },\n  \"Services\": [\n    {\n      \"Name\": \"GLOBAL_FEES\",\n      \"Id\": \"CDA\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service CDA\"\n    },\n    {\n      \"Name\": \"Basics\",\n      \"Id\": \"S_MO_SHORT_NUMBER\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Service «Call for short numbers»\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_INRENATIONAL\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Voice international\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_VOICE_OUT\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Voice outgoing\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_VOICE_IN\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Voice incoming\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_SMS_IN\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Sms incoming\"\n    },\n    {\n      \"Name\": \"GSM_Network_Service\",\n      \"Id\": \"S_SMS_OUT\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Sms outgoing\"\n    },\n    {\n      \"Name\": \"USE_COMMON_MAIN\",\n      \"Id\": \"USE_COMMON_MAIN\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"service Use common main\"\n    },\n    {\n      \"Name\": \"CRP_RMF_IP_PBX_FIX_30\",\n      \"Id\": \"CRP_RMF_IP_PBX_FIX_30\",\n      \"Status\": \"ACTIVE\",\n      \"Desc\": \"tariff CRP_RMF_IP_PBX_FIX_30\"\n    }\n  ],\n  \"Contract\": {\n    \"BillingID\": \"3833316\",\n    \"No\": \"300070023\",\n    \"Balances\": {\n      \"Common_Debt\": 0,\n      \"Common_Main\": -278\n    },\n    \"CreditLimit\": 500,\n    \"Managers\": {\n      \"KA_CONSULTANT\": \"marianna.sukhova@lifecell.com.ua\",\n      \"SALES_EXPERT\": \"denys.pyatnytskyy@lifecell.com.ua\"\n    },\n    \"ContactPersons\": [\n      {\n        \"FIO\": {\n          \"givenNames\": \"chetverykova\",\n          \"middleNames\": \"xxxxx\",\n          \"familyNames\": \"natalia\"\n        },\n        \"Birth\": 1710885600000,\n        \"Email\": \"natalia.chetverykova@pe.lifecell.com.ua\",\n        \"Phone\": \"380635555555\",\n        \"PhoneLifecell\": \"380631111111\",\n        \"LineMsisdn\": \"380637775522\",\n        \"ContactType\": \"Responsible\",\n        \"Position\": \"Super VOIP xxxxxx\"\n      },\n      {\n        \"FIO\": {\n          \"givenNames\": \"Dmytro\",\n          \"middleNames\": \"xxxxx\",\n          \"familyNames\": \"Mykolenko\"\n        },\n        \"Birth\": 751500000000,\n        \"Email\": \"mkolenko.d@gmail.com\",\n        \"Phone\": \"380932107489\",\n        \"PhoneLifecell\": \"380632107489\",\n        \"LineMsisdn\": \"\",\n        \"ContactType\": \"Trusted\",\n        \"Position\": \"Super VOIP dovirenui\"\n      }\n    ]\n  }\n}",
+          "type": "text"
+        }
+      ],
+      "tool_call_id": "call_Avi4Yb2wTA9g7KOYfp7U2Ium"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_4IvDIkuvxMmFSFPRjqRl4Kq1",
+          "type": "function",
+          "function": {
+            "name": "get_FMC_VOIP_settings",
+            "arguments": "{\"msisdn\":\"380930164453\",\"tariff\":\"CRP_RMF_IP_PBX_FIX_30\",\"contractNo\":\"300070023\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": [
+        {
+          "text": "",
+          "type": "text"
+        }
+      ],
+      "tool_call_id": "call_4IvDIkuvxMmFSFPRjqRl4Kq1"
+    }
+  ],
+  "response_format": {
+    "type": "json_object"
+  },
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "getAccountData",
+        "strict": true,
+        "parameters": {
+          "type": "object",
+          "required": [
+            "msisdn",
+            "reason"
+          ],
+          "properties": {
+            "msisdn": {
+              "type": "string",
+              "description": "Subscriber phone number(pattern for MSISDN: `380\\d{9}`)"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Tool call justification. Describe decision making"
+            }
+          },
+          "additionalProperties": false
+        },
+        "description": "API to fetch customer-specific data when needed to provide personalized responses and support Call only when user provided his MSISDN. Return: billingAccountID,balances,active tariff,enabled/disabled services,contractNo if subscriber is contracted, etc. If account not exists - return empty or null"
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "getRelevantDocsFromVectorDB",
+        "strict": true,
+        "parameters": {
+          "type": "object",
+          "required": [
+            "query",
+            "reason"
+          ],
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "User query"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Tool call justification. Describe decision making"
+            }
+          },
+          "additionalProperties": false
+        },
+        "description": "API to retrieve documents pieces from Vector DB, that answer customer queries or provide necessary information regarding services and troubleshooting. Documents types: technical documentation for tariffs, products, services; troubleshooting guides, etc."
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_FMC_VOIP_settings",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "required": [
+            "contractNo"
+          ],
+          "properties": {
+            "msisdn": {
+              "type": "string",
+              "description": "Mobile Station Integrated Services Digital Network number, optional and should have tariff if provided"
+            },
+            "tariff": {
+              "type": "string",
+              "description": "Tariff associated with the provided MSISDN, should only be included if msisdn is provided"
+            },
+            "contractNo": {
+              "type": "string",
+              "description": "Contract number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "description": "Return FMC VoIP settings, which will helpful to handle complaints related to in/out calls or provide to user his on ask"
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_FMC_MOBILE_settings",
+        "strict": true,
+        "parameters": {
+          "type": "object",
+          "required": [
+            "contractNo",
+            "msisdn",
+            "tariff"
+          ],
+          "properties": {
+            "msisdn": {
+              "type": "string",
+              "description": "Mobile subscriber integrated services digital network number (MSISDN)"
+            },
+            "tariff": {
+              "type": "string",
+              "description": "Tariff plan for the mobile service"
+            },
+            "contractNo": {
+              "type": "string",
+              "description": "Contract number associated with the mobile service"
+            }
+          },
+          "additionalProperties": false
+        },
+        "description": "Return FMC MOBILE settings"
+      }
+    }
+  ],
+  "temperature": 0,
+  "max_tokens": 1138,
+  "top_p": 1,
+  "frequency_penalty": 0,
+  "presence_penalty": 0
+}

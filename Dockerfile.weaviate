@@ -1,0 +1,11 @@
+FROM artifactory.dev.ict/docker-virtual/semitechnologies/weaviate:1.26.5
+
+ARG LOCAL_CERT_DIR=/usr/local/share/ca-certificates
+ARG PROXY=http://ict-proxy.vas.sn:3128
+
+RUN cd ${LOCAL_CERT_DIR} && \
+    for i in RootCA.pem IssuerCA01.pem IssuerCA02.pem ; do \
+        wget http://pki1.lifecell.com.ua/PEM/$i && cat $i >> ${LOCAL_CERT_DIR}/AllInOne.crt; done \
+    && update-ca-certificates
+
+ENV http_proxy=$PROXY https_proxy=$PROXY no_proxy=.dev.ict,.vas.sn,.lifecell.ua,lifecell.ua,.lifecell.com.ua,lifecell.com.ua,.omnicell.ua,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12

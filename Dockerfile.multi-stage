@@ -1,0 +1,127 @@
+# First stage: Build the Go application
+FROM artifactory.dev.ict/docker-virtual/golang:latest AS builder
+
+# Define build arguments
+ARG APP_NAME=go-ai
+ARG GITLAB_USER
+ARG GITLAB_ACCESS_TOKEN
+ARG GOPROXY_ARTIFACTORY=${GOPROXY_ARTIFACTORY}
+ARG LOCAL_CERT_DIR=/usr/local/share/ca-certificates/
+
+# Set environment variables for proxy and GitLab credentials
+ENV GIT_SSL_NO_VERIFY=true \
+    GITLAB_USER=${GITLAB_USER} \
+    GITLAB_ACCESS_TOKEN=${GITLAB_ACCESS_TOKEN} \
+    GOINSECURE=* \
+    GONOPROXY='*.dev.ict' \
+    GONOSUMDB='*.dev.ict' \
+    GOPRIVATE='*.dev.ict' \
+    GOPROXY=${GOPROXY_ARTIFACTORY} \
+    LD_LIBRARY_PATH=/opt/oracle/instantclient_21_3 \
+    SSL_CERT_DIR=/etc/ssl/certs
+
+ADD --chmod=644 http://pki1.lifecell.com.ua/PEM/AllInOne.pem ${LOCAL_CERT_DIR}
+ADD --chmod=644 http://pki1.lifecell.com.ua/crt/RootCA.crt ${LOCAL_CERT_DIR}
+ADD --chmod=644 http://pki1.lifecell.com.ua/crt/IssuerCA01.crt ${LOCAL_CERT_DIR}
+ADD --chmod=644 http://pki1.lifecell.com.ua/crt/IssuerCA02.crt ${LOCAL_CERT_DIR}
+ADD --chmod=644 http://pki1.lifecell.com.ua/PEM/IssuerCA01.pem ${LOCAL_CERT_DIR}
+ADD --chmod=644 http://pki1.lifecell.com.ua/PEM/IssuerCA02.pem ${LOCAL_CERT_DIR}
+ADD --chmod=644 http://pki1.lifecell.com.ua/PEM/RootCA.pem ${LOCAL_CERT_DIR}
+
+ENV GO_AI_SSL_PATH=${LOCAL_CERT_DIR}AllInOne.pem
+
+# Install required packages and certificates in a single step to minimize layers
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates unzip curl libaio1 tree \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN cd ${LOCAL_CERT_DIR} \
+    && openssl x509 -outform der -in AllInOne.pem -out ALLAstelitRootCA.crt \
+    && openssl x509 -outform der -in RootCA.pem -out AstelitRootCA.crt \
+    && cp * ${SSL_CERT_DIR}/ \
+    && update-ca-certificates --verbose
+
+
+# Download and install Oracle Instant Client
+RUN mkdir -p /opt/oracle \
+    && cd /opt/oracle \
+    && curl -k -L -O https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-basic-linux.x64-21.3.0.0.0.zip \
+    && curl -k -L -O https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-sqlplus-linux.x64-21.3.0.0.0.zip \
+    && curl -k -L -O https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-sdk-linux.x64-21.3.0.0.0.zip \
+    && unzip instantclient-basic-linux.x64-21.3.0.0.0.zip \
+    && unzip instantclient-sqlplus-linux.x64-21.3.0.0.0.zip \
+    && unzip instantclient-sdk-linux.x64-21.3.0.0.0.zip \
+    && rm *.zip \
+    && ln -s /opt/oracle/instantclient_21_3 /opt/oracle/instantclient
+
+# Set global git configuration
+RUN git config --global user.name "Dmytro Mykolenko" \
+    && git config --global user.email "dmytro.mykolenko@lifecell.com.ua" \
+    && git config --global http.sslVerify false \
+    && git config --global http.sslCAInfo ${LOCAL_CERT_DIR}AllInOne.pem \
+    && git config --global http.proxy ${HTTP_PROXY}
+
+# Create .netrc file with GitLab credentials
+RUN echo "machine gitlab.dev.ict login ${GITLAB_USER} password ${GITLAB_ACCESS_TOKEN}" > ~/.netrc \
+    && chmod 600 ~/.netrc
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod go mod download
+
+COPY . .
+RUN --mount=type=cache,target=/root/.cache/go-build go build -o /ai .
+
+FROM artifactory.dev.ict/docker-virtual/node:20 AS febuilder
+
+ARG LOCAL_CERT_DIR=/usr/local/share/ca-certificates/
+
+ADD --chmod=644 http://pki1.lifecell.com.ua/PEM/AllInOne.pem ${LOCAL_CERT_DIR}
+
+RUN npm config set registry http://registry.npmjs.org/ \
+    && npm config set cafile ${LOCAL_CERT_DIR}AllInOne.pem \
+    && npm config set proxy ${HTTP_PROXY} \
+    && npm config set https-proxy ${HTTPS_PROXY}
+
+RUN npm install webpack -g
+
+WORKDIR /usr/src/app/web
+
+COPY ./web/package.json /usr/src/app/web/package.json
+RUN --mount=type=cache,target=/root/.npm npm install
+
+COPY ./web /usr/src/app/web/
+
+ENV NODE_ENV=production \
+    NPM_CONFIG_LOGLEVEL=verbose
+RUN npm run build
+
+
+FROM artifactory.dev.ict/docker-virtual/debian:stable-slim
+# FROM artifactory.dev.ict/docker-virtual/golang:latest
+
+ARG LOCAL_CERT_DIR=/usr/local/share/ca-certificates
+
+# RUN apk update --no-check-certificate && apk add --no-cache --no-check-certificate bash curl libaio ca-certificates libc6-compat
+# RUN apt-get update && apt-get install -y --no-install-recommends bash curl libaio1 ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends libaio1 curl && rm -rf /var/lib/apt/lists/*
+
+ENV LD_LIBRARY_PATH=/opt/oracle/instantclient \
+    GO_AI_SSL_PATH=${LOCAL_CERT_DIR}/AllInOne.pem \
+    SSL_CERT_DIR=/etc/ssl/certs
+
+COPY --from=builder ${LD_LIBRARY_PATH} ${LD_LIBRARY_PATH}
+COPY --from=builder ${LOCAL_CERT_DIR} ${LOCAL_CERT_DIR}
+COPY --from=builder ${SSL_CERT_DIR} ${SSL_CERT_DIR}
+
+WORKDIR /app
+
+COPY --from=builder /ai /go/bin/go-ai
+COPY --from=febuilder /usr/src/app/web /app/web/
+COPY --from=builder /app/.env.dev /app/.env.dev
+
+RUN rm -rf /app/web/node_modules
+
+# ENTRYPOINT ["/go/bin/go-ai", "-dev"]
+ENTRYPOINT ["/go/bin/go-ai", "-dev", "-l_oc", "-l_color", "-l_of", "-l_file", "go-ai.log"]

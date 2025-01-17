@@ -1,0 +1,75 @@
+---
+version: '3.4'
+services:
+  weaviate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    # image: artifactory.dev.ict/docker-virtual/semitechnologies/weaviate:1.23.6
+    ports:
+      - 8082:8080
+      - 2112:2112
+    restart: on-failure:0
+    volumes:
+    - weaviate_data:/var/lib/weaviate
+    environment:
+      OPENAI_APIKEY: $OPENAI_APIKEY
+      QUERY_DEFAULTS_LIMIT: 10
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-openai'
+      ENABLE_MODULES: 'text2vec-openai'
+      LOG_LEVEL: 'trace'
+      LOG_FORMAT: 'text'
+      PROMETHEUS_MONITORING_ENABLED: 'true'
+      PROMETHEUS_MONITORING_PORT: 2112
+  prometheus:
+    image: artifactory.dev.ict/docker-virtual/prom/prometheus:v2.36.2
+    user: root
+    volumes:
+      - ./prometheus:/etc/prometheus/
+      - ./data/prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+  grafana:
+    image: artifactory.dev.ict/docker-virtual/grafana/grafana-oss
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/prometheus.yml
+      - ./grafana/dashboard_provider.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+  postgresql:
+    image: artifactory.dev.ict/docker-virtual/postgres:latest
+    restart: always
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB_NAME
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+  # healthcheck:
+  #   test: wget --no-verbose --tries=3 --spider http://localhost:8080/v1/.well-known/ready || exit 1
+  #   interval: 5s
+  #   timeout: 30s
+  #   retries: 5
+  #   start_period: 10s
+volumes:
+  weaviate_data:
+  postgres-db:

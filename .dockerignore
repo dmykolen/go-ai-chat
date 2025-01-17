@@ -1,0 +1,67 @@
+**/.classpath
+**/.dockerignore
+**/.env
+**/.git
+**/.gitignore
+**/.project
+**/.settings
+**/.toolstarget
+**/.vs
+**/.vscode
+**/*.*proj.user
+**/*.dbmdl
+**/*.jfm
+**/bin
+**/charts
+# **/docker-compose*
+**/compose*
+# **/Dockerfile*
+**/node_modules
+**/npm-debug.log
+**/obj
+**/secrets.dev.yaml
+**/values.dev.yaml
+LICENSE
+README.md
+
+# Ignore specific file types
+*.tar.gz
+*.log
+*.md
+*.fiber.gz
+
+# Ignore specific directories
+uploads/
+bkp/
+**/services/media/
+**/services/weaviate/docker/
+_testdata/
+node_modules/
+docs/*.md
+docs/*.png
+docs/*.html
+# tests/
+.vscode/
+.files/
+
+XXXXXXX
+tree_goai
+.files/ca-certificates.crt
+CUSTOMER_MODEL_README
+cm_ai_analyze.md
+web_bkp/
+
+
+**/.prettierignore
+**/.prettierrc
+**/.babelrc
+
+**/*Dockerfile*
+**/*.fiber.gz
+
+./web/**/*.go
+./web/static/htmx_test
+./web/static/js/test
+./web/static/js/external
+./web/files
+./web/instruction.txt

@@ -1,0 +1,89 @@
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+###
+
+tmp/
+
+.log
+*.log*
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+**/node_modules/
+jspm_packages/
+
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+.tmp
+go-ai
+services/KB.json
+fiber.sqlite3
+services/media
+services/TestFull_bkp
+
+# services/weaviate/docker/dev/weaviate_prom_graphana/data
+
+**/weaviate_prom_graphana/data
+assets/voip_ritm_docs/parsed
+media
+test.xml
+
+cert.pem
+key.pem
+
+*.sql
+**/*.fiber.gz
+**/_test_*.html
+
+_testdata/files/vectordb-admin.html
+.env.local
+XXXXXXX
+tree_goai
+.files/ca-certificates.crt
+CUSTOMER_MODEL_README
+cm_ai_analyze.md
+web_bkp/
+web/static/dist/
+empty.sqlite.db
+fiber.sqlite3
+services/history_example.db
+logic/ailogic/history_example.db
+logic/ailogic/tools/hst.db
+# _testdata/audio/history_example.db
+# _testdata/files/history_example.db
+_testdata/*/history_example.db
+services/TestFULL
+data/
+logs/
+db/**/*.sqlite
+handlers/**/*.sqlite
+data/history.db

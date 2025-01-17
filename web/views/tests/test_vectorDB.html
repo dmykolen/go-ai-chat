@@ -1,0 +1,2874 @@
+<html lang="en" data-theme="forest">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AI Interface</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="dist/tailwind.css">
+    <script src="https://kit.fontawesome.com/b8f9f217c7.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+<script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked-highlight/lib/index.umd.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
+<script src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+    <style>
+        .htmx-indicator {
+            opacity: 0
+        }
+
+        .htmx-request .htmx-indicator {
+            opacity: 1;
+            transition: opacity 200ms ease-in;
+        }
+
+        .htmx-request.htmx-indicator {
+            opacity: 1;
+            transition: opacity 200ms ease-in;
+        }
+    </style>
+</head>
+
+<body class="bg-[url('/img/robot_image_3.png')] overscroll-y-none overscroll-none overscroll-x-none overflow-x-hidden scroll-smooth bg-cover bg-center h-screen">
+    <div class="min-h-12 h-1 absolute bg-gradient-to-r from-25% from-primary navbar to-35%">
+        <div class="flex-1">
+            <a id="typeBrand" href="" class="btn hover:scale-110 btn-ghost no-animation hover:bg-transparent normal-case text-2xl font-mono transition-all ease-in opacity-75 delay-100 text-base-100/50">Lifecell AI</a>
+        </div>
+        <div class="flex-none">
+            <div class="dropdown dropdown-left">
+                <label class="btn btn-ghost btn-circle avatar">
+                    <div class="w-auto rounded-full text-4xl">
+                        <label class="swap swap-flip">
+                            <input type="checkbox" name="" id="">
+                            <div class="swap-on">😎</div>
+                            <div class="swap-off">🥷🏽</div>
+                        </label>
+                    </div>
+                </label>
+                <ul class="shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-44 z-20">
+                    <li id="logout-li" class="">
+                        <a href="/logout" class="bg-gradient-to-r border-0 btn btn-outline btn-primary p-3 rounded-xl font-mono text-primary-content/60 transition-all duration-500 relative">
+                            Logout
+                            <span class="absolute flex hover:animate-bounce text-4xl w-full">🏃🏽‍♂️</span>
+                        </a>
+                    </li>
+                    <li id="login-li" style="display: none;">
+
+                        <button class="bg-gradient-to-r border-0 btn btn-outline btn-primary rounded-xl font-mono text-primary-content/60 transition-all duration-500 relative" id="showModal" hx-get="/login_form_only" hx-trigger="click[checkLoginSection()]" hx-target="#content" hx-swap="afterbegin transition:true settle:200ms">
+                            Login
+                            <span class="absolute flex inset-2 text-4xl w-full hover:rotate-45 duration-300 ease-in-out transform transition">👋</span>
+                        </button>
+                    </li>
+                    <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60 btn-disabled" disabled="">Profile</button></li>
+                    <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60" disabled="">Settings</button></li>
+                    <li class="divide-accent"></li>
+                    <li>
+                        <div class="dropdown dropdown-bottom flex justify-center p-0 hover:bg-base-100/0 btn btn-ghost">
+                            <button tabindex="0" role="button" class="btn mx-auto w-full bg-primary/25 ring-0 btn-circle ring-offset-1 ring-offset-primary shadow-lg shadow-pink-500/40" onclick="toggleHidden(this.nextElementSibling)">
+                                Theme
+                                <svg width="12px" height="12px" class="h-2 w-2 fill-current opacity-60 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+                                    <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                                </svg>
+                            </button>
+                            <div tabindex="0" id="dataThemeChanger" data-choose-theme="" data-key="admin-panel" class="join join-vertical dropdown-content hidden z-50 p-0 mt-2">
+
+                                <input type="radio" data-set-theme="dim" name="theme-buttons" class="btn theme-controller join-item" aria-label="dim" value="dim">
+                                <input type="radio" data-set-theme="forest" name="theme-buttons" class="btn theme-controller join-item" aria-label="forest" value="forest">
+                                <input type="radio" data-set-theme="bumblebee" name="theme-buttons" class="btn theme-controller join-item" aria-label="bumblebee" value="bumblebee">
+                                <input type="radio" data-set-theme="sunset" name="theme-buttons" class="btn theme-controller join-item" aria-label="sunset" value="sunset">
+                                <input type="radio" data-set-theme="mytheme" name="theme-buttons" class="btn theme-controller join-item" aria-label="mytheme" value="mytheme">
+                                <input type="radio" data-set-theme="cupcake" name="theme-buttons" class="btn theme-controller join-item" aria-label="cupcake" value="cupcake">
+                                <input type="radio" data-set-theme="cyberpunk" name="theme-buttons" class="btn theme-controller join-item" aria-label="cyberpunk" value="cyberpunk">
+                                <input type="radio" data-set-theme="ua" name="theme-buttons" class="btn theme-controller join-item" aria-label="UA💙" value="ua">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleHidden(element) {
+            console.log("THIS:", this);
+            console.log("Element:", element);
+            element.classList.toggle("hidden");
+        }
+        function checkLoginSection() {
+            let isExists = document.getElementById('loginSection') && true || false;
+            console.log(`Check login section exists=[${isExists}]! Do HTMX request, If not exists`);
+            if (isExists) {
+
+
+                $('#loginModal').show();
+            }
+            return !isExists;
+        }
+    </script>
+    <div class="flex">
+        <input type="checkbox" id="drawer-toggle" class="relative sr-only peer">
+        <label for="drawer-toggle" id="drawer-toggle-label" class="absolute bg-transparent/40 duration-500 inline-block left-0 peer-checked:left-1/4 peer-checked:rotate-180 px-2 py-4 rounded-lg top-20 transition-all cursor-pointer hover:scale-125 hover:bg-gradient-to-b hover:from-yellow-400 hover:to-sky-600">
+            <div class="w-4 h-1 mb-1 -rotate-45 bg-white rounded-lg bg-black"></div>
+            <div class="w-4 h-1 rotate-45 bg-white rounded-lg bg-black"></div>
+        </label>
+        <div class="fixed top-0 left-0 z-20 w-1/4 h-full transition-all duration-500 transform -translate-x-full shadow-black shadow-lg peer-checked:translate-x-0">
+            <div class="px-6 py-4 bg-black">
+                <h2 class="text-2xl font-extrabold font-mono link-secondary leading-6">MENU</h2>
+                <p class="text-gray-500"></p>
+            </div>
+            <div class="bg-base-300 h-full">
+                <ul class="join join-vertical mx-auto px-4 py-6 space-y-2 text-sm w-full list-none">
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/">START PAGE</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/ai">AI WEB Interface</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/aidb">AI DB Assistant</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/voip">VoIP</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/vectordb-admin">VectorDB</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-xl font-mono font-bold flex justify-center animate-gradient bg-accent via-error bg-gradient-to-r to-accent from-accent text-error-content mt-16">RAG System - Data Display and Upload</h2>
+    <div class="flex flex-row join justify-end p-2 pb-6 sticky top-0 z-10">
+        <div class="hover:shadow-lg hover:shadow-pink-500 rounded-l-box shadow-red-500 transition-all">
+            <div class="tooltip tooltip-warning" data-tip="Refresh">
+                <button class="btn join-item" hx-get="/wdocs" hx-target="#data-container" hx-indicator="#spinner"><i class="fa-rotate fas scale-150 text-lg" aria-hidden="true"></i></button>
+            </div>
+        </div>
+        <div class="hover:shadow-lg hover:shadow-pink-500 rounded-r-box shadow-red-500 transition-all">
+            <div class="tooltip tooltip-warning" data-tip="Add to VectorDB">
+                <button id="manageFormDoc" class="btn join-item" onclick="$('#upform').slideToggle();$('#manageFormDoc>i').toggleClass('hidden');">
+                    <i class="fa-file-circle-plus fas text-base-content text-lg" aria-hidden="true"></i>
+                    <i class="animate-pulse fa-xmark fas text-3xl text-error hidden" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="hover:shadow-lg hover:shadow-pink-500 rounded-r-box shadow-red-500 transition-all">
+            <div class="tooltip tooltip-warning" data-tip="Search in VectorDB">
+                <button id="manageFormSearch" class="btn join-item" onclick="$('#formSearch').slideToggle();$('#manageFormSearch>i').toggleClass('hidden');">
+                    <i class="fa-magnifying-glass fas text-base-content text-lg" aria-hidden="true"></i>
+                    <i class="animate-pulse fa-xmark fas text-3xl text-error hidden" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto">
+        <div class="bg-gradient-to-tr bottom-3 cursor-pointer fixed from-secondary hover:opacity-100 hover:scale-110 opacity-60 p-2 right-2 rounded-full text-center to-secondary-content w-14 z-20" id="scrollToTop"><i class="fa-arrow-up fas text-4xl" aria-hidden="true"></i></div>
+        <div id="formSearch" class="flex flex-row space-x-2 h-80 bg-transparent/10 p-4 m-10 lg:mx-40 rounded-2xl shadow-black shadow-inner" style="display: none;">
+
+            <form id="formSearchForm" hx-post="/api/vdb/v1/search" hx-trigger="submit" hx-target="#results" hx-ext="json-enc" class="basis-1/2 form-control space-y-2">
+                <div class="artboard-demo flex flex-row justify-around input">
+                    <input name="searchText" id="searchText" type="text" class="input-ghost w-full" hx-get="/api/vdb/v1/suggest" hx-vals="{&quot;limit&quot;:closest(&quot;form&quot;).querySelector(&quot;#limit&quot;).value}" hx-indicator="#searchSpinner" hx-trigger="keyup[target.value.length > 5] changed delay:700ms" hx-target="#results" placeholder="Search text..." minlength="5">
+                    <span id="searchSpinner" class="htmx-indicator loading loading-spinner loading-xs"></span>
+                </div>
+
+
+                <div id="suggestions"></div>
+
+                <div class="form-control">
+                    <label for="fields" class="label-text">Return fields</label>
+                    <div id="fields" name="fields" class="join">
+                        <input type="checkbox" name="title" class="join-item btn btn-sm checkbox-primary" aria-label="title" checked="">
+                        <input type="checkbox" name="chunkNo" class="join-item btn btn-sm checkbox-primary" aria-label="chunkNo">
+                        <input type="checkbox" name="category" class="join-item btn btn-sm checkbox-primary" aria-label="category" checked="">
+                        <input type="checkbox" name="content" class="join-item btn btn-sm checkbox-primary" aria-label="content">
+                    </div>
+                </div>
+
+
+                <div class="">
+                    <label for="sf" class="label-text">Search in:</label>
+                    <div id="sf" class="join join-vertical text-sm">
+                        <label class="cursor-pointer"><input type="radio" name="searchFields" class="mx-1 radio radio-accent radio-sm" value="content" checked="">Content</label>
+                        <label class="cursor-pointer"><input type="radio" name="searchFields" class="radio radio-sm radio-accent mx-1" value="title">Title</label>
+                    </div>
+                </div>
+
+
+                <div class="">
+                    <label for="sort" class="label-text">Sort by</label>
+                    <select name="sort" id="sort" class="select select-bordered select-sm">
+                        <option value="">Relevance</option>
+                        <option value="{&quot;field&quot;:&quot;title&quot;,&quot;sortOrder&quot;:&quot;asc&quot;}">Title (A-Z)</option>
+                        <option value="{&quot;field&quot;:&quot;title&quot;,&quot;sortOrder&quot;:&quot;desc&quot;}">Title (Z-A)</option>
+                    </select>
+                </div>
+
+                <label for="limit"><span class="label-text">Limit Results</span>
+                    <input id="limit" name="limit" type="range" min="1" max="20" value="3" class="range range-secondary range-xs md:w-2/3">
+                </label>
+
+                <button class="btn btn-outline btn-sm place-self-center" disabled="">Search</button>
+            </form>
+            <div id="results" class="basis-1/2 overflow-y-auto bg-gradient-to-br from-base-300 h-full p-2 rounded-box to-95% via-primary/10">
+                <div class="text-2xl">No results yet</div>
+            </div>
+        </div>
+        <div id="uploadForm" class="m-10 mb-2 lg:mx-40">
+            <form id="upform" hx-post="/upload" hx-encoding="multipart/form-data" hx-target="#response" class="bg-gradient-to-tr from-base-100 shadow-md rounded-2xl my-4 p-4 hidden">
+                <div class="flex p-2 text-base-content/100 w-full">
+                    <div class="card flex-grow place-items-center w-1/3">
+                        <div class="lg:w-4/5">
+                            <label class="font-bold" for="document">Upload Document</label>
+                            <input id="document" name="file-upload" type="file" accept=".pdf,.docx" class="input input-bordered py-2 w-full">
+                        </div>
+                    </div>
+                    <div class="divider divider-accent divider-horizontal font-mono flex-grow">OR</div>
+                    <div class="card flex-grow place-items-center w-1/3">
+                        <div class="lg:w-4/5">
+                            <label class="font-bold" for="url">Enter URL
+                                <input id="url" name="url-input" type="url" placeholder="https://lifecell.ua" class="input w-full">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <button class="btn btn-accent btn-active btn-wide font-bold mt-2 text-white" type="submit">Submit</button>
+                </div>
+            </form>
+
+        </div>
+        <div id="response" class="flex w-3/4 justify-around mx-24 alert hidden">SUCCESS</div>
+        <div class="flex justify-center">
+            <label class="input flex items-center w-1/3 bg-base-300/100">
+                <input id="filer-weaviate-results" type="text" class="w-full" placeholder="Filter documents...">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+                    <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"></path>
+                </svg>
+            </label>
+        </div>
+        <section id="data-display" class="place-self-center">
+            <div id="spinner" class="hidden">
+                <span class="loading loading-dots loading-md"></span>
+            </div>
+            <div id="data-container" hx-get="/wdocs" hx-trigger="load" class="space-y-4 mt-4">
+                <div class="fixed left-0 top-28 z-10">
+                    <div class="hover:opacity-100 opacity-70">
+                        <div class="stat-title">VectorDB</div>
+                        <div class="stat-value">107</div>
+                        <div class="stat-desc">Objects</div>
+                    </div>
+                </div>
+
+                <style>
+                    .card.htmx-swapping button {
+                        opacity: 0;
+                        transition: opacity 1s ease-out;
+                    }
+                </style>
+
+                <div id="docs" class="grid grid-cols-1 xl:grid-cols-2 gap-4" hx-confirm="Are you sure you want to delete this item?" hx-target="closest .card" hx-swap="outerHTML swap:1s">
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/0931b79c-4242-44cd-a690-65e3d76bac1a" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">3CX Phone System</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-03-20 05:10:04</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">confluence</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">0931b79c-4242-44cd-a690-65e3d76bac1a</div>
+                            <div class="card-actions hidden justify-end" hidden="">
+                                <a href="/display/BIZ/3CX+Phone+System" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="bg-accent collapse-title peer-checked:bg-purple-600 peer-checked:text-secondary-content text-primary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2"># Налаштування 3CX Phone System
+
+   Додаткову документацію по 3CX Phone System можна знайти за посиланням(https://www.3cx.com/blog/category/docs/).
+   Для роботи з SIP необхідно використовувати версію 3CXv16 Update 3або вище.
+   Налаштування:
+   - В параметрах SIP-транка з'явилась нова опція «Transport Protocol».
+   Для підключення TLS-транка необхідно вказати TLS (Transport Layer Security) та завантажити на сервер сертифікат безпеки (.pem), наданий SIP-оператором. Тепер всі SIP-повідомлення між АТС та провайдером будут зашифровані.
+   - Рівень сумісності протокола TLS.
+   В розділі «Settings» &gt; «Security» з'явився новий параметр «Enable PCI compliance SSL/SecureSIP Transport and Ciphers», який вказує режим сервера в TLS v1.2 (та відключає сумісності з TLS v1.0).Зверніть увагу:TLS v1.2 не сумісний з деякими застарілими SIP-пристроями.
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/8ad084b9-7a8a-4c93-91ff-33ac1d1c1273" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">3CX Phone System</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-04-03 03:04:11</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">confluence</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">8ad084b9-7a8a-4c93-91ff-33ac1d1c1273</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="/display/BIZ/3CX+Phone+System" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2"># Налаштування 3CX Phone System
+
+   Додаткову документацію по 3CX Phone System можна знайти за посиланням(https://www.3cx.com/blog/category/docs/).
+   Для роботи з SIP необхідно використовувати версію 3CXv16 Update 3або вище.
+   Налаштування:
+   - В параметрах SIP-транка з'явилась нова опція «Transport Protocol».
+   Для підключення TLS-транка необхідно вказати TLS (Transport Layer Security) та завантажити на сервер сертифікат безпеки (.pem), наданий SIP-оператором. Тепер всі SIP-повідомлення між АТС та провайдером будут зашифровані.
+   - Рівень сумісності протокола TLS.
+   В розділі «Settings» &gt; «Security» з'явився новий параметр «Enable PCI compliance SSL/SecureSIP Transport and Ciphers», який вказує режим сервера в TLS v1.2 (та відключає сумісності з TLS v1.0).Зверніть увагу:TLS v1.2 не сумісний з деякими застарілими SIP-пристроями.
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/300b7c93-561f-4b4f-8139-429f64db1945" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">CLIR SIP FRD.docx</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-03-20 05:10:04</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">FRD</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">300b7c93-561f-4b4f-8139-429f64db1945</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="assets/voip_ritm_docs/CLIR%20SIP%20FRD.docx" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">Version [1.0]
+
+   Project Group
+   FG/DIV/UNIT/TEAM,Name Surname,Responsibility
+   Analyst ICT-CM-VAS,Ivan Shevchuk,Example:     * Create FRD    * Create request about test environment    * Create request about needed resources for test support    * Request/ Inform test MSISDN    * Perform test based on ATP    * Collect ATP approvals
+   RO ,Sergiy Kuzmenko,    * Provide PTR with described business logic     * Accept FRD    * Accept estimation    * Provide text for Iguana &amp; channels    * Accept FRD
+   Responsible for implementation,ICT-AO-CSP-CSPICT -AO-CSP-CRPICT -AO-VAS,    * Technical feasibility    * Informs about implementation approach     * Provides solution technical risks and limitations    * FRD completeness confirmation    * Provides request implementation cost and deadline for UAT and production
+
+
+   Document control
+   Version,Date,Status,Who
+   1.0,13.05.2013,Creation,Ivan Shevchuk
+   ,,,
+   ,,,
+   ,,,
+   Changes since last version
+   &lt;Put changes\\marking here&gt;
+   Issue control
+
+   Owner: ,Title:,Date:,Signature:
+
+   Approved  Marketing,Title:,Date:,Signature:
+   Approved   CC,Title:,Date:,Signature:
+   Approved   IT,Title:,Date:,Signature:
+   Approved  Finance,Title:,Date:,Signature:
+
+   Review Record Reference:,        Distribution:
+   File reference
+
+   ,
+
+
+   Contents
+   [1Tıme plan &amp; responsibilities5]()
+   [1.1Reference5]()
+   [1.2Requested launch date5]()
+   [1.3requested Delivery for tests date5]()
+   [1.4development Responsibility matrix5]()
+   [2Basic service info6]()
+   [2.1Type of Servıce6]()
+   [2.2target market6]()
+   [3Functıonal Servıce descrıptıon and flows7]()
+   [3.1Subscription Сhannels7]()
+   [3.2Service description9]()
+   [3.3billing details10]()
+   [3.4SMS notifications11]()
+   [3.5Usage Channels12]()
+   [4Fraud RIsk &amp; RequIrements13]()
+   [5Interactıons wıth other servıce and products14]()
+   [6Call detail15]()
+   [7Monthly invoice16]()
+   [8Reportıng needs17]()
+
+
+   Purpose of the servıce
+   CLIR- Calling Line Identification Restriction
+   Service should be prolonged automatically every month if subscriber has enough money.
+   If subscriber does not have enough money for charging service goes to suspend state.
+
+   # Tıme plan &amp; responsibilities
+   ## Reference
+   RELATED FRD VERSION:
+
+
+   RELATED PTR VERSION:
+
+
+   RELATED PTR VERSION for #302776:
+
+
+   ## Requested launch date
+   According to priority
+
+   ## requested Delivery for tests date
+   5 days before PROD launch
+
+   ## development Responsibility matrix
+
+   Responsible,FRD section
+   ICT-AO-CSP-CSP ,Billing product + notification
+   ICT-AO-CSP-CRP,Service notification\\provisioning
+
+   # Basic service info
+   ## Type of Servıce
+   Operator Service
+   Third party non-branded service
+   3rd party branded service
+
+
+   ## target market
+   Individual Contracted
+   Individual Prepaid
+   Corporate Contracted
+   Corporate Postpaid
+   Corporate Prepaid
+   Internal Astelit usage
+
+   # Functıonal Servıce descrıptıon and flows
+
+   ## Subscription Сhannels
+   SERVICE CHANNEL,Details
+   Iguana IUI     Act\\Deact     Information,Services should be added to: “Iguana”-&gt; “Абонент: базові” -&gt; “Послуги” -&gt; “Заборона визначення номеру SIP”“Iguana”-&gt; “Абонент: базові” -&gt; “Послуги” -&gt; “Заборона визначення номеру SIP без ПФ”
+   Iguana IUI     Act\\Deact     Information ,Should be created possibility to activate via Mass Transaction
+
+
+   ## Service description
+   This service performs charging of life subscriber for calendar month and provisioning corp SBC.
+   NAME_EN,NAME_UA,NAME_RU,NAME_UA_TRANSLIT,NAME_RU_TRANSLIT,"Price (inc VAT, w\\o PF), UAH","Period, "
+   CLIR IPPBX,Заборона визначення номеру IPPBX,Запрет определения номера IPPBX,Zaborona vyznachennya nomeru IPPBX,Zapret opredeleniya nomera IPPBX,19.764705,monthly
+   CLIR SIP,Заборона визначення номеру SIP,Запрет определения номера SIP,Zaborona vyznachennya nomeru SIP,Zapret opredeleniya nomera SIP,,
+
+   1. CLIR SIP service should be available for corporate subscribers.
+   2. The subscriber should have a possibility to subscribe/unsubscribe to/from CLIR service via available channels.
+   3. Subscriber can be charged from: common main and common bonus (if subscriber is granted with access to common balances) balances.
+   4. In case of not enough money for monthly  fee for service activation  -  service should fall in suspend
+   5. After subscription the monthly fee should be charged and service should be provided to subscriber by provisioned of corp SBC. From the moment of subscription phone number of subscriber should be allowed to be hidden.
+   6. After deactivation of service the subscriber should be provisioned of corp SB to block feature.
+   7. In case of service deactivation during service validity period, the remaining money should not be returned to subscriber.
+   8. Validity period of CLIR service – calendar month.
+   9. Each next month the monthly fee should be charged and service should be provided for next period automatically.
+   10. In case subscriber didn’t have enough money for charging monthly fee during whole 90 days suspend period, the service should be deactivated.
+   11. CLIR SIP  should be available to be activated only for CRP_PP_IP_PBX_FIX
+   12. CLIR SIP w\\o PF  should be available to be activated only for CRP_PP_IP_PBX.
+   ## ## billing details
+
+   Billing product details:
+
+   Commercial service name,CLIR SIP,CLIR SIP w\\o PF
+   Product(Service) Name,VAS_CLIR_SIP,VAS_CLIR_SIP_WOPF
+   ROP NAME,ROP_VAS_CLIR_SIP,ROP_VAS_CLIR_ SIP_WOPF
+   "Price, UAH with VAT without PF",19.764705,19.764705
+   "Price, UAH with VAT and PF",21,
+   "Subscription Period, days",month,month
+   "Grace, days",90 days
+   "Preprocessing, days(if needed)",30 days
+   Begin with prorating,&lt;Yes&gt;
+   Balances(charging priorities from top to bottom), common maincommon bonusLine mainLine bonus,Line mainLine bonus common maincommon bonus
+
+
+   ## notifications
+
+   ROP_VAS_CLIR_\* state changes table:
+
+   Event,ROP state change,notification
+   Successful activation,DPL/STD -&gt; ACT/STDPAS/UDEACT -&gt; ACT/STDPAS/SDEACT - &gt; ACT/STD,Provisioning to corp SBC
+   Successful prolongation on calendar month,ACT/STD --&gt; ACT/STDACT/BAR --&gt; ACT/STD,
+   Grace period (suspend),ACT/STD -&gt; ACT/BAR,Provisioning to corp SBC
+   System Deactivation,ACT/BAR -&gt; PAS/SDEACT,Provisioning to corp SBC
+   User Deactivation,ACT/STD -&gt; PAS/UDEACTACT/BAR -&gt; PAS/UDEACT,
+
+
+   # Fraud RIsk &amp; RequIrements
+   There are no fraud cases were found
+   # Interactıons wıth other servıce and products
+   There is interaction with “Hidden Number Identifier” service (SOCLIP).
+   Subscriber’s number which was hidden by “CLIR” service will be unhidden by “Hidden Number Identifier” service.
+   # Call detail
+   Notification should go to:
+   * ICT-AO-CSP-CRC
+   * ICT-AO-CSP-ICO
+
+   Include to Call Detail
+   Field limitation: 20 symbols – Latina, 10 symbols – Cyrillic.
+
+   An example:
+
+   RDM,CODE,CLASS_CODE_SHORT_NAME,CLASS_CODE_NAME,CATEGORY_CODE_SHORT_NAME,CATEGORY_CODE_NAME
+   ROOT/NON_USAGE_EVENT/RECURRING_OPERATI ONS/ROP/ROP_VAS /ROP_VAS_CLIR_SIP,,ДП,Додаткові послуги,CLIR SIP,CLIR SIP
+
+
+   # Monthly invoice
+   Don’t Include to Monthly Invoice (in this case event going to be included into “Other” field)
+
+   Include to Monthly Invoice
+   Contract Level
+   Line Level
+   Monthly
+   Weekly
+   OTF
+   New Service
+   Add to existed
+   Others
+
+
+   Notifictaion should go
+   * ICT-AO-CSP-ICO
+   * ICT-AO-CSP-CRC
+   RDM,"Balance(line main, line bonus, common main)",Monthly Invoice ID,Category,Description Eng,Description Ukr
+   ROOT/NON_USAGE_EVENT/RECURRING_OPERATI ONS/ROP/ROP_VAS /ROP_VAS_CLIR,"line main, line bonus,common main, common bonus",,,Monthly fee «CLIR SIP»,Щомісячний платіж «Заборона визначення номеру SIP»
+
+
+   # Reportıng needs
+
+   The service should be added to service report to Asterix report# 302.
+
+   In case of necessity to add statistic about new service to Service report at  [https://asterix.sdab.sn](https://asterix.sdab.sn) , CM analyst needs to write letter to ICT-AO-CSP-SSR:
+
+   Пожалуйста, добавьте в отчёт по сервисам &nbsp;на [https://asterix.sdab.sn](https://asterix.sdab.sn) reporting system &nbsp;новый продукт “Hidden Number Identifier” . Сервис имеет состояние ROPa &nbsp;ACT/BAR. Предусмотрен прорейт: в сучае недостаточного количества средств на счету абонента, происходит снятие средств за один день.
+   Выходит на продакшен 29.05.2013.
+   Информация по сервису:
+   Service Name,Hidden Number Identifier
+   ROP NAME,ROP_VAS_CLIR_SIP
+   Product name,VAS_CLIR_SIP
+   Service code,CLIR SIP
+
+
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/0360c8a5-7edb-4b70-aea7-fe06d9732408" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">F.A.Q.</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-03-20 05:10:04</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">confluence</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">0360c8a5-7edb-4b70-aea7-fe06d9732408</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="/pages/viewpage.action?pageId=75104607" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">Питання                                                        | Відповіді
+   -----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   Яку версію TLS використовувати?                                | Наш сервер за замовчуванням працює на версії TLS 1.0. Для зміни версії на TLS 1.2 звертайтесь до свого менеджера.
+   Що означає помилка 409 Not enough money?                       | Ця помилка вказує, що на балансах номера та контракта закінчились гроші. Всі баланси ви можете перевірити через https://my.lifecell.ua.Вам необхідно поповнити рахунок чи звернутись до свого менеджера для підвищення кредитного ліміту. Звертатися до технічної підтримки не потрібно.
+   Чи можна використовувати SIPS URI?                             | Ми не підтримуємо схему SIPS URI, тільки SIP URI TLS.
+   Які є особливості налаштування FreePBX?                        | FreePBX не зберігає зміни в стандартному файлі налаштувань sip.conf.Щоб це обійти пропишіть кастомні конфігурації з налаштування TLS в файлі sip_general_custom.conf.
+   Які є особливості налаштування 3СХ?                            | Використовуєте версію програми 3CX v16 Update 3.Налаштування:1. В параметрах SIP-транка з'явилась нова опція «Transport Protocol». Для підключення TLS-транка вкажіть TLS (Transport Layer Security) та завантажте на сервер сертифікат безпеки (.pem), який надає SIP-оператор. Теперь всі SIP-пакети між АТС та провайдером будут зашифровані.2. Рівень сумісності протокола TLS. В розділі «Settings» &gt; «Security» з'явився новий параметр «Enable PCI compliance SSL/SecureSIP Transport and Ciphers», який встановлює режим сервера в TLS v1.2 (та виключає сумісність с TLS v1.0). Зверніть увагу, що TLS v1.2 не сумісний з деякими застарілими SIP-пристроями.3. Оновлення SSL-сертифіката без перезапуску. Раніше при оновленні SSL-сертифіката (Let's Encrypt) для FQDN сервера від компанії 3CX, АТС перезапускала веб-сервіс. При цьому переривалися всі поточні виклики. Тепер АТС просто ініціалізує новий сертифікат без рестарту nginx.
+   Як перевірити сертифікат в Asterisk?                           | echo "x" | openssl s_client -connect 127.0.0.1:5061 -tls1echo "x" | openssl s_client -connect 212.58.160.196:5061 -tls15061 - вказуйте порт залежно від типу підключення
+   Чи можливо відключити IVR повідомлення "Абонент поза мережею"? | Ні.
+   Як змінити чи додати нову IP адресу чи тип підключення?        | Будь ласка, зверніться до вашого менеджера.
+   Як довго займає додання/зміна IP адреси?                       | До 1 тижня.
+   Чи можна підключити приховання номеру?                         | Так. Для цього зверніться до свого менеджера, який активує послугу.Після активаціі при дзвінках вказуйте заголовок X-num-hide зі значенням 1.Наприклад, для Asterisk: exten =&gt; _X.,1,SipAddHeader(X-num-hide: 1)
+   Чи можна зробити підміну caller id?                            | Ні. Підміна caller id заборонена законодавством України.
+   Які правила оплати рахунку на контракті Постпейд?              | Для постпейд контракту необхідно оплатити 95% від рахунку за попередній місяць до 25 числа включно поточного місяця та 100% від рахунку за попередній місяць до останнього календарного дня поточного місяця. Інакше послуги будуть заблоковані.
+   Що перевірити якщо не чутно звук?                              | Якщо ви не чуєте звук під час дзвінків, будь ласка, перевірте, що з вашої сторони відкрито доступ для IP адрес, через які йде медіа поток 212.58.160.197, 212.58.160.198, діапазон портів 10000-65535.
+   Не проходить голос з двох сторін, що робити?                   | Перевірити налаштування Content-Type.Правильні налаштування Content-Type: application/sdpНалаштування типу Content-Type: multipart/mixed;boundary=uniqueBoundary призводять до проблем з передачею голоса.
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/15b7f01a-06c0-4856-958e-ac892618de54" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">GSM-шлюз (Єдина Мережа)</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-04-03 03:04:11</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">WEB</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">15b7f01a-06c0-4856-958e-ac892618de54</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="https://lifecell.ua/uk/malii-biznes-lifecell/servisi/gsm-shliuz/" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2"># GSM-шлюз (Єдина Мережа)
+
+   Оптимальне офісне рішення для дзвінків у мережі lifecell. Об`єднайте свою офісну АТС із GSM-шлюзом та економте на дзвінках.
+   65грн
+        / місяць
+    Як замовити(#!/order-form/)
+
+   Переваги:
+   - Суттєве скорочення витрат на офісний зв’язок
+   - Гнучкі тарифи на вихідні дзвінки
+   - Абсолютна легальність
+    опис(#!/tariff-description/)
+    Як підключитись(#!/order-form/)
+    питання та відповіді(#!/tariff-questions-answers/)
+     Єдина Мережа без обладнання                                                                                                                                             |
+   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------
+     Сплачується абонентом щомісячно при внесенні на основний рахунок, грн                                                                                                   | 15
+     Частина абонентної плати, в рахунок якої абонент може замовити електронні комунікаційні послуги до кінця календарного місяця, в якому внесено таку абонентну плату, грн | 50
+     Дзвінки всередині корпоративної групи, грн/хв                                                                                                                           | за рахунок АП
+     Дзвінки на номери мережі мобільного зв’язку lifecell, грн/хв                                                                                                            | 0,2
+     Дзвінки на номери мереж фіксованого зв’язку України, грн/хв                                                                                                             | 0,5
+     Дзвінки на номери мереж інших мобільних операторів України, грн/хв                                                                                                      | 0,5
+     Міжнародні дзвінки, крім дзвінків на операторів супутникового зв’язку та спеціальних міжнародних напрямків, грн/хв                                                      | 3,99
+     Дзвінки на спеціальні міжнародні напрямки, грн/хв                                                                                                                       | 7,99
+     Плата за з'єднання, грн/з’єднання*                                                                                                                                      | 0,1
+     Плата за з’єднання при міжнародних дзвінках, грн/з’єднання                                                                                                              | 1,88
+
+   Повні умови
+   *Плата за з'єднання нараховується для переадресованих вихідних дзвінків за наступними напрямками:
+   - на номери мереж інших мобільних операторів України
+   - на номери мереж фіксованого зв'язку України
+   - на номери мережі лайфселл
+   - на номери корпорації
+
+   Дзвінки на спеціальні міжнародні напрямки тарифікуються по 7,99 грн/хв.
+
+   Тарифікація вихідних та переадресованих дзвінків (електронної комунікаційної послуги передавання інформації голосом) здійснюється в першу секунду кожної хвилини електронної комунікаційної послуги. У рахунок вартості першої секунди кожної хвилини електронної комунікаційної послуги надаються наступні 59 секунд (з 2 по 60) без додаткової тарифікації.
+   Тарифи наведено у гривнях з урахуванням ПДВ. Додатково утримується пенсійний збір у розмірі 7,5% на вартість послуг мобільного зв'язку.Запитання та відповіді
+
+    Які переваги послуги "Єдина Мережа"?
+   Можливість дзвінків з&nbsp;Ваших офісних телефонів на&nbsp;номери мережі загального користування, номери інших мобільних операторів України, у&nbsp;міжнародному напрямку за&nbsp;привабливими тарифами.
+   Спеціальна тарифікація дзвінків між телефонами Вашого офісу та&nbsp;мобільними телефонами Вашої lifecell корпорації.
+   Висока якість зв’язку.
+
+    Як створити "Єдину мережу"?
+   Підключити пристрій FCT до Вашої АТС чи організувати звичайне з'єднання FCT з телефонним/факсовим аппаратом.Ви відповіли.Дякуємо за Ваш відгук.Задати питання оператору 0 800 20 5433 безкоштовно зі стаціонарних та мобільних номерів по Україні
+
+    Які переваги послуги "Єдина Мережа"?
+   Можливість дзвінків з&nbsp;Ваших офісних телефонів на&nbsp;номери мережі загального користування, номери інших мобільних операторів України, у&nbsp;міжнародному напрямку за&nbsp;привабливими тарифами.
+   Спеціальна тарифікація дзвінків між телефонами Вашого офісу та&nbsp;мобільними телефонами Вашої lifecell корпорації.
+   Висока якість зв’язку.
+
+    Як створити "Єдину мережу"?
+   Підключити пристрій FCT до Вашої АТС чи організувати звичайне з'єднання FCT з телефонним/факсовим аппаратом.Ви відповіли.Дякуємо за Ваш відгук.Задати питання оператору 0 800 20 5433 безкоштовно зі стаціонарних та мобільних номерів по Україні</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/25dca613-16af-4b92-8850-20248d571f59" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">GSM-шлюз (Єдина Мережа)</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-03-20 05:10:04</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">WEB</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">25dca613-16af-4b92-8850-20248d571f59</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="https://lifecell.ua/uk/malii-biznes-lifecell/servisi/gsm-shliuz/" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2"># GSM-шлюз (Єдина Мережа)
+
+   Оптимальне офісне рішення для дзвінків у мережі lifecell. Об`єднайте свою офісну АТС із GSM-шлюзом та економте на дзвінках.
+   65грн
+        / місяць
+    Як замовити(#!/order-form/)
+
+   Переваги:
+   - Суттєве скорочення витрат на офісний зв’язок
+   - Гнучкі тарифи на вихідні дзвінки
+   - Абсолютна легальність
+    опис(#!/tariff-description/)
+    Як підключитись(#!/order-form/)
+    питання та відповіді(#!/tariff-questions-answers/)
+     Єдина Мережа без обладнання                                                                                                                                             |
+   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------
+     Сплачується абонентом щомісячно при внесенні на основний рахунок, грн                                                                                                   | 15
+     Частина абонентної плати, в рахунок якої абонент може замовити електронні комунікаційні послуги до кінця календарного місяця, в якому внесено таку абонентну плату, грн | 50
+     Дзвінки всередині корпоративної групи, грн/хв                                                                                                                           | за рахунок АП
+     Дзвінки на номери мережі мобільного зв’язку lifecell, грн/хв                                                                                                            | 0,2
+     Дзвінки на номери мереж фіксованого зв’язку України, грн/хв                                                                                                             | 0,5
+     Дзвінки на номери мереж інших мобільних операторів України, грн/хв                                                                                                      | 0,5
+     Міжнародні дзвінки, крім дзвінків на операторів супутникового зв’язку та спеціальних міжнародних напрямків, грн/хв                                                      | 3,99
+     Дзвінки на спеціальні міжнародні напрямки, грн/хв                                                                                                                       | 7,99
+     Плата за з'єднання, грн/з’єднання*                                                                                                                                      | 0,1
+     Плата за з’єднання при міжнародних дзвінках, грн/з’єднання                                                                                                              | 1,88
+
+   Повні умови
+   *Плата за з'єднання нараховується для переадресованих вихідних дзвінків за наступними напрямками:
+   - на номери мереж інших мобільних операторів України
+   - на номери мереж фіксованого зв'язку України
+   - на номери мережі лайфселл
+   - на номери корпорації
+
+   Дзвінки на спеціальні міжнародні напрямки тарифікуються по 7,99 грн/хв.
+
+   Тарифікація вихідних та переадресованих дзвінків (електронної комунікаційної послуги передавання інформації голосом) здійснюється в першу секунду кожної хвилини електронної комунікаційної послуги. У рахунок вартості першої секунди кожної хвилини електронної комунікаційної послуги надаються наступні 59 секунд (з 2 по 60) без додаткової тарифікації.
+   Тарифи наведено у гривнях з урахуванням ПДВ. Додатково утримується пенсійний збір у розмірі 7,5% на вартість послуг мобільного зв'язку.Запитання та відповіді
+
+    Які переваги послуги "Єдина Мережа"?
+   Можливість дзвінків з&nbsp;Ваших офісних телефонів на&nbsp;номери мережі загального користування, номери інших мобільних операторів України, у&nbsp;міжнародному напрямку за&nbsp;привабливими тарифами.
+   Спеціальна тарифікація дзвінків між телефонами Вашого офісу та&nbsp;мобільними телефонами Вашої lifecell корпорації.
+   Висока якість зв’язку.
+
+    Як створити "Єдину мережу"?
+   Підключити пристрій FCT до Вашої АТС чи організувати звичайне з'єднання FCT з телефонним/факсовим аппаратом.Ви відповіли.Дякуємо за Ваш відгук.Задати питання оператору 0 800 20 5433 безкоштовно зі стаціонарних та мобільних номерів по Україні
+
+    Які переваги послуги "Єдина Мережа"?
+   Можливість дзвінків з&nbsp;Ваших офісних телефонів на&nbsp;номери мережі загального користування, номери інших мобільних операторів України, у&nbsp;міжнародному напрямку за&nbsp;привабливими тарифами.
+   Спеціальна тарифікація дзвінків між телефонами Вашого офісу та&nbsp;мобільними телефонами Вашої lifecell корпорації.
+   Висока якість зв’язку.
+
+    Як створити "Єдину мережу"?
+   Підключити пристрій FCT до Вашої АТС чи організувати звичайне з'єднання FCT з телефонним/факсовим аппаратом.Ви відповіли.Дякуємо за Ваш відгук.Задати питання оператору 0 800 20 5433 безкоштовно зі стаціонарних та мобільних номерів по Україні</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/42e39dc4-808e-47ff-909b-72ba01bd21a6" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">IP PBX UN premium 30 FRD.docx</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-04-03 03:04:11</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">FRD</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">42e39dc4-808e-47ff-909b-72ba01bd21a6</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="assets/voip_ritm_docs/IP%20PBX%20UN%20premium%2030%20FRD.docx" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">Project Group
+   FG/DIV/UNIT/TEAM,Name Surname,Responsibility
+   Analyst / PMICT-CM,Alina Demianchuk,Example:     * Create FRD \\ CR    * Create request about test environment    * Create request about needed resources for test support    * Request/ Inform test MSISDN    * Perform test based on ATP    * Collect ATP approvals
+   RO MR-PM,Dmitriy Konovalov ,    * Provide PTR with described business logic     * Accept FRD \\ CR    * Accept estimation
+   Sales,Daryna MakarenkoOlena Panasyuk,    * Provide text for Iguana &amp; channels    * Accept FRD \\ CR
+   ICT-CM-BSS-CSPICT- CM-BSS -CRPICT-DEV,Artem ZaliznyakEvgen Kasyanik ,    * Technical feasibility    * Informs about implementation approach     * Provides solution technical risks and limitations    * FRD completeness confirmation    * Provides request implementation cost and deadline for UAT and production
+
+
+   Document control
+   Version,Date,Description &amp; change details,Who
+   1.0,27.05.2020,Create,Alina Demianchuk
+   1.1,18.06.2020,Updated: added discoints LineDiscount1_Omo_Personal LineDiscount1_OnNet_Personal LineDiscount1_PSTN_Personal,Alina Demianchuk
+   1.2,30.07.2020,Updated: 310210 IP PBX UN premium 30 rules of migration,Alina Demianchuk
+   1.3,10.04.2023,[BIZ-27527 - New nat base international tariffs for B2B](https://jira.dev.ict/browse/BIZ-27527),Olena Turok
+   1.4,09.08.2023,BIZ-27390_PBX C2C migration,Alina Demianchuk
+
+   CONTENT
+   [1GENERAL INFORMATION3]()
+   [1.1TIME PLAN3]()
+   [1.2TARGET MARKET3]()
+   [1.3TARİFF NAME3]()
+   [2SCOPE OF WORK3]()
+   [3CHARGING RULES4]()
+   [3.1LİFE CYCLE OF TARİFFS4]()
+   [3.2GENERAL TARİFF TABLE4]()
+   [4SUBSCRIPTION LOGIC6]()
+   [4.1SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA6]()
+   [5SMS notifications6]()
+   [6interaction with services, offers and campaigns6]()
+   [7Direct number subscription6]()
+   [8Balance Info7]()
+   [9MİGRATİON7]()
+   [8.1 C2C According Migration matrix:7]()
+   [8.2 Change Owner7]()
+   [10mylifecell7]()
+   [11special Services on TP7]()
+   [7.1.1Billing and billing details8]()
+   [1.1IT Security requirements9]()
+
+
+   # 1.       GENERAL INFORMATION
+   New tariff for VoIP
+
+   ## 1. TIME PLAN
+   Tariff subscription \\ migration is available starting from 24.06.2020 (including).
+
+   ## 2. TARGET MARKET
+   Corporate Contract
+   Corporate Postpaid contract
+   Individual Contract
+
+
+   ## 3. TARİFF NAME
+
+   Language,CON_CRP_PST
+   Ukrainian name,Єдина Мережа Преміум 30
+   Russian name,Единая Сеть Премиум 30
+   English name,Unified Network Premium 30
+   Tariff code ,CRP_PP_IP_PBX_FIX_30
+   ROP ,ROP_PP_1st_IP_PBX_FIX_30
+
+
+   # 2.       SCOPE OF WORK
+   id,Job,Responsible,FRD paragraph
+   1.,Create tariff product ,ICT-CM-BSS-CSP,
+   2.,Create charging rules ,ICT-CM-BSS-CSP,
+   3.,Mapping pocket,ICT-CM-BSS-CSP,
+   4.,New services created ,ICT-CM-BSS-CSPICT-CM-BSS-CRP,
+   5.,Forbid for activation in tariff some services (according list) ,ICT-CM-BSS-CSP,
+
+
+   # 3.       CHARGING RULES
+   ## 4. LİFE CYCLE OF TARİFFS
+
+   Tariff name,Unified Network Premium 30
+   "Lifecycle (RMF_PRO, RMF_FULL, PIA, Postpaid)",Postpaid
+   "MF (UAH, VAT incl., PF incl.)",30 UAH
+   Prorating ,"Yes First activation and tariff plan change/ ownership transfer - prorate, rest - full"
+   Discounts.Line discount should be available for activation:LINE_DISCOUNT_1LINE_DISCOUNT_2LINE_DISCOUNT_MONTHLY_FEELineDiscount1_Omo_Personal LineDiscount1_OnNet_Personal LineDiscount1_PSTN_Personal,Yes
+   "Common discount_1,2,6",No
+   "Initial payment (UAH, VAT incl., PF incl.)",No
+   MF Payment Date,1st day of the month
+   Subscription period (days),Calendar month
+   Customer type,C
+   Contract types,CON_CRP_PST
+
+   Life cycle description is in FRD_Subscribers States.doc &amp; FRD_Postpaid.doc
+
+   ## 5.         GENERAL TARİFF TABLE
+
+   Type of service (over RMF bundles),Unit,"Price per unit (UAH, VAT incl., PF incl.)",Discounts,Charging interval,"Call Setup Fee (UAH, VAT incl., PF excl.)","Comment (e.g. call drop, refill conditions, etc)"
+   MOC CUG ,60 sec,"0,01",Yes,60 sec,-,-
+   MOC Onnet,60 sec,"0,30",Yes,60 sec,-,-
+   MOC OMO ,60 sec,"0,30",Yes,60 sec,-,-
+   MOC PSTN,60 sec,"0,30",Yes,60 sec,,
+   SMS national\*,1 sms,"0,35",No,1 sms,-,-
+   CF CUG ,60 sec,"0,01",,60 sec,"0,2125",Paid monthly ONNET bundles must be used for CF. If no bundle – CSF+base tariff
+   "CF OMO, PSTN, Onnet",60 sec,"0,30",Yes,60 sec,,
+   Redirect from direct number to GSM,60 sec,0,No ,,,
+   MOC International,NatBaseREVOLVER_INTERNATIONAL_NAT_BASE (UTF) CTF_REVOLVER_International_NatBase,According to [New Revolver International Logic](https://scat.sp.life.ua/product-management/services-offers/2371)
+   Int. SMS,1 message,NatBase,No,,-,
+   Roaming,\*\*None ,\*\*None ,No,,-,
+   Internet,\*\*None ,\*\*None ,No,,-,
+   \*SMS Will be provided aftre launched task 306602\*\*None -  means service is inaccessible due to IP PBX realization specificity.
+
+
+   # 4.       SUBSCRIPTION LOGIC
+   ## 6. SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA
+
+   1. Type of customer
+   Individual
+   Corporate
+   Private Enterprise
+
+   2. Type of subscription
+   Usual
+   PBX
+   Connecting of special number (SN)
+   Number choice (NC)
+   Number choice via WEB(NCW)
+   Special number via WEB (SNW)
+   Direct number
+
+   3. Extra Fields for Subscription:
+   Additional fields that need to be shown during subscription, ownership transfer, migration Prepaid to Contract.
+   Access to common account
+   Spending limit from common account
+   Discount 1 for national traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Discount 2 for international traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Camel roaming (for CON_CRP or CON_CRP_PST tariff)
+   Discount 6 (for monthly fee)
+
+
+   4. Subscription and migration to tariff should be avalable in Iguana for the following roles:
+   * iui_bo_corp_cust_care_cc
+   * iui_bo_corp_customer_care
+   * iui_pm_agent
+   * iui_operation_team
+   * iui_prod_support
+   Should be create new FN group for the tariff - FN_SUBSCRIPTION_PBX_FIX_30
+
+
+   5. Link to Infolife: https://infolife.lifecell.com.ua/pages/viewpage.action?pageId=32344895
+
+
+   ## 5. SMS notifications
+
+   NO need.
+
+
+   ## 6. interaction with services, offers and campaigns
+   In the attached file list of services which allowed and forbid for activation on the tariff.
+
+
+   ## 7. Direct number subscription
+   Direct number subscription is not allowed for these tariffs.
+
+
+   ## 8. Balance Info
+   \*121# standard rules [https://scat.sp.life.ua/search?k=121](https://scat.sp.life.ua/search?k=121)
+
+   ## 9. MİGRATİON
+   ## 9.1  C2C (change tariff) According Migration matrix:
+   [Corp migration matrix](https://scat.sp.life.ua/search?k=corp%20migration%20matrix)
+
+   According Migration rules for PBX:
+
+   [Migration rules for PBX tariffs](https://scat.sp.life.ua/search?k=Migration%20rules%20for%20PBX)
+
+   ### 9.2 Change Owner
+   Standard Change Owner charging rules for corporate tariffs should be applied.
+
+
+   ## 10. mylifecell
+   Non information on my.lifecell
+
+
+   ## 11. special Services on TP
+
+   7. Service “Additional line&nbsp;for&nbsp;Premium&nbsp;30”
+
+
+   Service name,                       VAS_ADD_LINE_FIX_30
+   ukr,Безномерні лінії для Преміум 30
+   rus,Безномерные линии для Премиум 30
+   eng,Additional line&nbsp;for&nbsp;Premium&nbsp;30
+
+
+   1. Service can be activated in contract level only.
+   2. Activation and deactivation available via Iguana Contarct level”Сервіси з пролонгацією”
+   3. Services should be charged from common_main and common bonus balances by formule N\*30 UAH, where N is number of additional lines defined by operator.No special provisioning required for service.
+   4. For activation service In Iguana need to feel extra field of service, indicate the number of lines.
+   ![](media/image2.png)
+   5. In case, were during a month the value in the extra field is changed (increase), then by additional lines should be charged MF immediately, after field updated.
+   Number of additional lines may be edited in Iguana and should be recorded to AdditionalDiskSpaceCount parameter of ROP_VAS_WS_FIX_30_Add_Line.
+   6. Information about activation\\deactivation service should be show in Transaction history.
+   7. Service should be added to the following permisions:
+   mod-tm-om:agreement-service:edit
+   mod-tm-om:agreement-service:order
+   mod-tm-om:agreement-service:refuse
+   mod-tm-om:agreement-service:reorder
+   mod-tm-om:agreement-service:view
+   mod-tm-om:agreement-service:view-attr
+
+   ### 1. Billing and billing details
+   Billing product details:
+   Commercial service name,Additional line&nbsp;for&nbsp;Premium&nbsp;30
+   Product(Service) Name,VAS_ADD_LINE_FIX_30
+   ROP NAME,ROP_VAS_WS_FIX_30_Add_Line
+   "Price, UAH with VAT and PF",30 UAH \* Number of lines in the field AdditionalDiskSpaceCount
+   "Subscription Period, days",monthly (autoprolongation every 1st day of calendar month)
+   "Grace, days",No
+   "Preprocessing, days(if needed)",No
+   Begin with prorating,No
+   Balances(charging priorities from top to bottom), common maincommon bonus
+
+
+   7.1.2   Service “Premium 30 pulse in Ukraine – 1 second”
+
+   Service name,VAS_PBX_FIX_30_ONE_SEC
+   ukr,Преміум 30 тарифікація&nbsp;по Україні – 1 секунда
+   rus,Премиум 30 тарификация по Украине – 1 секунда
+   eng,Premium 30 pulse in Ukraine – 1 second
+
+
+   * It is necessary to create a service that provides of seconds tarification for national traffic.
+   * Service can be activate via CMS only.
+   * Service may be activate on line level.
+   * Available for activation on the tariff «Unified Network Premium 30» only.
+   * If service is active that calls to onnet, OMO, PSTN, CUG, CF to Onnet, CF to OMO, CF to PSTN charging rules should be 1 sec pulse.
+   * Information about activation\\deactivation service should be show in Transaction history.
+   * Discounts should be applied.
+
+   «Unified Network Premium 30» tariff table is:
+   Type of service (voice and CF),Unit,Price of the 60 sec (price includes VAT with PFT),Charging rules
+   CUG,60 sec,"0,01",1 sec pulse
+   Onnet,60 sec,"0,30",1 sec pulse
+   PSTN,60 sec,"0,30",1 sec pulse
+   OMO,60 sec,"0,30",1 sec pulse
+
+
+   ## IT Security requirements
+   ,,,"[use as reference at FRD, thes colums can be deleted after FRD completion]"
+   Question,Answer,Link to FRD section,Reguirements,next action,
+   Is it planned NEW transfer / CHANGE transfer of sensitive data to 3rd party? ,N,&nbsp;,Item from Security Guide: F:1-3E:1-5,N - No security involvementY - used requirements from the file,"Sensitive information includes: personal data like personal telephone number, name, surname, customer call details (CDR), location, demographic information; cardholder data like credit card info, CVV, Date of Expiration; critical telcj data like: IMEI number, web history, SMS/MMS/voice mail content "
+   Is it planned NEW show / transfer sensitive data to subscriber / client via application/site? ,N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,Security Guide for Project Managers:
+   "Is it planned CHANGE (delete/add) way of client authorization: captcha, secret word, super password, password, OTP, etc?",N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,![](media/image3.png)
+   Is it planned to create NEW services/application that used clients data?,N,&nbsp;,Item from Security Guide: Please check all items ,N - No security involvementY - used requirements from the file,
+   "Is it planes ADD new or change existent elements of site/application (used parameters): e.g. pages, fields, buttons that available from internet, change structure of requests (add/change/delete parameters e.g. new identification id)",N,&nbsp;,Item from Security Guide: I:all itemsJ:all itemsK:all items,N - No security involvementY - used requirements from the file,
+   Is it planned NEW integration between external resources (available from internet) and internal company resources AND new methods of integration and work will be used?,N,&nbsp;,Item from Security Guide: Please check all items,N - No security involvementY - used requirements from the file,
+
+
+   ##
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/cc584ea0-28ac-4253-9f4f-0d81969ff255" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">IP PBX UN premium 30 FRD.docx</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-03-20 05:10:04</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">FRD</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">cc584ea0-28ac-4253-9f4f-0d81969ff255</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="assets/voip_ritm_docs/IP%20PBX%20UN%20premium%2030%20FRD.docx" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">Project Group
+   FG/DIV/UNIT/TEAM,Name Surname,Responsibility
+   Analyst / PMICT-CM,Alina Demianchuk,Example:     * Create FRD \\ CR    * Create request about test environment    * Create request about needed resources for test support    * Request/ Inform test MSISDN    * Perform test based on ATP    * Collect ATP approvals
+   RO MR-PM,Dmitriy Konovalov ,    * Provide PTR with described business logic     * Accept FRD \\ CR    * Accept estimation
+   Sales,Daryna MakarenkoOlena Panasyuk,    * Provide text for Iguana &amp; channels    * Accept FRD \\ CR
+   ICT-CM-BSS-CSPICT- CM-BSS -CRPICT-DEV,Artem ZaliznyakEvgen Kasyanik ,    * Technical feasibility    * Informs about implementation approach     * Provides solution technical risks and limitations    * FRD completeness confirmation    * Provides request implementation cost and deadline for UAT and production
+
+
+   Document control
+   Version,Date,Description &amp; change details,Who
+   1.0,27.05.2020,Create,Alina Demianchuk
+   1.1,18.06.2020,Updated: added discoints LineDiscount1_Omo_Personal LineDiscount1_OnNet_Personal LineDiscount1_PSTN_Personal,Alina Demianchuk
+   1.2,30.07.2020,Updated: 310210 IP PBX UN premium 30 rules of migration,Alina Demianchuk
+   1.3,10.04.2023,[BIZ-27527 - New nat base international tariffs for B2B](https://jira.dev.ict/browse/BIZ-27527),Olena Turok
+   1.4,09.08.2023,BIZ-27390_PBX C2C migration,Alina Demianchuk
+
+   CONTENT
+   [1GENERAL INFORMATION3]()
+   [1.1TIME PLAN3]()
+   [1.2TARGET MARKET3]()
+   [1.3TARİFF NAME3]()
+   [2SCOPE OF WORK3]()
+   [3CHARGING RULES4]()
+   [3.1LİFE CYCLE OF TARİFFS4]()
+   [3.2GENERAL TARİFF TABLE4]()
+   [4SUBSCRIPTION LOGIC6]()
+   [4.1SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA6]()
+   [5SMS notifications6]()
+   [6interaction with services, offers and campaigns6]()
+   [7Direct number subscription6]()
+   [8Balance Info7]()
+   [9MİGRATİON7]()
+   [8.1 C2C According Migration matrix:7]()
+   [8.2 Change Owner7]()
+   [10mylifecell7]()
+   [11special Services on TP7]()
+   [7.1.1Billing and billing details8]()
+   [1.1IT Security requirements9]()
+
+
+   # 1.       GENERAL INFORMATION
+   New tariff for VoIP
+
+   ## 1. TIME PLAN
+   Tariff subscription \\ migration is available starting from 24.06.2020 (including).
+
+   ## 2. TARGET MARKET
+   Corporate Contract
+   Corporate Postpaid contract
+   Individual Contract
+
+
+   ## 3. TARİFF NAME
+
+   Language,CON_CRP_PST
+   Ukrainian name,Єдина Мережа Преміум 30
+   Russian name,Единая Сеть Премиум 30
+   English name,Unified Network Premium 30
+   Tariff code ,CRP_PP_IP_PBX_FIX_30
+   ROP ,ROP_PP_1st_IP_PBX_FIX_30
+
+
+   # 2.       SCOPE OF WORK
+   id,Job,Responsible,FRD paragraph
+   1.,Create tariff product ,ICT-CM-BSS-CSP,
+   2.,Create charging rules ,ICT-CM-BSS-CSP,
+   3.,Mapping pocket,ICT-CM-BSS-CSP,
+   4.,New services created ,ICT-CM-BSS-CSPICT-CM-BSS-CRP,
+   5.,Forbid for activation in tariff some services (according list) ,ICT-CM-BSS-CSP,
+
+
+   # 3.       CHARGING RULES
+   ## 4. LİFE CYCLE OF TARİFFS
+
+   Tariff name,Unified Network Premium 30
+   "Lifecycle (RMF_PRO, RMF_FULL, PIA, Postpaid)",Postpaid
+   "MF (UAH, VAT incl., PF incl.)",30 UAH
+   Prorating ,"Yes First activation and tariff plan change/ ownership transfer - prorate, rest - full"
+   Discounts.Line discount should be available for activation:LINE_DISCOUNT_1LINE_DISCOUNT_2LINE_DISCOUNT_MONTHLY_FEELineDiscount1_Omo_Personal LineDiscount1_OnNet_Personal LineDiscount1_PSTN_Personal,Yes
+   "Common discount_1,2,6",No
+   "Initial payment (UAH, VAT incl., PF incl.)",No
+   MF Payment Date,1st day of the month
+   Subscription period (days),Calendar month
+   Customer type,C
+   Contract types,CON_CRP_PST
+
+   Life cycle description is in FRD_Subscribers States.doc &amp; FRD_Postpaid.doc
+
+   ## 5.         GENERAL TARİFF TABLE
+
+   Type of service (over RMF bundles),Unit,"Price per unit (UAH, VAT incl., PF incl.)",Discounts,Charging interval,"Call Setup Fee (UAH, VAT incl., PF excl.)","Comment (e.g. call drop, refill conditions, etc)"
+   MOC CUG ,60 sec,"0,01",Yes,60 sec,-,-
+   MOC Onnet,60 sec,"0,30",Yes,60 sec,-,-
+   MOC OMO ,60 sec,"0,30",Yes,60 sec,-,-
+   MOC PSTN,60 sec,"0,30",Yes,60 sec,,
+   SMS national\*,1 sms,"0,35",No,1 sms,-,-
+   CF CUG ,60 sec,"0,01",,60 sec,"0,2125",Paid monthly ONNET bundles must be used for CF. If no bundle – CSF+base tariff
+   "CF OMO, PSTN, Onnet",60 sec,"0,30",Yes,60 sec,,
+   Redirect from direct number to GSM,60 sec,0,No ,,,
+   MOC International,NatBaseREVOLVER_INTERNATIONAL_NAT_BASE (UTF) CTF_REVOLVER_International_NatBase,According to [New Revolver International Logic](https://scat.sp.life.ua/product-management/services-offers/2371)
+   Int. SMS,1 message,NatBase,No,,-,
+   Roaming,\*\*None ,\*\*None ,No,,-,
+   Internet,\*\*None ,\*\*None ,No,,-,
+   \*SMS Will be provided aftre launched task 306602\*\*None -  means service is inaccessible due to IP PBX realization specificity.
+
+
+   # 4.       SUBSCRIPTION LOGIC
+   ## 6. SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA
+
+   1. Type of customer
+   Individual
+   Corporate
+   Private Enterprise
+
+   2. Type of subscription
+   Usual
+   PBX
+   Connecting of special number (SN)
+   Number choice (NC)
+   Number choice via WEB(NCW)
+   Special number via WEB (SNW)
+   Direct number
+
+   3. Extra Fields for Subscription:
+   Additional fields that need to be shown during subscription, ownership transfer, migration Prepaid to Contract.
+   Access to common account
+   Spending limit from common account
+   Discount 1 for national traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Discount 2 for international traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Camel roaming (for CON_CRP or CON_CRP_PST tariff)
+   Discount 6 (for monthly fee)
+
+
+   4. Subscription and migration to tariff should be avalable in Iguana for the following roles:
+   * iui_bo_corp_cust_care_cc
+   * iui_bo_corp_customer_care
+   * iui_pm_agent
+   * iui_operation_team
+   * iui_prod_support
+   Should be create new FN group for the tariff - FN_SUBSCRIPTION_PBX_FIX_30
+
+
+   5. Link to Infolife: https://infolife.lifecell.com.ua/pages/viewpage.action?pageId=32344895
+
+
+   ## 5. SMS notifications
+
+   NO need.
+
+
+   ## 6. interaction with services, offers and campaigns
+   In the attached file list of services which allowed and forbid for activation on the tariff.
+
+
+   ## 7. Direct number subscription
+   Direct number subscription is not allowed for these tariffs.
+
+
+   ## 8. Balance Info
+   \*121# standard rules [https://scat.sp.life.ua/search?k=121](https://scat.sp.life.ua/search?k=121)
+
+   ## 9. MİGRATİON
+   ## 9.1  C2C (change tariff) According Migration matrix:
+   [Corp migration matrix](https://scat.sp.life.ua/search?k=corp%20migration%20matrix)
+
+   According Migration rules for PBX:
+
+   [Migration rules for PBX tariffs](https://scat.sp.life.ua/search?k=Migration%20rules%20for%20PBX)
+
+   ### 9.2 Change Owner
+   Standard Change Owner charging rules for corporate tariffs should be applied.
+
+
+   ## 10. mylifecell
+   Non information on my.lifecell
+
+
+   ## 11. special Services on TP
+
+   7. Service “Additional line&nbsp;for&nbsp;Premium&nbsp;30”
+
+
+   Service name,                       VAS_ADD_LINE_FIX_30
+   ukr,Безномерні лінії для Преміум 30
+   rus,Безномерные линии для Премиум 30
+   eng,Additional line&nbsp;for&nbsp;Premium&nbsp;30
+
+
+   1. Service can be activated in contract level only.
+   2. Activation and deactivation available via Iguana Contarct level”Сервіси з пролонгацією”
+   3. Services should be charged from common_main and common bonus balances by formule N\*30 UAH, where N is number of additional lines defined by operator.No special provisioning required for service.
+   4. For activation service In Iguana need to feel extra field of service, indicate the number of lines.
+   ![](media/image2.png)
+   5. In case, were during a month the value in the extra field is changed (increase), then by additional lines should be charged MF immediately, after field updated.
+   Number of additional lines may be edited in Iguana and should be recorded to AdditionalDiskSpaceCount parameter of ROP_VAS_WS_FIX_30_Add_Line.
+   6. Information about activation\\deactivation service should be show in Transaction history.
+   7. Service should be added to the following permisions:
+   mod-tm-om:agreement-service:edit
+   mod-tm-om:agreement-service:order
+   mod-tm-om:agreement-service:refuse
+   mod-tm-om:agreement-service:reorder
+   mod-tm-om:agreement-service:view
+   mod-tm-om:agreement-service:view-attr
+
+   ### 1. Billing and billing details
+   Billing product details:
+   Commercial service name,Additional line&nbsp;for&nbsp;Premium&nbsp;30
+   Product(Service) Name,VAS_ADD_LINE_FIX_30
+   ROP NAME,ROP_VAS_WS_FIX_30_Add_Line
+   "Price, UAH with VAT and PF",30 UAH \* Number of lines in the field AdditionalDiskSpaceCount
+   "Subscription Period, days",monthly (autoprolongation every 1st day of calendar month)
+   "Grace, days",No
+   "Preprocessing, days(if needed)",No
+   Begin with prorating,No
+   Balances(charging priorities from top to bottom), common maincommon bonus
+
+
+   7.1.2   Service “Premium 30 pulse in Ukraine – 1 second”
+
+   Service name,VAS_PBX_FIX_30_ONE_SEC
+   ukr,Преміум 30 тарифікація&nbsp;по Україні – 1 секунда
+   rus,Премиум 30 тарификация по Украине – 1 секунда
+   eng,Premium 30 pulse in Ukraine – 1 second
+
+
+   * It is necessary to create a service that provides of seconds tarification for national traffic.
+   * Service can be activate via CMS only.
+   * Service may be activate on line level.
+   * Available for activation on the tariff «Unified Network Premium 30» only.
+   * If service is active that calls to onnet, OMO, PSTN, CUG, CF to Onnet, CF to OMO, CF to PSTN charging rules should be 1 sec pulse.
+   * Information about activation\\deactivation service should be show in Transaction history.
+   * Discounts should be applied.
+
+   «Unified Network Premium 30» tariff table is:
+   Type of service (voice and CF),Unit,Price of the 60 sec (price includes VAT with PFT),Charging rules
+   CUG,60 sec,"0,01",1 sec pulse
+   Onnet,60 sec,"0,30",1 sec pulse
+   PSTN,60 sec,"0,30",1 sec pulse
+   OMO,60 sec,"0,30",1 sec pulse
+
+
+   ## IT Security requirements
+   ,,,"[use as reference at FRD, thes colums can be deleted after FRD completion]"
+   Question,Answer,Link to FRD section,Reguirements,next action,
+   Is it planned NEW transfer / CHANGE transfer of sensitive data to 3rd party? ,N,&nbsp;,Item from Security Guide: F:1-3E:1-5,N - No security involvementY - used requirements from the file,"Sensitive information includes: personal data like personal telephone number, name, surname, customer call details (CDR), location, demographic information; cardholder data like credit card info, CVV, Date of Expiration; critical telcj data like: IMEI number, web history, SMS/MMS/voice mail content "
+   Is it planned NEW show / transfer sensitive data to subscriber / client via application/site? ,N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,Security Guide for Project Managers:
+   "Is it planned CHANGE (delete/add) way of client authorization: captcha, secret word, super password, password, OTP, etc?",N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,![](media/image3.png)
+   Is it planned to create NEW services/application that used clients data?,N,&nbsp;,Item from Security Guide: Please check all items ,N - No security involvementY - used requirements from the file,
+   "Is it planes ADD new or change existent elements of site/application (used parameters): e.g. pages, fields, buttons that available from internet, change structure of requests (add/change/delete parameters e.g. new identification id)",N,&nbsp;,Item from Security Guide: I:all itemsJ:all itemsK:all items,N - No security involvementY - used requirements from the file,
+   Is it planned NEW integration between external resources (available from internet) and internal company resources AND new methods of integration and work will be used?,N,&nbsp;,Item from Security Guide: Please check all items,N - No security involvementY - used requirements from the file,
+
+
+   ##
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/37cef971-d7c6-4941-9979-04e6bf1c0527" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">IP PBX UN premium 30 Prep FRD.docx</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-03-20 05:10:04</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">FRD</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">37cef971-d7c6-4941-9979-04e6bf1c0527</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="assets/voip_ritm_docs/IP%20PBX%20UN%20premium%2030%20Prep%20FRD.docx" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">Project Group
+   FG/DIV/UNIT/TEAM,Name Surname,Responsibility
+   Analyst / PMICT-CM,Alina Demianchuk,Example:     * Create FRD \\ CR    * Create request about test environment    * Create request about needed resources for test support    * Request/ Inform test MSISDN    * Perform test based on ATP    * Collect ATP approvals
+   RO MR-PM,Dmitriy Konovalov ,    * Provide PTR with described business logic     * Accept FRD \\ CR    * Accept estimation
+   Sales,Daryna MakarenkoOlena Panasyuk,    * Provide text for Iguana &amp; channels    * Accept FRD \\ CR
+   ICT-CM-BSS-CSPICT- CM-BSS -CRPICT-DEV,Artem ZaliznyakEvgen Kasyanik ,    * Technical feasibility    * Informs about implementation approach     * Provides solution technical risks and limitations    * FRD completeness confirmation    * Provides request implementation cost and deadline for UAT and production
+
+
+   Document control
+   Version,Date,Description &amp; change details,Who
+   1.0,23.10.2020,Create,Alina Demianchuk
+   1.1,29.10.2020,Updated: added channels for activation service VAS_PBX_FIX_30_ONE_SEC.,Alina Demianchuk
+   1.2,12.11.2020,Updated: added configuration information ,Alina Demianchuk
+   1.3,10.04.2023,[BIZ-27527 - New nat base international tariffs for B2B](https://jira.dev.ict/browse/BIZ-27527),Olena Turok
+   1.4,09.08.2023,BIZ-27390_PBX C2C migration,Alina Demianchuk
+
+   CONTENT
+   [1GENERAL INFORMATION3]()
+   [1.1TIME PLAN3]()
+   [1.2TARGET MARKET3]()
+   [1.3TARİFF NAME3]()
+   [2SCOPE OF WORK3]()
+   [3CHARGING RULES4]()
+   [3.1LİFE CYCLE OF TARİFFS4]()
+   [3.2GENERAL TARİFF TABLE4]()
+   [4SUBSCRIPTION LOGIC6]()
+   [4.1SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA6]()
+   [5SMS notifications6]()
+   [6interaction with services, offers and campaigns6]()
+   [7Direct number subscription6]()
+   [8Balance Info7]()
+   [9MİGRATİON7]()
+   [8.1 C2C According Migration matrix:7]()
+   [8.2 Change Owner7]()
+   [10mylifecell7]()
+   [11special Services on TP7]()
+   [7.1.1Billing and billing details8]()
+   [1.1IT Security requirements9]()
+
+
+   # 1.       GENERAL INFORMATION
+   New tariff for VoIP
+
+   ## 1. TIME PLAN
+   Tariff subscription \\ migration is available starting from 04.11.2020 (including).
+
+   ## 2. TARGET MARKET
+   Corporate Contract
+   Corporate Postpaid contract
+   Individual Contract
+
+
+   ## 3. TARİFF NAME
+
+   Language,CON_CRP
+   Ukrainian name,Єдина Мережа Преміум 30 Передплата
+   Russian name,Единая Сеть Премиум 30 Предоплата
+   English name,Unified Network Premium 30 Prep
+   Tariff code ,CRP_RMF_IP_PBX_FIX_30
+   ROP ,ROP_RMF_1st_IP_PBX_FIX_30
+
+
+   # 2.       SCOPE OF WORK
+   id,Job,Responsible,FRD paragraph
+   1.,Create tariff product ,ICT-CM-BSS-CSP,
+   2.,Create charging rules ,ICT-CM-BSS-CSP,
+   3.,Mapping pocket,ICT-CM-BSS-CSP,
+   4.,New services created ,ICT-CM-BSS-CSPICT-CM-BSS-CRP,
+   5.,Forbid for activation in tariff some services (according list) ,ICT-CM-BSS-CSP,
+
+
+   # 3.       CHARGING RULES
+   ## 4. LİFE CYCLE OF TARİFFS
+
+   Tariff name,Unified Network Premium 30 Prep
+   "Lifecycle (RMF_PRO, RMF_FULL, PIA, Postpaid)",RMF_FULL
+   "MF (UAH, VAT incl., PF incl.)",30 UAH
+   Prorating ,"Yes First activation and tariff plan change/ ownership transfer - prorate, rest - full"
+   Discounts.Line discount should be available for activation:LINE_DISCOUNT_1LINE_DISCOUNT_2LINE_DISCOUNT_MONTHLY_FEELineDiscount1_Omo_Personal LineDiscount1_OnNet_Personal LineDiscount1_PSTN_Personal,Yes
+   "Common discount_1,2,6",No
+   "Initial payment (UAH, VAT incl., PF incl.)",No
+   MF Payment Date,1st day of the month
+   Subscription period (days),Calendar month
+   Customer type,C
+   Contract types,CON_CRP
+   \*Resource type (attribute of tariff),PBX
+
+   \*Resource type should be added for each tariffs PBX, vPBX, FMC. Details describe on confluence:[https://confluence.dev.ict/pages/resumedraft.action?draftId=91947511&amp;draftShareId=fb3165bc-0944-4cef-94a2-4b2ffd702967&amp;](https://confluence.dev.ict/pages/resumedraft.action?draftId=91947511&amp;draftShareId=fb3165bc-0944-4cef-94a2-4b2ffd702967&amp;)
+
+
+   ## 5.         GENERAL TARİFF TABLE
+
+   Type of service (over RMF bundles),Unit,"Price per unit (UAH, VAT incl., PF incl.)",Discounts,Charging interval,"Call Setup Fee (UAH, VAT incl., PF excl.)","Comment (e.g. call drop, refill conditions, etc)"
+   MOC CUG ,60 sec,"0,01",Yes,60 sec,-,-
+   MOC Onnet,60 sec,"0,30",Yes,60 sec,-,-
+   MOC OMO ,60 sec,"0,30",Yes,60 sec,-,-
+   MOC PSTN,60 sec,"0,30",Yes,60 sec,,
+   SMS national\*,1 sms,"0,35",No,1 sms,-,-
+   CF CUG ,60 sec,"0,01",,60 sec,"0,2125",Paid monthly ONNET bundles must be used for CF. If no bundle – CSF+base tariff
+   "CF OMO, PSTN, Onnet",60 sec,"0,30",Yes,60 sec,,
+   Redirect from direct number to GSM,60 sec,0,No ,,,
+   MOC International,REVOLVER_INTERNATIONAL_NAT_BASE (UTF) CTF_REVOLVER_International_NatBase,According to [New Revolver International Logic](https://scat.sp.life.ua/product-management/services-offers/2371)
+   MMS National,\*\*None ,\*\*None ,No,,-,
+   Int. SMS,1 message,NatBase,No,,-,
+   Int. MMS,\*\*None ,\*\*None ,No,,-,
+   Roaming,\*\*None ,\*\*None ,No,,-,
+   Internet,\*\*None ,\*\*None ,No,,-,
+   \*SMS Will be provided aftre launched task 306602\*\*None -  means service is inaccessible due to IP PBX realization specificity.
+
+
+   ## 4. SUBSCRIPTION LOGIC
+   ## 6. SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA
+
+   1. Type of customer
+   Individual
+   Corporate
+   Private Enterprise
+
+   2. Type of subscription
+   Usual
+   PBX
+   Connecting of special number (SN)
+   Number choice (NC)
+   Number choice via WEB(NCW)
+   Special number via WEB (SNW)
+   Direct number
+
+
+   3. Type of numbers(GSM or PSTN, or both) available  for subscription to tariff
+   In Billing configurations should be applied one of three attributes for the tariff
+
+   GSM_Only  (Profile name - GET_FREENUMBERS_SOLR_AND_PSTN))
+   PSTN_Only  (Profile name - GET_FREENUMBERS_SOLR_AND_PSTN))
+   GSM_PSTN (Profile name - GET_FREENUMBERS_SOLR_AND_PSTN)
+
+
+   4. Extra Fields for Subscription:
+   Additional fields that need to be shown during subscription, ownership transfer, migration Prepaid to Contract.
+   Access to common account
+   Spending limit from common account
+   Discount 1 for national traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Discount 2 for international traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Camel roaming (for CON_CRP or CON_CRP_PST tariff)
+   Discount 6 (for monthly fee)
+
+
+   Link to Infolife: https://infolife.lifecell.com.ua/pages/viewpage.action?pageId=44270401
+
+
+   ## 5. SMS notifications
+
+   NO need.
+
+
+   ## 6. interaction with services, offers and campaigns
+   In the attached file list of services which allowed and forbid for activation on the tariff.
+
+
+   ## 7. Direct number subscription
+   Direct number subscription is not allowed for these tariffs.
+
+
+   ## 8. Balance Info
+   \*121# standard rules [https://scat.sp.life.ua/search?k=121](https://scat.sp.life.ua/search?k=121)
+
+
+   ## 9. MİGRATİON
+   ### 9.1 C2C (change tariff) According Migration matrix: [Corp migration matrix](https://scat.sp.life.ua/search?k=corp%20migration%20matrix)
+   According Migration rules for PBX: [Migration rules for PBX tariffs](https://scat.sp.life.ua/search?k=Migration%20rules%20for%20PBX)
+   ### 9.2 Change Owner
+   Standard Change Owner charging rules for corporate tariffs should be applied.
+
+
+   ## 10. mylifecell
+   Non information on my.lifecell
+
+
+   ## 11. special Services on TP
+
+   7. Service “Additional lines for IP PBX FIXED 30”
+
+
+   Service name,VAS_ADD_LINE_FIX_30
+   ukr,Безномерні лінії для IP PBX Fixed 30
+   rus,Безномерные линии для IP PBX FIXED 30
+   eng,Additional lines for IP PBX FIXED 30
+
+
+   1. Service can be activated in contract level only.
+   2. Activation and deactivation available via Iguana Contarct level”Сервіси з пролонгацією”
+   3. Services should be charged from common_main and common bonus balances by formule N\*30 UAH, where N is number of additional lines defined by operator.No special provisioning required for service.
+   4. For activation service In Iguana need to feel extra field of service, indicate the number of lines.
+   ![](media/image2.png)
+   5. In case, were during a month the value in the extra field is changed (increase), then by additional lines should be charged MF immediately, after field updated.
+   Number of additional lines may be edited in Iguana and should be recorded to AdditionalDiskSpaceCount parameter of ROP_VAS_WS_FIX_30_Add_Line.
+   6. Information about activation\\deactivation service should be show in Transaction history.
+   7. Service should be added to the following permisions:
+   mod-tm-om:agreement-service:edit
+   mod-tm-om:agreement-service:order
+   mod-tm-om:agreement-service:refuse
+   mod-tm-om:agreement-service:reorder
+   mod-tm-om:agreement-service:view
+   mod-tm-om:agreement-service:view-attr
+
+   ### 1. Billing and billing details
+   Billing product details:
+   Commercial service name,Additional lines for IP PBX FIXED 30
+   Product(Service) Name,S_VAS_ADD_LINE_PBX_FIX_30
+   ROP NAME,ROP_VAS_WS_FIX_30_Add_Line
+   "Price, UAH with VAT and PF",30 UAH \* Number of lines in the field AdditionalDiskSpaceCount
+   "Subscription Period, days",monthly (autoprolongation every 1st day of calendar month)
+   "Grace, days",No
+   "Preprocessing, days(if needed)",No
+   Begin with prorating,No
+   Balances(charging priorities from top to bottom), common maincommon bonus
+
+
+   7.1.2   Service “Premium 30 pulse in Ukraine – 1 second”
+
+   Service name,VAS_PBX_FIX_30_ONE_SEC
+   ukr,Преміум 30 тарифікація&nbsp;по Україні – 1 секунда
+   rus,Премиум 30 тарификация по Украине – 1 секунда
+   eng,Premium 30 pulse in Ukraine – 1 second
+
+
+   * It is necessary to create a service that provides of seconds tarification for national traffic.
+   * Service can be activate via CMS, Iguana, Mass transactions.
+   * Service may be activate on line level.
+   * Available for activation on the tariffs CRP_PP_IP_PBX_FIX_30 and CRP_RMF_IP_PBX_FIX_30.
+   * If service is active that calls to onnet, OMO, PSTN, CUG, CF to Onnet, CF to OMO, CF to PSTN charging rules should be 1 sec pulse.
+   * Information about activation\\deactivation service should be show in Transaction history.
+   * Discounts should be applied.
+
+   CRP_RMF_IP_PBX_FIX_30 tariff table is:
+   Type of service (voice and CF),Unit,Price of the 60 sec (price includes VAT with PFT),Charging rules
+   CUG,60 sec,"0,01",1 sec pulse
+   Onnet,60 sec,"0,30",1 sec pulse
+   PSTN,60 sec,"0,30",1 sec pulse
+   OMO,60 sec,"0,30",1 sec pulse
+
+
+   ## ## IT Security requirements
+   ,,,"[use as reference at FRD, thes colums can be deleted after FRD completion]"
+   Question,Answer,Link to FRD section,Reguirements,next action,
+   Is it planned NEW transfer / CHANGE transfer of sensitive data to 3rd party? ,N,&nbsp;,Item from Security Guide: F:1-3E:1-5,N - No security involvementY - used requirements from the file,"Sensitive information includes: personal data like personal telephone number, name, surname, customer call details (CDR), location, demographic information; cardholder data like credit card info, CVV, Date of Expiration; critical telcj data like: IMEI number, web history, SMS/MMS/voice mail content "
+   Is it planned NEW show / transfer sensitive data to subscriber / client via application/site? ,N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,Security Guide for Project Managers:
+   "Is it planned CHANGE (delete/add) way of client authorization: captcha, secret word, super password, password, OTP, etc?",N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,![](media/image4.png)
+   Is it planned to create NEW services/application that used clients data?,N,&nbsp;,Item from Security Guide: Please check all items ,N - No security involvementY - used requirements from the file,
+   "Is it planes ADD new or change existent elements of site/application (used parameters): e.g. pages, fields, buttons that available from internet, change structure of requests (add/change/delete parameters e.g. new identification id)",N,&nbsp;,Item from Security Guide: I:all itemsJ:all itemsK:all items,N - No security involvementY - used requirements from the file,
+   Is it planned NEW integration between external resources (available from internet) and internal company resources AND new methods of integration and work will be used?,N,&nbsp;,Item from Security Guide: Please check all items,N - No security involvementY - used requirements from the file,
+
+
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/fa1f19c7-50aa-4b73-ba4e-6419102b5bc0" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">IP PBX UN premium 30 Prep FRD.docx</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-04-03 03:04:11</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">FRD</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">fa1f19c7-50aa-4b73-ba4e-6419102b5bc0</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="assets/voip_ritm_docs/IP%20PBX%20UN%20premium%2030%20Prep%20FRD.docx" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">Project Group
+   FG/DIV/UNIT/TEAM,Name Surname,Responsibility
+   Analyst / PMICT-CM,Alina Demianchuk,Example:     * Create FRD \\ CR    * Create request about test environment    * Create request about needed resources for test support    * Request/ Inform test MSISDN    * Perform test based on ATP    * Collect ATP approvals
+   RO MR-PM,Dmitriy Konovalov ,    * Provide PTR with described business logic     * Accept FRD \\ CR    * Accept estimation
+   Sales,Daryna MakarenkoOlena Panasyuk,    * Provide text for Iguana &amp; channels    * Accept FRD \\ CR
+   ICT-CM-BSS-CSPICT- CM-BSS -CRPICT-DEV,Artem ZaliznyakEvgen Kasyanik ,    * Technical feasibility    * Informs about implementation approach     * Provides solution technical risks and limitations    * FRD completeness confirmation    * Provides request implementation cost and deadline for UAT and production
+
+
+   Document control
+   Version,Date,Description &amp; change details,Who
+   1.0,23.10.2020,Create,Alina Demianchuk
+   1.1,29.10.2020,Updated: added channels for activation service VAS_PBX_FIX_30_ONE_SEC.,Alina Demianchuk
+   1.2,12.11.2020,Updated: added configuration information ,Alina Demianchuk
+   1.3,10.04.2023,[BIZ-27527 - New nat base international tariffs for B2B](https://jira.dev.ict/browse/BIZ-27527),Olena Turok
+   1.4,09.08.2023,BIZ-27390_PBX C2C migration,Alina Demianchuk
+
+   CONTENT
+   [1GENERAL INFORMATION3]()
+   [1.1TIME PLAN3]()
+   [1.2TARGET MARKET3]()
+   [1.3TARİFF NAME3]()
+   [2SCOPE OF WORK3]()
+   [3CHARGING RULES4]()
+   [3.1LİFE CYCLE OF TARİFFS4]()
+   [3.2GENERAL TARİFF TABLE4]()
+   [4SUBSCRIPTION LOGIC6]()
+   [4.1SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA6]()
+   [5SMS notifications6]()
+   [6interaction with services, offers and campaigns6]()
+   [7Direct number subscription6]()
+   [8Balance Info7]()
+   [9MİGRATİON7]()
+   [8.1 C2C According Migration matrix:7]()
+   [8.2 Change Owner7]()
+   [10mylifecell7]()
+   [11special Services on TP7]()
+   [7.1.1Billing and billing details8]()
+   [1.1IT Security requirements9]()
+
+
+   # 1.       GENERAL INFORMATION
+   New tariff for VoIP
+
+   ## 1. TIME PLAN
+   Tariff subscription \\ migration is available starting from 04.11.2020 (including).
+
+   ## 2. TARGET MARKET
+   Corporate Contract
+   Corporate Postpaid contract
+   Individual Contract
+
+
+   ## 3. TARİFF NAME
+
+   Language,CON_CRP
+   Ukrainian name,Єдина Мережа Преміум 30 Передплата
+   Russian name,Единая Сеть Премиум 30 Предоплата
+   English name,Unified Network Premium 30 Prep
+   Tariff code ,CRP_RMF_IP_PBX_FIX_30
+   ROP ,ROP_RMF_1st_IP_PBX_FIX_30
+
+
+   # 2.       SCOPE OF WORK
+   id,Job,Responsible,FRD paragraph
+   1.,Create tariff product ,ICT-CM-BSS-CSP,
+   2.,Create charging rules ,ICT-CM-BSS-CSP,
+   3.,Mapping pocket,ICT-CM-BSS-CSP,
+   4.,New services created ,ICT-CM-BSS-CSPICT-CM-BSS-CRP,
+   5.,Forbid for activation in tariff some services (according list) ,ICT-CM-BSS-CSP,
+
+
+   # 3.       CHARGING RULES
+   ## 4. LİFE CYCLE OF TARİFFS
+
+   Tariff name,Unified Network Premium 30 Prep
+   "Lifecycle (RMF_PRO, RMF_FULL, PIA, Postpaid)",RMF_FULL
+   "MF (UAH, VAT incl., PF incl.)",30 UAH
+   Prorating ,"Yes First activation and tariff plan change/ ownership transfer - prorate, rest - full"
+   Discounts.Line discount should be available for activation:LINE_DISCOUNT_1LINE_DISCOUNT_2LINE_DISCOUNT_MONTHLY_FEELineDiscount1_Omo_Personal LineDiscount1_OnNet_Personal LineDiscount1_PSTN_Personal,Yes
+   "Common discount_1,2,6",No
+   "Initial payment (UAH, VAT incl., PF incl.)",No
+   MF Payment Date,1st day of the month
+   Subscription period (days),Calendar month
+   Customer type,C
+   Contract types,CON_CRP
+   \*Resource type (attribute of tariff),PBX
+
+   \*Resource type should be added for each tariffs PBX, vPBX, FMC. Details describe on confluence:[https://confluence.dev.ict/pages/resumedraft.action?draftId=91947511&amp;draftShareId=fb3165bc-0944-4cef-94a2-4b2ffd702967&amp;](https://confluence.dev.ict/pages/resumedraft.action?draftId=91947511&amp;draftShareId=fb3165bc-0944-4cef-94a2-4b2ffd702967&amp;)
+
+
+   ## 5.         GENERAL TARİFF TABLE
+
+   Type of service (over RMF bundles),Unit,"Price per unit (UAH, VAT incl., PF incl.)",Discounts,Charging interval,"Call Setup Fee (UAH, VAT incl., PF excl.)","Comment (e.g. call drop, refill conditions, etc)"
+   MOC CUG ,60 sec,"0,01",Yes,60 sec,-,-
+   MOC Onnet,60 sec,"0,30",Yes,60 sec,-,-
+   MOC OMO ,60 sec,"0,30",Yes,60 sec,-,-
+   MOC PSTN,60 sec,"0,30",Yes,60 sec,,
+   SMS national\*,1 sms,"0,35",No,1 sms,-,-
+   CF CUG ,60 sec,"0,01",,60 sec,"0,2125",Paid monthly ONNET bundles must be used for CF. If no bundle – CSF+base tariff
+   "CF OMO, PSTN, Onnet",60 sec,"0,30",Yes,60 sec,,
+   Redirect from direct number to GSM,60 sec,0,No ,,,
+   MOC International,REVOLVER_INTERNATIONAL_NAT_BASE (UTF) CTF_REVOLVER_International_NatBase,According to [New Revolver International Logic](https://scat.sp.life.ua/product-management/services-offers/2371)
+   MMS National,\*\*None ,\*\*None ,No,,-,
+   Int. SMS,1 message,NatBase,No,,-,
+   Int. MMS,\*\*None ,\*\*None ,No,,-,
+   Roaming,\*\*None ,\*\*None ,No,,-,
+   Internet,\*\*None ,\*\*None ,No,,-,
+   \*SMS Will be provided aftre launched task 306602\*\*None -  means service is inaccessible due to IP PBX realization specificity.
+
+
+   ## 4. SUBSCRIPTION LOGIC
+   ## 6. SUBSCRİBTİON\\MİGRATİON TO TARİFFS VİA İGUANA
+
+   1. Type of customer
+   Individual
+   Corporate
+   Private Enterprise
+
+   2. Type of subscription
+   Usual
+   PBX
+   Connecting of special number (SN)
+   Number choice (NC)
+   Number choice via WEB(NCW)
+   Special number via WEB (SNW)
+   Direct number
+
+
+   3. Type of numbers(GSM or PSTN, or both) available  for subscription to tariff
+   In Billing configurations should be applied one of three attributes for the tariff
+
+   GSM_Only  (Profile name - GET_FREENUMBERS_SOLR_AND_PSTN))
+   PSTN_Only  (Profile name - GET_FREENUMBERS_SOLR_AND_PSTN))
+   GSM_PSTN (Profile name - GET_FREENUMBERS_SOLR_AND_PSTN)
+
+
+   4. Extra Fields for Subscription:
+   Additional fields that need to be shown during subscription, ownership transfer, migration Prepaid to Contract.
+   Access to common account
+   Spending limit from common account
+   Discount 1 for national traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Discount 2 for international traffic (FN_SUSPEND_BY_FRAUD ONLY)
+   Camel roaming (for CON_CRP or CON_CRP_PST tariff)
+   Discount 6 (for monthly fee)
+
+
+   Link to Infolife: https://infolife.lifecell.com.ua/pages/viewpage.action?pageId=44270401
+
+
+   ## 5. SMS notifications
+
+   NO need.
+
+
+   ## 6. interaction with services, offers and campaigns
+   In the attached file list of services which allowed and forbid for activation on the tariff.
+
+
+   ## 7. Direct number subscription
+   Direct number subscription is not allowed for these tariffs.
+
+
+   ## 8. Balance Info
+   \*121# standard rules [https://scat.sp.life.ua/search?k=121](https://scat.sp.life.ua/search?k=121)
+
+
+   ## 9. MİGRATİON
+   ### 9.1 C2C (change tariff) According Migration matrix: [Corp migration matrix](https://scat.sp.life.ua/search?k=corp%20migration%20matrix)
+   According Migration rules for PBX: [Migration rules for PBX tariffs](https://scat.sp.life.ua/search?k=Migration%20rules%20for%20PBX)
+   ### 9.2 Change Owner
+   Standard Change Owner charging rules for corporate tariffs should be applied.
+
+
+   ## 10. mylifecell
+   Non information on my.lifecell
+
+
+   ## 11. special Services on TP
+
+   7. Service “Additional lines for IP PBX FIXED 30”
+
+
+   Service name,VAS_ADD_LINE_FIX_30
+   ukr,Безномерні лінії для IP PBX Fixed 30
+   rus,Безномерные линии для IP PBX FIXED 30
+   eng,Additional lines for IP PBX FIXED 30
+
+
+   1. Service can be activated in contract level only.
+   2. Activation and deactivation available via Iguana Contarct level”Сервіси з пролонгацією”
+   3. Services should be charged from common_main and common bonus balances by formule N\*30 UAH, where N is number of additional lines defined by operator.No special provisioning required for service.
+   4. For activation service In Iguana need to feel extra field of service, indicate the number of lines.
+   ![](media/image2.png)
+   5. In case, were during a month the value in the extra field is changed (increase), then by additional lines should be charged MF immediately, after field updated.
+   Number of additional lines may be edited in Iguana and should be recorded to AdditionalDiskSpaceCount parameter of ROP_VAS_WS_FIX_30_Add_Line.
+   6. Information about activation\\deactivation service should be show in Transaction history.
+   7. Service should be added to the following permisions:
+   mod-tm-om:agreement-service:edit
+   mod-tm-om:agreement-service:order
+   mod-tm-om:agreement-service:refuse
+   mod-tm-om:agreement-service:reorder
+   mod-tm-om:agreement-service:view
+   mod-tm-om:agreement-service:view-attr
+
+   ### 1. Billing and billing details
+   Billing product details:
+   Commercial service name,Additional lines for IP PBX FIXED 30
+   Product(Service) Name,S_VAS_ADD_LINE_PBX_FIX_30
+   ROP NAME,ROP_VAS_WS_FIX_30_Add_Line
+   "Price, UAH with VAT and PF",30 UAH \* Number of lines in the field AdditionalDiskSpaceCount
+   "Subscription Period, days",monthly (autoprolongation every 1st day of calendar month)
+   "Grace, days",No
+   "Preprocessing, days(if needed)",No
+   Begin with prorating,No
+   Balances(charging priorities from top to bottom), common maincommon bonus
+
+
+   7.1.2   Service “Premium 30 pulse in Ukraine – 1 second”
+
+   Service name,VAS_PBX_FIX_30_ONE_SEC
+   ukr,Преміум 30 тарифікація&nbsp;по Україні – 1 секунда
+   rus,Премиум 30 тарификация по Украине – 1 секунда
+   eng,Premium 30 pulse in Ukraine – 1 second
+
+
+   * It is necessary to create a service that provides of seconds tarification for national traffic.
+   * Service can be activate via CMS, Iguana, Mass transactions.
+   * Service may be activate on line level.
+   * Available for activation on the tariffs CRP_PP_IP_PBX_FIX_30 and CRP_RMF_IP_PBX_FIX_30.
+   * If service is active that calls to onnet, OMO, PSTN, CUG, CF to Onnet, CF to OMO, CF to PSTN charging rules should be 1 sec pulse.
+   * Information about activation\\deactivation service should be show in Transaction history.
+   * Discounts should be applied.
+
+   CRP_RMF_IP_PBX_FIX_30 tariff table is:
+   Type of service (voice and CF),Unit,Price of the 60 sec (price includes VAT with PFT),Charging rules
+   CUG,60 sec,"0,01",1 sec pulse
+   Onnet,60 sec,"0,30",1 sec pulse
+   PSTN,60 sec,"0,30",1 sec pulse
+   OMO,60 sec,"0,30",1 sec pulse
+
+
+   ## ## IT Security requirements
+   ,,,"[use as reference at FRD, thes colums can be deleted after FRD completion]"
+   Question,Answer,Link to FRD section,Reguirements,next action,
+   Is it planned NEW transfer / CHANGE transfer of sensitive data to 3rd party? ,N,&nbsp;,Item from Security Guide: F:1-3E:1-5,N - No security involvementY - used requirements from the file,"Sensitive information includes: personal data like personal telephone number, name, surname, customer call details (CDR), location, demographic information; cardholder data like credit card info, CVV, Date of Expiration; critical telcj data like: IMEI number, web history, SMS/MMS/voice mail content "
+   Is it planned NEW show / transfer sensitive data to subscriber / client via application/site? ,N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,Security Guide for Project Managers:
+   "Is it planned CHANGE (delete/add) way of client authorization: captcha, secret word, super password, password, OTP, etc?",N,&nbsp;,Item from Security Guide: C:13-14F:1-3E:1-5A:1-5B:1-2,N - No security involvementY - used requirements from the file,![](media/image4.png)
+   Is it planned to create NEW services/application that used clients data?,N,&nbsp;,Item from Security Guide: Please check all items ,N - No security involvementY - used requirements from the file,
+   "Is it planes ADD new or change existent elements of site/application (used parameters): e.g. pages, fields, buttons that available from internet, change structure of requests (add/change/delete parameters e.g. new identification id)",N,&nbsp;,Item from Security Guide: I:all itemsJ:all itemsK:all items,N - No security involvementY - used requirements from the file,
+   Is it planned NEW integration between external resources (available from internet) and internal company resources AND new methods of integration and work will be used?,N,&nbsp;,Item from Security Guide: Please check all items,N - No security involvementY - used requirements from the file,
+
+
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/515dce7e-e071-4878-b775-f7a7d337961b" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">IP PBX UN premium FRD.docx</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-04-03 03:04:11</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">FRD</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">515dce7e-e071-4878-b775-f7a7d337961b</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="assets/voip_ritm_docs/IP%20PBX%20UN%20premium%20FRD.docx" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2">IP PBX TARIFF FIXED
+
+
+   Project Group
+   CM,Alina Demianchuk,,
+   Marketing,"Yulia Myronova, Oles Chabanovych",,
+   PI&amp;QM,Veronika Bevz,,
+   SNO-SCP,,,
+   SN-DEV,,,
+
+
+   Version,Date,Status,Who
+   1.0,14.01.09,Created ,V.Matyashovskyy
+   1.3,01.02.10,Updated,V.Matyashovskyy
+   1.4,05.02.10,Updated,V.Matyashovskyy
+   1.5,12.02.10,Updated,V.Matyashovskyy
+   1.6,17.02.10,Updated,V.Matyashovskyy
+   1.7,18.02.10,Updated,V.Matyashovskyy
+   1.8,22.02.10,Updated migration (forbidden from/to IP PBX),V.Matyashovskyy
+   1.09,04.03.10,"Updated: migration, additional line service, discount, tariff subscription",V.Matyashovskyy
+   1.10,11.03.10,Update with discount mngmnt and migration clarification,V.Matyashovskyy
+   1.11,09.03.12,COR133932_Update: price of Onnet&amp;PSTN calls. To change tariff name from CRP_PP_IP_PBX_FIXED to CRP_PP_IP_Mobile,AlinaDemianchuk
+   1.12,13.03.2012,COR132319 Created: Separate the number base while subscription for CRP_PP_IP_Mobile tariffs.,Alina Demianchuk
+   1.13,29.10.2012,COR161069_Change in price for Russia in corp segment,Viacheslav Smirnov
+   1.14,20.02.2013,COR176350 IP PBX price change,Piltyay Roman
+   1.15,20.02.2013,COR176391_international price change for corporate,Viacheslav Smirnov
+   1.16,30.05.2014,Updated: CR_COR248509_IPPBX_PBX_MF_onnet_increase_2014_v_1.1,Alina Demianchuk
+   1.17,25.08.2016,"Updated: Onnet increase from 0,20UAH to 0,30UAH;Pulse increase;",Alina Demianchuk
+   1.18,09.09.2016,Created: New service which has unit charge 1 sec instead off  60 sec.,Alina Demianchuk
+   1.19,04.01.2017,"303,717 Campaings for fixed numbers in CMS deactivation",Georgii Gurin
+   1.20,17.02.2020,309378  Short and long numbers merging (item 4),Alina Demianchuk
+   1.21,10.04.2023,[BIZ-27527 - New nat base international tariffs for B2B](https://jira.dev.ict/browse/BIZ-27527),Olena Turok
+   1.22,09.08.2023,BIZ-27390_PBX C2C migration,Alina Demianchuk
+   1.23,09.10.2023,BIZ-32497 Add links to tariffs in Iguana,Viktoriia Yurchenko
+   Changes since last version
+
+   ,Printed: [dd mm yy]
+
+
+   Document control
+
+   CONTENT
+   ########### [1GENERAL INFORMATION4]()
+   ##################### [1.1TIME PLAN4]()
+   ##################### [1.2REQUEST TYPE4]()
+   ##################### [1.3TARIFF SUMMARY4]()
+   ########### [2CHARGING RULES5]()
+   ##################### [2.1Tariff description5]()
+   ##################### [2.2Lifecycle5]()
+   ##################### [2.3Channels5]()
+   ########### [3Service provisioning7]()
+   ########### [4Additional service – VAS_SPECIAL_SIP8]()
+   ########### [5“Additional line” service9]()
+   ########### [65000 onnet minutes bundle10]()
+   ########### [7Loyalty program11]()
+   ########### [8Migration12]()
+   ############################### [C2C (change tariff) According Migration matrix: Corp migration matrix12]()
+   ##################### [8.1Direct number subscription12]()
+   ########### [9Service - charging pulse 1 sec.13]()
+   ########### [10Subscription to tariff14]()
+   ##################### [10.1discount management14]()
+   # # 1.       GENERAL INFORMATION
+   New tariff for PBX Fixed service required. Tariff should be used with PBX subscriptions only so it doesn’t make available GSM services as SMS, MMS and GPRS. PBX subscriptions may use numbers from 063/093 NDCs
+
+
+   ## 1. TIME PLAN
+   Tariff is available starting from 25.01.2010
+
+   ## 2. REQUEST TYPE
+   Small project
+
+   ## 3. TARIFF SUMMARY
+
+   Draft name,Unified Network Premium
+   English name,Unified Network Premium
+   Russian name,Единая Сеть Премиум
+   Ukrainian name,Едина Мережа Преміум
+   Tariff_name,CRP_PP_IP_PBX_FIX
+
+
+   # 2.       CHARGING RULES
+   ## 4. Tariff description
+   IP PBX Fixed tariff table is:
+   Type of service (voice and CF),Unit,Price,Charging rules
+   RMF (Postpaid discounts aren’t applied),60 sec,50,
+   CUG\*,60 sec,"0,01",60sec pulse
+   Onnet\*\*,60 sec,"0,30",60sec pulse
+   PSTN,60 sec,"0,5",60sec pulse
+   OMO,60 sec,"0,5",60sec pulse
+   Redirect from direct number to GSM,60 sec,0,-
+   MOC International,REVOLVER_INTERNATIONAL_NAT_BASE (UTF) CTF_REVOLVER_International_NatBase,According to [New Revolver International Logic](https://scat.sp.life.ua/product-management/services-offers/2371)
+   SMS within UKR,none\*,0.39,1 message
+   International SMS,none\*,1.17,1 message
+   GPRS Internet,none\*,0.001,10kb pulse
+   Wap GPRS,none\*,0.012,10kb pulse
+
+   none\* - means service is unaccessiable due to IP PBX realization specificity.
+
+   Price is difened in UAH. Stated price includes VAT without PFT.
+   PFT Should be charged from abonents additionally to price described in table above.
+   Postpaid discounts are applicable.
+
+
+   ## 5. Lifecycle
+   ,IP Mobile
+   Lifecycle,Postpaid
+   Initial payment,0
+   Customer type,C
+   Contract types,CON_CRP_PST
+
+
+   ## 6. Channels
+
+   SERVICE CHANNEL,Details
+   Iguana IUI,Migration should be available in Iguana only for separate rolesAdd linkhttps://infolife.lifecell.com.ua/pages/viewpage.action?pageId=44270399&amp;showLanguage=uk_UA
+
+   ## # 3.       Service provisioning
+
+
+   Service provisioning should be done same as for CRP_PBX_FIXEDLINE  tariff.
+   It is required to sell product/component PBX_FIXED_NETWORK_SERVICE/PBX_NWS instead GSM_Network_Service/ GSM_Network_Service
+
+
+   # 4.       Additional service – VAS_SPECIAL_SIP
+   Should be included the service VAS_SPECIAL_SIP.
+   (if VAS_SPECIAL_SIP exist at MSISDN/line level - GOLD should respong for MOC calls with tag destRoutingAdr adding prefix 3723B to OthParty. example:&lt; destRoutingAdr ton="unk" npi="isdn"&gt;3723B0938221221&lt;/destRoutingAdr)
+   Service descriptions [VAS SPECIAL SIP](https://scat.sp.life.ua/product-management/general-subscribers-rules/routing-charging/2175)
+
+
+   PROD details
+   Short number - 428
+   Long number – 380931705377
+
+
+   !!! IMPORTANT !!! PROD launch should be done only after successful test on PROD.
+
+   # 5.        “Additional line” service
+   New service on TopLevel required: “Additional line”: customer may request additional number of voice channels without MSISDN for 50UAH per month for one line - İnclude VAT and Include PF.
+   Service should charge N\*50UAH every month, where N is number of additional lines defined by operator.
+   No special provisioning required for service.
+
+   Service name is: “Безномерні лінії для IP PBX Fixed”
+   Service may be activated on contract level via «Контракт» - «Послуги». Product VAS_ADD_LINE should be sold to TopLevel for service activation.
+   Number of additional lines may be edited in Iguana and should be recorded to AdditionalDiskSpaceCount parameter of ROP_VAS_WS_Add_Line. Number of additional lines is positive integer.
+
+   # 6.       5000 onnet minutes bundle
+   Should be created bundle which gives 5000 min of onnet minutes (excluding corporate group) with price 20 kop/min (including VAT, excl. PF). Validity – calendar month (valid till the end of calendar month. Bundle can be activated via Iguana only (Services section) and should has autoprolongation.
+   Iguana name:
+   UKR,5000 хвилин в мережі
+   RUS,5000 минут в сети
+   ENG,5000 minutes to onnet
+
+   Charging intervals remain unchanged: PSTN bundle (city-city) as well as overbundle 1 second interval, the rest 30 seconds interval.
+
+   # 7.       Loyalty program
+   Tariff is participant of Loyalty program.
+
+   # 8.       Migration
+
+   ### C2C (change tariff) According Migration matrix: [Corp migration matrix](https://scat.sp.life.ua/search?k=corp%20migration%20matrix)
+   According Migration rules for PBX: [Migration rules for PBX tariffs](https://scat.sp.life.ua/search?k=Migration%20rules%20for%20PBX)
+
+
+   р2с  - (No)   migration from prepaid impossibe
+   с2с  - (Yes) ownership transfer is allowed.Tariff may be changed during ownership transfer according OWT matrix
+   с2р  - (No)   migration to prepaid is impossible
+
+
+   ## 7. Direct number subscription
+   Tariff name,Contract type,Is new,Is gold,Price
+   FIXED_PP,CON_CRP_PST,Y,Y,50
+   FIXED_PP,CON_CRP_PST,Y,N,100
+   FIXED_PP,CON_CRP_PST,N,Y,50
+   FIXED_PP,CON_CRP_PST,N,N,100
+
+
+   Do not calculate incoming calls to direct number in billing OPSC GOLD.
+   (This traffic will be calculated in interconnect billing).
+
+
+   # 9.       Service - charging pulse 1 sec.
+   It is necessary to create a service that provides of seconds tarification for national traffic.
+   Activation/DEactivation of service S_VAS_PBX_FIX_ONE_SEC is available via CMS only.
+   Service may be activate on line level
+   If service is active that calls to onnet, OMO, PSTN, CUG, CF to Onnet, CF to OMO, CF to PSTN charging rules should be 1 sec pulse.
+
+   IP PBX Fixed tariff table is:
+   Type of service (voice and CF),Unit,Price of the 60 sec,Charging rules
+   CUG\*,60 sec,"0,01",1 sec pulse
+   Onnet\*\*,60 sec,"0,30",1 sec pulse
+   PSTN,60 sec,"0,5",1 sec pulse
+   OMO,60 sec,"0,5",1 sec pulse
+
+
+   Price is difened in UAH. Stated price includes VAT without PFT.
+   PFT Should be charged from abonents additionally to price described in table above.
+   Postpaid discounts are applicable.
+
+   State of service should be show in IguanaServices. Service should not be available for activate via Iguana.
+   Name of service:
+
+   Service name,VAS_PBX_FIX_ONE_SEC
+   ukr,Інтервал тарифікації &nbsp;по Україні – 1 секунда
+   rus,Интервал тарификации по Украине – 1 секунда
+   eng,Charging pulse in Ukraine – 1 second
+
+
+   TH record for service S_ VAS_PBX_FIX_ONE_SEC activation:
+   TH Code,NAME_EN,NAME_UA,NAME_RU
+   108892,«Charging pulse in Ukraine – 1 second» service activation,Активація послуги  «Інтервал тарифікації по Україні – 1 секунда»,Активация услуги  «Интервал тарификации по Украине – 1 секунда»
+
+
+   TH record for service S_ VAS_PBX_FIX_ONE_SEC DEactivation:
+   TH Code,NAME_EN,NAME_UA,NAME_RU
+   108893,«Charging pulse in Ukraine – 1 second» service deactivation,Деактивація послуги  «Інтервал тарифікації по Україні – 1 секунда»,Деактивация услуги  «Интервал тарификации по Украине – 1 секунда»
+
+
+   # 10.       Subscription to tariff
+
+   Subscription to tariff differs from regular GSM subscription:
+
+   * There should be no field for SIM number
+   Check:
+   * MSISDN is not checked for 38063\*/38093\* pattern.
+   * For tariff CRP_PP_IP_Mobile should be available for subscription only 093 numbers
+   * MSISDN should be defined as PBX in SimStock
+   * MSISDN field should allow search with filter (similar to search of TDMA number in direct number subscription).
+   * MSISDN state – Installed
+   * It is required to implement in Iguana Interface for subscription the Additional lines on contract:
+   * Subscription should be available on Contract-&gt;Services(послуги) screen
+   * Subscription screen template:
+   * Subscription parameters: additional lines amount
+   * Check for correct input (should be positive integer type)
+
+   ## 8. discount management
+   Upon subscription – to provide ability to setup discount. The service should be available for  CRP_PP_IP_Mobile category.
+
+   Upon migration – to provide ability to setup discount. The service should be available for CRP_PP_IP_Mobile category.
+
+
+   </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bordered bg-base-300 shadow-lg shadow-neutral-700">
+                        <div class="card-body p-3">
+                            <div class="card-actions justify-end absolute right-4">
+                                <div class="tooltip tooltip-warning" data-tip="Delete document">
+                                    <button hx-delete="/api/vdb/v1/objects/b3d7fbf0-f1de-4609-8073-82a8132123c9" class="bg-red-500 btn btn-xs btn-outline">🚽</button>
+                                </div>
+                            </div>
+                            <div class="card-title max-w-lg mr-20">
+                                <span class="text-sm truncate">Єдина мережа FMC</span>
+                                <div class="relative group">
+                                    <button class="relative z-10 mb-2 middle none center rounded-lg bg-gradient-to-tr from-black-200 to-red-400 p-1 hover:scale-125 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85]">💡</button>
+
+                                    <div class="absolute invisible delay-100 duration-300 ease-in-out group-hover:-top-[6rem] group-hover:scale-110 group-hover:visible -top-20 left-10 scale-0 text-xs transform transition-all w-72 z-30">
+                                        <div class="chat-start">
+                                            <div class="chat-bubble p-1 bg-gradient-to-tr from-secondary/25">
+                                                <div class="overflow-x-auto shadow-md">
+                                                    <table class="table table-xs">
+                                                        <tbody class="font-bold">
+                                                            <tr class="border-0">
+                                                                <td>Time Creation</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning">2024-04-03 03:04:11</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>DateUpdate</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-warning"></td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>ChunkNo</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-error">0</td>
+                                                            </tr>
+                                                            <tr class="border-0">
+                                                                <td>Category</td>
+                                                                <td class="text-xs font-normal badge badge-xs badge-success">WEB</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge badge-secondary">b3d7fbf0-f1de-4609-8073-82a8132123c9</div>
+                            <div class="card-actions justify-end" hidden="">
+                                <a href="https://lifecell.ua/uk/malii-biznes-lifecell/servisi/yedina-merezha-fmc/" class="btn btn-primary">View Document</a>
+                            </div>
+                            <div class="collapse collapse-arrow mt-8 bg-base-200 grid-cols-1">
+                                <input type="checkbox" class="peer">
+                                <div class="collapse-title bg-accent text-primary-content peer-checked:bg-purple-600 peer-checked:text-secondary-content">Click me to show/hide content</div>
+                                <div class="collapse-content p-1 text-xs peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                                    <span class="copy-button absolute right-4 top-20 cursor-pointer text-2xl transform transition-all z-10">
+                                        <div class="tooltip tooltip-secondary duration-100 ease-in hover:-translate-x-1 hover:-translate-y-1 hover:scale-125" data-tip="Copy!">📋</div>
+                                    </span>
+
+                                    <div class="-mb-3 p-2 max-h-72 overflow-auto bg-gradient-to-r bg-secondary/50 rounded-lg">
+                                        <pre><code class="m-2"># Єдина мережа FMC
+
+   Об'єднайте комунікації всіх офісів, мобільних та фіксованих телефонів співробітників вашої компанії у єдину корпоративну мережу з загальною короткою нумерацією
+   2200грн
+        / місяць
+    Як замовити(#!/order-form/)
+
+      | Об’єднання мережі Об'єднання                                                                                             |  | Коротка нумерація Короткі
+      | територіально розподілених                                                                                               |  | номери  для дзвінків з
+      | об’єктів компанії в єдину                                                                                                |  | мобільних та фіксованих
+      | телефонну мережу                                                                                                         |  | телефонів співробітників
+   ---+--------------------------------------------------------------------------------------------------------------------------+--+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      | Інтеграція існуючого обладнання Інтеграція усіх існуючих відомчих станцій в єдину телефонну мережу без заміни обладнання |  | Інтелектуальні функції Інтелектуальна обробка дзвінків (запис, контроль якості відповіді співробітників, статистичні звіти) та гнучка переадресація на GSM-лінії
+      | Економія Дзвінки між співробітниками за 0,01 грн/хв                                                                      |  |
+
+    опис(#!/tariff-description/)
+    Як підключитись(#!/order-form/)
+     Тарифні плани
+   ---------------------------------------------------------------
+
+     Вартість підключення, грн
+     Лінії в сервісі, шт
+     Щомісячна плата, грн
+     Пакет хвилин на всі напрямки, включений до щомісячної плати
+     Щомісячна плата за додаткову лінію
+
+   Повні умови
+   *Тарифи наведено у гривнях з урахуванням ПДВ та ПФ. Для отримання послуги «Єдина мережа FMC» необхідно одночасно підключити тарифний план Єдина мережа FMC mobile та Єдина мережа FMC VoIP.
+   Умови надання послуги наведено станом на 15.12.2017 р. Оператор залишає за собою право встановлювати та змінювати тарифні плани, тарифи на свої послуги, їх перелік та умови надання відповідно до Закону України «Про електронні комунікації». Детальна інформація про покриття, тарифи, тарифні плани, стандартні тарифи понад пакети послуг, умови надання послуг, їх можливі зміни, тарифікацію та інше: lifecell.ua, 0 800 20 5433 (безкоштовно у межах України), 5433 (безкоштовно в мережі lifecell), або пункти продажу lifecell. ТОВ «лайфселл». 03110, м. Київ, вул. Солом’янська, 11, літера «А», коди мережі 063, 073 та 093</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <script>
+                    $('.copy-button').click(function () {
+                        console.debug('copying', $(this));
+
+                        var collapseDiv = $(this).closest('.collapse-content');
+
+
+                        var code = collapseDiv.find('code')[0];
+
+
+                        var range = document.createRange();
+                        range.selectNodeContents(code);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(range);
+
+
+                        document.execCommand('copy');
+
+
+                        window.getSelection().removeAllRanges();
+
+                        $(this).text('✅')
+                        setTimeout(() => {
+                            $(this).text('📋')
+                        }, 500);
+
+                    });
+                </script>
+            </div>
+        </section>
+    </div>
+
+    <script>
+
+        $(document).on({
+            'htmx:configRequest': function (e) {
+                if (e.detail.path.includes("/suggest")) {
+                    e.detail.parameters.limit = $("#limit").val();
+                }
+            }
+        });
+    </script>
+
+    <script>
+        const form = document.getElementById("uploadForm");
+        let deg = 0;
+        function rotForm() {
+            setInterval(() => {
+                deg += 20;
+                form.style.transform = `rotate(${deg}deg)`;
+            }, 20);
+        }
+        setTimeout(() => {
+            document.getElementById("response").classList.add('hidden')
+
+        }, 2000);
+
+        document.body.addEventListener("htmx:responseError", function (evt) {
+            console.log("RESPONSE ERROR!!!", evt);
+            if (evt.detail.xhr.status === 401) {
+                window.location.href = "/login";
+            }
+            if (evt.detail.target.id === "chat-msg") {
+                processErr(evt);
+            }
+        });
+
+        function processErr(evt) {
+            $("#chat-msg .chat-end:last").remove();
+            const errAlert = document.createElement("div");
+            errAlert.classList.add("flex", "justify-center");
+            errAlert.innerHTML = `
+         <div class="bg-red-100 text-red-700 border border-red-700 rounded px-4 py-3 leading-normal mb-4">
+           Error sending message! HTTP Status: ${evt.detail.xhr.status}
+         </div>`;
+            evt.detail.target.appendChild(errAlert);
+            setTimeout(() => {
+                evt.detail.target.removeChild(errAlert);
+            }, 3000);
+        }
+    </script>
+    <script>
+        function scrollToElement(selector) {
+            const id = $(selector).find('span').last().text()
+            element = $('div.badge.badge-secondary').filter(function () { return $(this).text() == id })
+            console.log(`scrolling to ${id}`, element)
+            if (element) {
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 100
+                }, 1000);
+            }
+        }
+
+        $(document).on({
+            'htmx:afterRequest': function (e) {
+                console.log('afterRequest>>>>', e);
+                $("#spinner").addClass('hidden');
+                $("#data-container>div.card").filter(function () {
+                    $(this).removeClass('skeleton');
+                });
+
+                console.log(`path: ${e.detail.requestConfig.path}\ntrigger: ${e.detail.requestConfig.headers["HX-Trigger"]}\ntarget: ${e.detail.requestConfig.headers["HX-Target"]}\nresponse: ${e.detail.xhr.responseText}\ntargetEl: ${e.detail.target}`)
+                if (e.detail.requestConfig.path.includes("suggest")) {
+                    if (e.detail.xhr.status != 200) {
+                        $("#results").html('ERROR');
+                    }
+
+                    console.log('suggestProcess()');
+                    searchResultsProcess(e.detail.xhr.responseText);
+                }
+            },
+            'htmx:afterOnLoad': function (e) {
+                console.log('afterOnLoad>>>>>', e);
+            },
+            'htmx:afterSwap': function () {
+                console.log('afterSwap');
+            },
+            'htmx:beforeRequest': function (e) {
+                console.log('beforeRequest ------>', e);
+                if (e.detail.requestConfig.path != "/search") {
+                    $("#spinner").removeClass('hidden');
+                }
+
+                $("#data-container div.card").filter(function () {
+                    $(this).addClass('skeleton');
+                });
+            },
+            'htmx:beforeSwap': function (e) {
+                console.log('beforeSwap>>>>>>>>', e);
+            },
+            'htmx:configRequest': function (e) {
+                console.log('configRequest! DETAILS:>>>>', e.detail);
+                if (e.detail.path == "/search") {
+                    const formSubm = e.detail.elt;
+                    console.log('configRequest! ELEM:>>>>', formSubm);
+                    const formSubmData = {
+                        searchText: formSubm.searchText.value,
+                        fields: Array.from(formSubm.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.name),
+                        searchFields: [formSubm.searchFields.value],
+                        sort: JSON.parse(formSubm.sort.value || "{}"),
+                        limit: parseInt(formSubm.limit.value, 10)
+                    };
+
+                    console.log('parameters:', formSubmData);
+                    e.detail.parameters = formSubmData;
+                    e.detail.requestConfig.parameters = formSubmData;
+                }
+            },
+        });
+
+        let testJsonData = [
+            { "title": "FMC FAQ", "_additional": { "id": "7ae53ce2-d3e2-4990-b403-0f1db1acdb69" } },
+            { "title": "F.A.Q.", "_additional": { "id": "9f8c554c-0ad9-4ede-97db-dc3c739e9bce" } },
+            { "title": "SIP помилки", "_additional": { "id": "2d75b504-a09d-4273-849f-b6291c3c0b56" } }
+        ];
+        function searchResultsProcess(jsonStr) {
+            jsonData = JSON.parse(jsonStr);
+
+            let htmlString = '<ul>';
+            jsonData.map(item => {
+                htmlString += `<li onclick="scrollToElement(this)" class="hover:border-l-8 hover:p-1 border-accent cursor-pointer"><span class="text-md text-extrabold">${item.title}</span> <span class="badge badge-secondary">${item._additional.id}</span></li>`;
+            });
+            $('#results').html(htmlString + '</ul>');
+        }
+
+        $('#scrollToTop').click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#filer-weaviate-results").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#docs>div.card").filter(function () {
+                    isToogle = $(this).text().toLowerCase().indexOf(value) > -1;
+                    console.trace($(this)[0], " > find[" + value + "]>> ", isToogle);
+                    if (isToogle) {
+                        $(this).slideDown(500, 'swing');
+                    } else {
+                        $(this).slideUp(500, 'swing');
+                    }
+                });
+            });
+
+            $('#menuItem2').on('click', function () {
+                $(this).text(function (index, currentvalue) {
+                    console.debug('index:', index, 'currentvalue:', currentvalue)
+                    if (currentvalue === '📄') {
+                        $("#upform").slideDown();
+                        return '❌';
+                    } else {
+                        $("#upform").slideUp();
+                        return '📄';
+                    }
+                })
+            });
+        });
+    </script>
+    <script src="js/app.js"></script>
+    <script defer="defer" src="js/htmx.js"></script>
+    <script src="js/typing_words.js"></script>
+    <script defer="defer">const pt_AWI = "AI Web Interface";
+
+        const pageTitle = "";
+        var es = null;
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(`Document ready! pageTitle=${pageTitle}`);
+            userAuthCheck(es);
+            sideBar();
+            controlTextArea();
+            addListener_btn_send();
+            if (pageTitle == pt_AWI) {
+                InitSTT();
+            }
+        })</script>
+    <script defer="defer" src="dist/json-enc.js"></script>
+</body>
+
+</html>

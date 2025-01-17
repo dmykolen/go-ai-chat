@@ -1,0 +1,28 @@
+<div class="flex flex-col items-center justify-center min-h-screen backdrop-grayscale">
+  <!-- Error Content -->
+  <div class="bg-base-300/70 border-2 rounded-md p-2 relative text-center">
+    <div class="flex justify-center animate-pulse opacity-10">
+      <img src="img/gifs/woman_shrugging.gif">
+    </div>
+    <h1 class="text-6xl font-extrabold mb-4">
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-red-700 animate-gradient">
+        {{.Title}}
+      </span>
+    </h1>
+    <p class="text-4xl mb-6 text-base-content">
+      {{.ErrorMessage}}
+    </p>
+    <!-- Optional Error Code -->
+    {{if .ErrorCode}}
+    <p class="text-lg text-slate-300/80 mb-4">Error Code: {{.ErrorCode}}</p>
+    {{end}}
+    <!-- Action Buttons -->
+    <div class="flex flex-row justify-center gap-4">
+      <a href="/" class="btn btn-primary btn-outline">HOME</a>
+      <a href="javascript:history.back()" class="btn btn-error btn-outline">BACK</a>
+    </div>
+  </div>
+</div>
+<script>
+  let inputObject = {{.}}
+</script>

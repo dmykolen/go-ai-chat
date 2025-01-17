@@ -1,0 +1,104 @@
+
+@host = https://localhost
+@port = 7558
+@appjs = Content-Type: application/json
+@uname = {{$processEnv USER}}
+@pass = {{$processEnv MY_PASSWORD}}
+@urlBase = {{host}}:{{port}}
+@urlBaseApi = {{host}}:{{port}}/api/v1
+@urlBaseApi2 = {{host}}:{{port}}/api/v2
+@FE = {{host}}:{{port}}/fe
+@FE2 = {{host}}:{{port}}/fe/v2
+
+
+####
+# @name login
+
+POST {{urlBase}}/login
+{{appjs}}
+
+{"login":"{{uname}}","password":"{{pass}}"}
+
+####
+# @name ANNOUNCE
+
+POST {{urlBase}}/announce
+{{appjs}}
+
+{"announce":"HI all users!!!"}
+
+####
+# @name Chat
+
+GET {{urlBase}}/fe/users/dmykolen/chats/cd54ff58-fcda-4509-8540-26d2955f9241
+Content-Type: text/html
+Accept: text/html
+
+####
+# @name get_user_info
+
+GET {{urlBaseApi}}/users/{{uname}}
+
+####
+# @name get_users_chats_shortinfo
+
+GET {{urlBaseApi}}/users/{{uname}}/chats/shortinfo
+
+####
+# @name get_user_info_with_chats
+
+GET {{urlBaseApi}}/users/{{uname}}?with_chats=true
+
+
+####
+# @name get_user_chats_full
+
+GET {{urlBaseApi}}/users/chats/{{uname}}
+
+####
+# @name get_user_chats
+
+GET {{urlBaseApi}}/users/chats/{{uname}}?type=UUID_ONLY
+
+
+####
+# @name get_chats_full
+
+GET {{urlBaseApi2}}/chats
+
+####
+# @name get_chat_by_uuid
+
+@uuid = 937bcc28-abcc-42e1-92a1-0000000
+
+GET {{urlBaseApi2}}/chats/{{uuid}}
+
+####
+# @name get_
+
+GET {{urlBaseApi2}}/users/dmykolen/chats/{{uuid}}
+
+
+####
+# @name get_
+
+# GET {{FE}}/users/dmykolen/chats/{{uuid}}
+GET {{FE2}}/users/dmykolen/chats/{{uuid}}
+
+
+####
+# @name get_appStoreUsers
+
+GET {{urlBaseApi2}}/app/store/users
+
+
+# /api/v1/users/dmykolen/chats/shortinfo
+
+
+####
+# @name Rate
+
+POST {{urlBaseApi}}/rate
+{{appjs}}
+
+{"chatID":"937bcc28-abcc-42e1-92a1-0000000","chatRating":5,"chatIdx":3}

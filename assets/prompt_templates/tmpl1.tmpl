@@ -1,0 +1,42 @@
+{{define "dialogueFormatPrompt"}}
+Format the following dialogue. Make sure this format ensures that each speaker’s lines are clearly marked, improving readability and understanding of the conversation.
+
+"""
+{{.Content}}
+"""
+{{end}}
+
+// ---------------------------------------------------------------
+
+{{define "askWithContentPrompt"}}
+CONTEXT:
+{{range .Documents}}
+* DOCUMENT_NAME: {{.Name}}
+* DOCUMEnT_LINK: {{.Reference}}
+* CONTENT:
+"""
+{{.Content}}
+"""
+--------------------
+{{- end}}
+
+USER QUESTION:
+{{.UserQuestion}}
+{{end}}
+
+
+{{define "PromptWithKnowledgeItems"}}
+CONTEXT:
+{{range .Documents}}
+* DOCUMENT_NAME: {{.Title}}
+* DOCUMEnT_LINK: {{.URL}}
+* CONTENT:
+"""
+{{.Content}}
+"""
+--------------------
+{{- end}}
+
+USER QUESTION:
+{{.UserQuestion}}
+{{end}}

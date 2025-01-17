@@ -1,0 +1,36 @@
+Description:
+
+SqlRunner is a tool designed to execute SQL queries on an Oracle database. It takes a JSON object as input, which must contain a single required field: sqlQuery. The sqlQuery field should hold a valid SQL query string.
+
+Requirements:
+ - Input Format: JSON object
+ - Required Field: sqlQuery (string)
+
+Example Input:{"sqlQuery": "SELECT * FROM employees WHERE department_id = 10"}
+
+Detailed Steps for Usage:
+
+1. Formulate a SQL Query: Based on the user’s natural language query and the context of the database structure, the LLM should generate an appropriate SQL query.
+2. Create JSON Object: Wrap the SQL query in a JSON object with the key sqlQuery.
+3. Call SqlRunner: Pass the JSON object to SqlRunner to execute the SQL query.
+
+Important Notes:
+
+ - Ensure that the SQL query is valid and conforms to the syntax rules of Oracle SQL.
+ - SqlRunner will execute the query as-is, so the LLM must generate accurate and safe SQL queries.
+ - Handle potential SQL injection risks by properly sanitizing and validating user input before forming the SQL query.
+ - The SqlRunner tool should be used to execute SQL queries on the database only when the user explicitly asks to get data from the database. If the user query is about how to obtain data or generate SQL queries without requesting actual data retrieval, the LLM should generate the SQL query but not call the SqlRunner tool.
+
+--------
+--------
+
+
+
+SqlRunner is a tool designed to execute SQL queries on an Oracle database. It takes a JSON object as input, which must contain a single required field: sqlQuery. The sqlQuery field should hold a valid SQL query string.
+
+Requirements:
+- Input Format: JSON object
+- Required Field: sqlQuery (string) // valid SQL query
+
+Example Input: {"sqlQuery": "valid SQL query that conforms to the syntax rules of Oracle SQL"}
+

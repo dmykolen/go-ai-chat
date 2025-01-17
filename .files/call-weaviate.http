@@ -1,0 +1,76 @@
+@host = http://localhost
+@port = 8082
+# @port = 8083
+@ct_json = Content-Type: application/json
+
+@urlWv = {{host}}:{{port}}
+@class_name = KnowledgeBase
+
+# @name  ENDPOINTS
+GET {{urlWv}}/v1/
+###################################
+# @name SCHEMA
+GET {{urlWv}}/v1/schema
+###################################
+# @name Collection/ClassInfo
+GET {{urlWv}}/v1/schema/{{class_name}}
+
+# Shards
+###
+# @name Shards_status
+
+GET {{urlWv}}/v1/schema/{{class_name}}/shards
+
+###
+# @name Shards_status_UPDATE
+
+@shardName = BRiG2bdqjL20
+
+PUT {{urlWv}}/v1/schema/{{class_name}}/shards/{{shardName}}
+
+{
+  "status": "READY"
+}
+
+
+# OBJECTS
+###
+# @name OBJECTS_LIST
+
+@limit = limit=10
+@include=include=classification,vector,interpretation,featureProjection
+@vectors=include=vector
+# GET {{urlWv}}/v1/objects?class={{class_name}}&{{limit}}
+GET {{urlWv}}/v1/objects?class={{class_name}}&{{limit}}&{{vectors}}
+
+###
+# @name OBJECT
+
+# @vectors=include=vector
+@id = 8ad084b9-7a8a-4c93-91ff-33ac1d1c1273
+GET {{urlWv}}/v1/objects/{{class_name}}/{{id}}?{{vectors}}
+
+###
+# @name OBJECT_DELETE
+
+DELETE {{urlWv}}/v1/objects/{{class_name}}/{{id}}
+
+###
+
+POST http://127.0.0.1:8080/v1/graphql
+Content-Type: application/json
+
+{ Aggregate { <ClassName> { meta { count } } } }
+
+###
+
+###
+
+###
+
+###
+
+###
+
+###
+

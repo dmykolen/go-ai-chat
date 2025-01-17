@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Переглянути джерело</title>
+    <link rel="canonical" href="/pages/viewpage.action?pageId=$action.page.id" />
+    <script>
+        window.WRM = window.WRM || {}; window.WRM._unparsedData = window.WRM._unparsedData || {}; window.WRM._unparsedErrors = window.WRM._unparsedErrors || {};
+        WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"] = "\u0022\u0022";
+        if (window.WRM._dataArrived) window.WRM._dataArrived();</script>
+    <link rel="stylesheet" href="/s/6791444873ef52021f56747e3d0f89b6-CDN/-upthzq/9012/1v6tx9j/996e61794520e1cafa5260df1da7d02e/_/download/contextbatch/css/_super/batch.css" data-wrm-key="_super" data-wrm-batch-type="context" media="all">
+    <link rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/-upthzq/9012/1v6tx9j/8f65c7543e74e502d4e2f4fab8e52ab3/_/download/contextbatch/css/plugin.viewsource,-_super/batch.css" data-wrm-key="plugin.viewsource,-_super" data-wrm-batch-type="context" media="all">
+    <link rel="stylesheet" href="/s/ab35df11132ed22326fbba14629016a1-CDN/-upthzq/9012/1v6tx9j/af805d6eba6ffdfc25655262fb3547ec/_/download/contextbatch/css/page,-_super/batch.css?cefp_collab_enabled=true&amp;cefp_ed_perm=false&amp;cefp_is_admin=false&amp;gatekeeper-ui-v2=true" data-wrm-key="page,-_super" data-wrm-batch-type="context" media="all">
+    <link rel="stylesheet" href="/s/0620af42811b05f6569f5e9b678620a8-CDN/-upthzq/9012/1v6tx9j/dadefc023f0dbc6a1d9e66922e94caa9/_/download/contextbatch/css/editor-content,-_super/batch.css" data-wrm-key="editor-content,-_super" data-wrm-batch-type="context" media="all">
+    <link rel="stylesheet" href="/s/-upthzq/9012/1v6tx9j/37/_/styles/colors.css" media="all">
+    <link rel="stylesheet" href="/s/-upthzq/9012/1v6tx9j/37/_/styles/custom.css" media="all">
+
+</head>
+
+<body class="mceContentBody aui-theme-default wiki-content fullsize">
+    <p>&nbsp;</p>
+    <p class="auto-cursor-target"><br /></p>
+    <div>
+        <h1>FAQ</h1>
+        <code>
+                <p>Ви можете знайти відповіді на найбільш поширені питання в цьому розділі.</p>
+                <span>go run main.go</span>
+            </code>
+        <p>After CODE</p>
+    </div>
+    <table class="wrapped confluenceTable">
+        <colgroup>
+            <col />
+            <col />
+        </colgroup>
+        <tbody>
+            <tr>
+                <th class="confluenceTh">Питання</th>
+                <th class="confluenceTh">Відповіді</th>
+            </tr>
+            <tr>
+                <td class="confluenceTd"><span>Що означає помилка <br />409 Not enough money?<br /></span></td>
+                <td class="confluenceTd">
+                    <p>Ця помилка вказує, що на балансах номера та контракта закінчились гроші. Всі баланси ви можете перевірити через <a href="https://my.lifecell.ua">https://my.lifecell.ua</a>.<br />Вам необхідно поповнити рахунок чи звернутись до свого менеджера для підвищення кредитного ліміту. Звертатися до технічної підтримки не потрібно.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p><span>Чи можна використовувати SIPS URI?</span></p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Ми не підтримуємо схему SIPS URI, тільки SIP URI TLS.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p><span>Які є особливості налаштування FreePBX?</span></p>
+                </td>
+                <td class="confluenceTd">
+                    <p>FreePBX не зберігає зміни в стандартному файлі налаштувань sip.conf.<br />Щоб це обійти пропишіть кастомні конфігурації з налаштування TLS в файлі sip_general_custom.conf.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p><span>Які є особливості налаштування 3СХ?</span></p>
+                    <p><span><br /></span></p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Використовуєте версію програми 3CX v16 Update 3.<br />Налаштування:<br />1. В параметрах SIP-транка з'явилась нова опція «Transport Protocol». Для підключення TLS-транка вкажіть TLS (Transport Layer Security) та завантажте на сервер сертифікат безпеки (.pem), який надає SIP-оператор. Теперь всі SIP-пакети між АТС та провайдером будут зашифровані.<br />2. Рівень сумісності протокола TLS. В розділі «Settings» &gt; «Security» з'явився новий параметр «Enable PCI compliance SSL/SecureSIP Transport and Ciphers», який встановлює режим сервера в TLS v1.2 (та виключає сумісність с TLS v1.0). Зверніть увагу, що TLS v1.2 не сумісний з деякими застарілими SIP-пристроями.<br />3. Оновлення SSL-сертифіката без перезапуску. Раніше при оновленні SSL-сертифіката (Let's Encrypt) для FQDN сервера від компанії 3CX, АТС перезапускала веб-сервіс. При цьому переривалися всі поточні виклики. Тепер АТС просто ініціалізує новий сертифікат без рестарту nginx.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Як перевірити сертификат а Asterisk?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p><span style="color: rgb(0,0,0);">echo &quot;x&quot; | openssl s_client -connect 127.0.0.1:5061 -tls1</span><br /><span style="color: rgb(0,0,0);">echo &quot;x&quot; | openssl s_client -connect 212.58.160.196:5061 -tls1</span></p>
+                    <p>5061 - вказуйте порт залежно від типу підключення</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Чи можливо відключити IVR повідомлення &quot;Абонент поза мережею&quot;?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Ні.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Як змінити чи додати нову IP адресу чи тип підключення?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Будь ласка, зверніться до вашого менеджера.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Як довго займає додання/зміна IP адреси?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>До 1 тижня.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Чи можна підключити приховання номеру?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Так. Для цього зверніться до свого менеджера, який активує послугу.<br />Після активаціі при дзвінках вказуйте заголовок X-num-hide зі значенням 1.<br />Наприклад, для Asterisk: exten =&gt; _X.,1,SipAddHeader(X-num-hide: 1)</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Чи можна зробити підміну caller id?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Ні. Підміна caller id заборонена законодавством України.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Які правила оплати рахунку на контракті Постпейд?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Для постпейд контракту необхідно оплатити 95% від рахунку за попередній місяць до 25 числа включно поточного місяця та 100% від рахунку за попередній місяць до останнього календарного дня поточного місяця. Інакше послуги будуть заблоковані.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Що перевірити якщо не чутно звук?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Якщо ви не чуєте звук під час дзвінків, будь ласка, перевірте, що з вашої сторони відкрито доступ для IP адрес, через які йде медіа поток 212.58.160.197, 212.58.160.198, діапазон портів 10000-65535.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="confluenceTd">
+                    <p>Не проходить голос з двох сторін, що робити?</p>
+                </td>
+                <td class="confluenceTd">
+                    <p>Перевірити налаштування Content-Type.<br />Правильні налаштування Content-Type: application/sdp<br />Налаштування типу Content-Type: multipart/mixed;boundary=uniqueBoundary призводять до проблем з передачею голоса.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="auto-cursor-target"><br /></p>
+    <p class="auto-cursor-target"><br /></p>
+    <p>&nbsp;</p>
+</body>
+
+</html>

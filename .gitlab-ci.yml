@@ -1,0 +1,5 @@
+include:
+  - project: 'infrastructure/gitlab-ci-global'
+    ref: master
+    file: 'golang/go-ai-ci.yml'
+

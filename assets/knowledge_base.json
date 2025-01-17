@@ -1,0 +1,82 @@
+{
+    "class": "KnowledgeBase",
+    "description": "Source of knowledge",
+    "moduleConfig": {
+        "text2vec-openai": {
+            "model": "text-embedding-3-large",
+            "dimensions": 3072,
+            "type": "text"
+        },
+        "vectorizeClassName": true,
+        "vectorizePropertyName": {
+            "title": true
+        }
+    },
+    "vectorizer": "text2vec-openai",
+    "properties": [
+        {
+            "name": "title",
+            "dataType": [
+                "text"
+            ],
+            "description": "Document name"
+        },
+        {
+            "name": "chunkNo",
+            "dataType": [
+                "int"
+            ],
+            "description": "Document chunk number"
+        },
+        {
+            "name": "content",
+            "dataType": [
+                "text"
+            ],
+            "description": "Document content"
+        },
+        {
+            "name": "url",
+            "dataType": [
+                "text"
+            ],
+            "description": "Document URL",
+            "moduleConfig": {
+                "text2vec-openai": {
+                    "skip": true
+                }
+            }
+        },
+        {
+            "name": "category",
+            "dataType": [
+                "text"
+            ],
+            "description": "Document category: CONFLUENCE, FRD, etc."
+        },
+        {
+            "name": "summary",
+            "dataType": [
+                "text"
+            ],
+            "description": "Document summary (extracted from content)",
+            "moduleConfig": {
+                "text2vec-openai": {
+                    "skip": true
+                }
+            }
+        },
+        {
+            "name": "keywords",
+            "dataType": [
+                "text"
+            ],
+            "description": "Document keywords",
+            "moduleConfig": {
+                "text2vec-openai": {
+                    "skip": true
+                }
+            }
+        }
+    ]
+}

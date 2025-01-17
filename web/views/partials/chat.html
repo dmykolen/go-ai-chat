@@ -1,0 +1,81 @@
+<!-- {
+"code": 200,
+"message": "OK",
+"data": {
+"id": "cd54ff58-fcda-4509-8540-26d2955f9241",
+"name": "",
+"createdTime": 1712843315341,
+"messages": [
+{
+"role": "system",
+"content": "You will be provided with a document delimited by triple quotes and a question. Your task is to answer the question using the provided document. If the document does not contain the information needed to answer this question then simply write: \"Insufficient information.\""
+},
+{
+"role": "user",
+"content": "\"\"\"# Налаштування SipDroid (OC Android)\n\nДодаткову документацію по SipDroid можна знайти за посиланням(http://www.sipdroid.org/).\nСпочатку необхідно створити нові SIP налаштування.\n\n\nAuthorization Username: вказуємо номер тільки у форматі \"380...\". Вказуємо пароль, який ви отримали при підписанні контракту. Якщо номер використовує \"Авторизацію за IP адресою\", то вказуємо будь-яке значення. В полі Server вказуємо сервер csbc.lifecell.ua та порт залежно від типу підключення. Обираємо протокол TLS.\n\n\nВ аудіо кодеках обраємо тільки кодеки PCMU та PCMA.\n\"\"\"\n\nQuestion: Why i got 401 error?"
+},
+{
+"role": "assistant",
+"content": "Insufficient information."
+}
+]
+}
+} -->
+<div>HELLO</div>
+<div>ID: {{.ID}}</div>
+
+{{range .Messages}}
+
+{{if eq .Role "user"}}
+<div class="chat">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">👤</div>
+    </div>
+    <div class="chat-header">{{.Role}}<time class="text-xs opacity-50">12:45</time></div>
+    <div class="chat-bubble">{{.Content}}</div>
+    <div class="chat-footer opacity-50">Seen at</div>
+</div>
+
+<div class="chat chat-start">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+    </div>
+    <div class="chat-header">User<time class="text-xs opacity-50">12:45</time></div>
+    <div class="chat-bubble whitespace-pre-wrap chat-bubble-primary">1st chat</div>
+    <div class="chat-footer opacity-50">Delivered</div>
+</div>
+{{end}}
+
+{{if eq .Role "assistant"}}
+<div class="chat chat-end">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+    </div>
+    <div class="chat-header">{{.Role}}<time class="text-xs opacity-50">00:00</time></div>
+    <div class="chat-bubble">{{.Content}}</div>
+    <div class="chat-footer opacity-50">Seen at 00:00</div>
+</div>
+{{end}}
+
+{{if eq .Role "system"}}
+<div class="chat chat-end">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">🤖</div>
+    </div>
+    <div class="chat-header">{{.Role}}<time class="text-xs opacity-50"></time></div>
+    <div class="chat-bubble">{{.Content}}</div>
+    <div class="chat-footer opacity-50">Seen at</div>
+</div>
+{{end}}
+
+
+
+<div class="chat chat-end">
+    <div class="chat-image avatar">
+        <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+    </div>
+    <div class="chat-header">AI<time class="text-xs opacity-50">12:46</time></div>
+    <div class="chat-bubble">I hate you!</div>
+    <div class="chat-footer opacity-50">Seen at 12:46</div>
+</div>
+{{end}}

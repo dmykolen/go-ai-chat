@@ -1,0 +1,34 @@
+{{ template "partials/login" .}}
+
+<!-- <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+<script>
+    document.body.addEventListener('click', function () { $('#login-error:visible').hide(1000) });
+    document.body.addEventListener("htmx:afterOnLoad", function (evt) {
+        console.log('>>> afterOnLoad:', evt)
+        if (evt.detail.target.id === "loginModal") {
+            console.log(`Process LOGIN_ENDPOINT response: code=${evt.detail.xhr.status}`);
+            if (evt.detail.xhr.status === 200) {
+                const qParams = new URLSearchParams(window.location.search);
+                window.location.href = qParams.get("referrer") || "/";
+            } else {
+                $("#form-login").trigger("reset").effect("shake", "fast");
+                $("#login-error").text("Invalid username or password").show("drop", 500);
+                setTimeout(() => {
+                    $("#login-error:visible").toggle("bounce", { times: 2 }, "slow");
+                }, 5000);
+            }
+        }
+    });
+
+    document.addEventListener("htmx:configRequest", function (evt) {
+        console.log("HTMX_LOG<configRequest> evt.detail:", evt.detail);
+        console.log(`P=${evt.detail.requestConfig.path} triggeredElementId=${evt.detail.elt.id} isExist_loginForm=${$('#loginModal').length >0}`)
+        // evt.detail.xhr.abort();
+        // htmx.trigger('#showModal', 'htmx:abort');
+        if (evt.detail.path == "/login_form_only" && evt.detail.elt.id == "showModal" && $('#loginModal').length > 0) {
+            console.log('CANCEL htmx request cause "loginForm" already exist');
+            // htmx.trigger('#showModal', 'htmx:abort');
+            // $('#loginModal').toggleClass('hidden');
+        }
+    });
+</script>

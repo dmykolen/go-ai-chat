@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant USER
+    participant AI_Agent1
+    participant AI_Agent2
+    participant LLM
+    participant VectorDB
+    participant WS
+    USER->>AI_Agent1: Ask question
+    AI_Agent1->>LLM: Preprocess user question
+    alt Question not related to Lifecell support
+        AI_Agent1->>USER: Return instant answer
+    else Possible to answer immediately
+        AI_Agent1->>USER: Return instant answer
+    else Need further processing
+        AI_Agent1->>AI_Agent2: Forward question for further processing
+        AI_Agent2->>LLM: Process user query with LLM
+        AI_Agent2->>AI_Agent2: Make decision on tools to call
+        loop AI_Agent2 call any tool which can help find solution
+            rect rgba(0, 218, 150, 0.57)
+                opt getRelevantDocsFromDB
+                AI_Agent2->>LLM: Create vector embedding of question
+                LLM-->>AI_Agent2: vector embedding
+                AI_Agent2->>VectorDB: Perform similarity search
+                VectorDB-->>AI_Agent2: Return relevant documents
+                end
+            end
+            rect rgba(0, 218, 190, 0.57)
+                opt getAccountData
+                AI_Agent2->>WS: Call WebServices (cim-ws, om-ws, billing)
+                WS-->>AI_Agent2: Return account data as JSON
+                end
+            end
+        end
+        AI_Agent2->>AI_Agent2: Combine results and generate answer
+        alt Need clarification
+            AI_Agent2->>USER: Send clarify questions
+        else Send final response
+            AI_Agent2->>USER: Return final response
+        end
+    end

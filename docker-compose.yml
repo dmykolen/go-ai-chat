@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  app-prod:
+    container_name: go-ai-app-prod
+    build:
+      context: .
+      dockerfile: Dockerfile.multi-stage
+      args:
+        GITLAB_USER: ${GITLAB_USER}
+        GITLAB_ACCESS_TOKEN: ${GITLAB_ACCESS_TOKEN}
+        GOPROXY_ARTIFACTORY: ${GOPROXY_ARTIFACTORY}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail https://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      pg-prod:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - .env.local
+    environment:
+      - GIT_SSL_NO_VERIFY=true
+      - HTTP_PROXY=${HTTP_PROXY}
+      - HTTPS_PROXY=${HTTP_PROXY}
+      - GITLAB_USER=${GITLAB_USER}
+      - GITLAB_ACCESS_TOKEN=${GITLAB_ACCESS_TOKEN}
+      - GOINSECURE=*
+      - GONOPROXY=*.dev.ict
+      - GONOSUMDB=*.dev.ict
+      - GOPRIVATE=*.dev.ict
+      - GOPROXY=direct
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DB_URL_TM_CIM=${DB_URL_TM_CIM}
+      - WEAVIATE_HOST=ai.dev.ict
+      - GO_AI_PORT=8080
+      - APP_LOG_LVL=debug
+      - APP_LOG_TO_TERM=true
+      - APP_LOG_COLOR=true
+      - LDAP_ADM_PASS=${LDAP_ADM_PASS}
+      - LDAP_BASE=${LDAP_BASE}
+      - LDAP_URL=${LDAP_URL}
+      - LDAP_ADM_USER=${LDAP_ADM_USER}
+      - CONFLUENCE_TOKEN=${CONFLUENCE_TOKEN}
+      - POSTGRES_PORT=5445
+    ports:
+      - "8080:8008"
+    volumes:
+      - app_data:/app
+      - ./web:/app/web:ro
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./web
+    #       target: /app/web
+    #       ignore:
+    #         - ./web/node_modules/
+      # - localdb:/app/history_example.db
+  pg-prod:
+    container_name: go-ai-pg-prod
+    image: artifactory.dev.ict/docker-virtual/postgres:latest
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    ports:
+      - 5445:5432
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB_NAME
+    volumes:
+      - pgdb_go-ai-prod:/var/lib/postgresql/data
+volumes:
+  pgdb_go-ai-prod:
+  app_data:

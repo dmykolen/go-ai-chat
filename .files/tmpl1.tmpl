@@ -1,0 +1,20 @@
+{{define "dialogueFormatPrompt"}}
+Format the following dialogue. Make sure this format ensures that each speaker’s lines are clearly marked, improving readability and understanding of the conversation.
+
+{{.Content}}
+{{end}}
+
+// ---------------------------------------------------------------
+
+{{define "detailedPrompt"}}
+CONTEXT:
+{{range .Documents}}
+* Document reference link: {{.Reference}}
+* Document name: {{.Name}}
+* Data: {{.Data}}
+--------------------
+{{end}}
+
+USER QUESTION:
+{{.UserQuestion}}
+{{end}}

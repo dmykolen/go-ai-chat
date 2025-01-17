@@ -1,0 +1,146 @@
+routes:
+  - path: "/health"
+    methods: ["GET"]
+    required_permission: "none"
+
+  # Static and Auth Related
+  - path: "/"
+    methods: ["GET"]
+    required_permission: "none"
+  - path: "/access_denied"
+    methods: ["GET"]
+    required_permission: "none"
+  - path: "/login"
+    methods: ["POST"]
+    required_permission: "none"
+  - path: "/logout"
+    methods: ["GET"]
+    required_permission: "none"
+  - path: "/login_form"
+    methods: ["GET"]
+    required_permission: "none"
+  - path: "/login_form_only"
+    methods: ["GET"]
+    required_permission: "none"
+
+    # AI Feature Routes
+  - path: "/ai"
+    methods: ["GET"]
+    required_permission: "fe.ai_chat.access"
+  - path: "/voip"
+    methods: ["GET"]
+    required_permission: "fe.voip.access"
+  - path: "/aidb"
+    methods: ["GET"]
+    required_permission: "fe.aidb.access"
+  - path: "/sse3"
+    methods: ["GET"]
+    required_permission: "sse_access"
+  - path: "/fe/users/:username/chats/:type"
+    methods: ["GET"]
+    required_permission: "fe.chat_access"
+
+  # AI and Chat Functionality
+  - path: "/chatgpt"
+    methods: ["POST"]
+    required_permission: "chatgpt_access"
+  - path: "/announce"
+    methods: ["POST"]
+    required_permission: "announce_access"
+
+  # API v1 Endpoints
+  - path: "/api/v1/"
+    methods: ["GET"]
+    required_permission: "api_v1_access"
+  - path: "/api/v1/ask-ai-voip"
+    methods: ["POST"]
+    required_permission: "ask_ai_voip"
+  - path: "/api/v1/stt"
+    methods: ["POST"]
+    required_permission: "handle_stt"
+
+  # API v2 Endpoints
+  - path: "/api/v2/users/:username/chats/:type"
+    methods: ["GET"]
+    required_permission: "api.chat.access"
+  - path: "/api/v2/app/store/users"
+    methods: ["GET"]
+    required_permission: "api.user_store.access"
+  - path: "/api/v2/users/chats/:username"
+    methods: ["GET"]
+    required_permission: "api.chat.access"
+  - path: "/api/v2/chats/:uuid"
+    methods: ["GET"]
+    required_permission: "api.chat.access"
+
+  # Access Management (RBAC)
+  - path: "/am"
+    methods: ["GET"]
+    required_permission: "users.manage"
+  - path: "/api/access/users"
+    methods: ["GET", "POST"]
+    required_permission: "users.manage"
+  - path: "/api/access/users/:id"
+    methods: ["PUT", "DELETE"]
+    required_permission: "users.modify"
+  - path: "/api/access/roles"
+    methods: ["GET", "POST"]
+    required_permission: "roles.manage"
+  - path: "/api/access/roles/:id"
+    methods: ["PUT", "DELETE"]
+    required_permission: "roles.modify"
+  - path: "/api/access/groups"
+    methods: ["GET", "POST"]
+    required_permission: "groups.manage"
+  - path: "/api/access/groups/:id"
+    methods: ["PUT", "DELETE"]
+    required_permission: "groups.modify"
+  - path: "/api/access/permissions"
+    methods: ["GET", "POST"]
+    required_permission: "permissions.manage"
+  - path: "/api/access/permissions/:id"
+    methods: ["PUT", "DELETE"]
+    required_permission: "permissions.modify"
+
+  # webservices routes
+  - path: "/ws"
+    methods: ["GET"]
+    required_permission: "ws_access"
+  - path: "/ws/account/:msisdn"
+    methods: ["GET"]
+    required_permission: "ws_account_access"
+
+  # VectorDB Admin Routes
+  - path: "/vectordb-admin"
+    methods: ["GET"]
+    required_permission: "vectordb.admin_access"
+  - path: "/wdocs"
+    methods: ["GET"]
+    required_permission: "vectordb.docs_view"
+  - path: "/upload"
+    methods: ["POST"]
+    required_permission: "vectordb.upload_docs"
+
+  # VectorDB API Routes
+  - path: "/api/vdb/v1/objects"
+    methods: ["GET", "POST"]
+    required_permission: "vectordb.manage_objects"
+  - path: "/api/vdb/v1/objects/:id"
+    methods: ["GET", "PUT", "DELETE"]
+    required_permission: "vectordb.modify_objects"
+  - path: "/api/vdb/v1/suggest"
+    methods: ["GET"]
+    required_permission: "vectordb.search"
+  - path: "/search"
+    methods: ["POST"]
+    required_permission: "vectordb.search"
+
+templates:
+  - template: "admin_dashboard.html"
+    elements:
+      - id: "create_user_btn"
+        required_permission: "create_user"
+  - template: "ai_page.html"
+    elements:
+      - id: "access_ai_features_section"
+        required_permission: "view_ai_features"

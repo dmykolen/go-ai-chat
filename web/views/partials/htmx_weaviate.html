@@ -1,0 +1,308 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<h2 class="text-xl font-mono font-bold flex justify-center animate-gradient bg-accent via-error bg-gradient-to-r to-accent from-accent text-error-content mt-16">RAG System - Data Display and Upload</h2>
+<div class="absolute flex flex-row join justify-end p-2 right-1 z-10">
+<!-- <div class="flex flex-row join justify-end p-2 sticky top-16 z-10"> -->
+  <div class="hover:shadow-lg hover:shadow-pink-500 rounded-l-box shadow-red-500 transition-all">
+    <div class="tooltip tooltip-warning" data-tip="Refresh">
+        <button class="btn join-item" hx-get="/wdocs" hx-target="#data-container" hx-indicator="#spinner">
+            <i class="large material-icons font-bold scale-150 text-lg" aria-hidden="true">refresh</i>
+        </button>
+    </div>
+</div>
+<div class="hover:shadow-lg hover:shadow-pink-500 rounded-r-box shadow-red-500 transition-all">
+    <div class="tooltip tooltip-warning" data-tip="Add to VectorDB">
+        <button id="manageFormDoc" class="btn join-item">
+            <i class="large material-icons font-bold text-lg text-base-content" aria-hidden="true">note_add</i>
+            <i class="large material-icons font-bold text-3xl text-error animate-pulse" style="display: none;" aria-hidden="true">close</i>
+        </button>
+    </div>
+</div>
+<div class="hover:shadow-lg hover:shadow-pink-500 rounded-r-box shadow-red-500 transition-all">
+    <div class="tooltip tooltip-warning" data-tip="Search in VectorDB">
+        <button id="manageFormSearch" class="btn join-item">
+            <i class="large material-icons font-bold text-lg text-base-content" aria-hidden="true">search</i>
+            <i class="large material-icons font-bold text-3xl text-error animate-pulse" style="display: none;" aria-hidden="true">close</i>
+        </button>
+    </div>
+</div>
+</div>
+
+<div class="container mx-auto backdrop-blur bg-transparent/10 h-[90%] max-h-[95%] overflow-x-hidden overflow-y-auto">
+  <div class="bottom-3 cursor-pointer sticky left-[95%] top-[90%] hover:opacity-100 hover:scale-110 opacity-60 p-2 right-2 rounded-full text-center w-14 z-20 bg-base-100/5 hover:shadow-neon-blue" id="scrollToTop"><i class="fa-arrow-up fas text-4xl"></i></div>
+  <!-- <div class="bg-gradient-to-tr bottom-3 cursor-pointer fixed from-secondary hover:opacity-100 hover:scale-110 opacity-60 p-2 right-2 rounded-full text-center to-secondary-content w-14 z-20" id="scrollToTop"><i class="fa-arrow-up fas text-4xl"></i></div> -->
+  <div id="formSearch" class="flex flex-row space-x-2 h-80 bg-transparent/80 rounded-2xl p-4 mb-4 lg:mx-20 xl:mx-40 shadow-black shadow-inner" style="display: none;">
+    <!-- <form id="formSearchForm" hx-post="/search" hx-trigger="submit" hx-target="#results" hx-ext='json-enc' class="from form-control space-y-3"> -->
+    <form id="formSearchForm" hx-post="/api/vdb/v1/search" hx-trigger="submit" hx-target="#results" hx-ext='json-enc' class="basis-1/2 form-control space-y-2">
+      <div class="artboard-demo flex flex-row justify-around input">
+        <input name="searchText" id="searchText" type="text" class="input-ghost w-full" hx-get="/api/vdb/v1/suggest" hx-vals='{"limit":closest("form").querySelector("#limit").value}' hx-indicator="#searchSpinner" hx-trigger="keyup[target.value.length > 5] changed delay:700ms" hx-target="#results" hx-swap="none" placeholder="Search text..." minlength="5" />
+        <span id="searchSpinner" class="htmx-indicator loading loading-spinner loading-xs"></span>
+      </div>
+
+      <!-- Suggestions will appear here -->
+      <div id="suggestions"></div>
+
+      <div class="form-control">
+        <label for="fields" class="label-text">Return fields</label>
+        <div id="fields" name="fields" class="join">
+          <input type="checkbox" name="title" class="join-item btn btn-sm checkbox-primary" aria-label="title" checked />
+          <input type="checkbox" name="chunkNo" class="join-item btn btn-sm checkbox-primary" aria-label="chunkNo" />
+          <input type="checkbox" name="category" class="join-item btn btn-sm checkbox-primary" aria-label="category" checked />
+          <input type="checkbox" name="content" class="join-item btn btn-sm checkbox-primary" aria-label="content" />
+        </div>
+      </div>
+
+      <!-- Search fields -->
+      <div class="">
+        <label for="sf" class="label-text">Search in:</label>
+        <div id="sf" class="join join-vertical text-sm">
+          <label class="cursor-pointer"><input type="radio" name="searchFields" class="mx-1 radio radio-accent radio-sm" value="content" checked="">Content</label>
+          <label class="cursor-pointer"><input type="radio" name="searchFields" class="radio radio-sm radio-accent mx-1" value="title">Title</label>
+        </div>
+      </div>
+
+      <!-- Sorting -->
+      <div class="">
+        <label for="sort" class="label-text">Sort by</label>
+        <select name="sort" id="sort" class="select select-bordered select-sm">
+          <option value="">Relevance</option>
+          <option value="{&quot;field&quot;:&quot;title&quot;,&quot;sortOrder&quot;:&quot;asc&quot;}">Title (A-Z)</option>
+          <option value="{&quot;field&quot;:&quot;title&quot;,&quot;sortOrder&quot;:&quot;desc&quot;}">Title (Z-A)</option>
+        </select>
+      </div>
+
+      <label for="limit"><span class="label-text">Limit Results</span>
+        <input id="limit" name="limit" type="range" min="1" max="20" value="3" class="range range-secondary range-xs md:w-2/3" />
+      </label>
+
+      <button class="btn btn-outline btn-sm place-self-center" disabled>Search</button>
+    </form>
+    <div id="results" class="basis-1/2 overflow-y-auto bg-gradient-to-br from-base-300 h-full p-2 rounded-box to-95% via-primary/10">
+      <div class="text-2xl">No results yet</div>
+    </div>
+  </div>
+  <div id="uploadForm" class="lg:mx-20 xl:mx-40 bg-transparent/80 rounded-2xl">
+    <form id="upform" hx-post="/upload" hx-encoding="multipart/form-data" hx-target="#response" class="bg-gradient-to-tr from-primary/25 shadow-md rounded-2xl my-4 p-4 hidden">
+      <div class="flex p-2 text-base-content/100 w-full">
+        <div class="card flex-grow place-items-center w-1/3">
+          <div class="lg:w-4/5">
+            <label class="font-bold" for="document">Upload Document</label>
+            <input id="document" name="file-upload" type="file" accept=".pdf,.docx" class="input input-bordered py-2 w-full">
+          </div>
+        </div>
+        <div class="divider divider-accent divider-horizontal font-mono flex-grow">OR</div>
+        <div class="card flex-grow place-items-center w-1/3">
+          <div class="lg:w-4/5">
+            <label class="font-bold" for="url">Enter URL
+              <input id="url" name="url-input" type="url" placeholder="https://lifecell.ua" class="input w-full">
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <button class="btn btn-accent btn-active btn-wide font-bold mt-2 text-white" type="submit">Submit</button>
+      </div>
+    </form>
+    <!-- <div id="response" class="alert alert-success relative top-36">SUCCESS</div> -->
+  </div>
+  <div id="response" class="flex w-3/4 justify-around mx-24 alert hidden">SUCCESS</div>
+  <div class="bottom-0 flex justify-center sticky top-1 z-30">
+  <!-- <div class="flex justify-center"> -->
+    <label class="input bg-primary/50 flex focus:bg-primary/90 hover:bg-primary/70 items-center shadow-lg shadow-neutral-700 w-1/3 duration-300 transition-all">
+    <!-- <label class="input flex items-center w-1/3 bg-base-300/100"> -->
+      <input id="filer-weaviate-results" type="text" class="w-full" placeholder="Filter documents..." />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+      </svg>
+    </label>
+  </div>
+  <section id="data-display" class="place-self-center">
+    <div id="spinner" class="hidden">
+      <span class="loading loading-dots loading-md"></span>
+    </div>
+    <div id="data-container" hx-get="/wdocs" hx-trigger="load" class="space-y-4">
+      <div class="skeleton min-h-64"></div>
+    </div>
+  </section>
+</div>
+
+<script defer="defer">
+  const form = document.getElementById("uploadForm");
+  let deg = 0;
+  function rotForm() {
+    setInterval(() => {
+      deg += 20;
+      form.style.transform = `rotate(${deg}deg)`;
+    }, 20);
+  }
+  // setTimeout(() => {
+  //   document.getElementById("response").classList.add('hidden')
+  // }, 2000);
+
+  document.body.addEventListener("htmx:responseError", function (evt) {
+    console.log("RESPONSE ERROR!!!", evt);
+    if (evt.detail.xhr.status === 401) {
+      window.location.href = "/login";
+    }
+    if (evt.detail.target.id === "chat-msg") {
+      processErr(evt);
+    }
+  });
+
+  function processErr(evt) {
+    $("#chat-msg .chat-end:last").remove();
+    const errAlert = document.createElement("div");
+    errAlert.classList.add("flex", "justify-center");
+    errAlert.innerHTML = `
+      <div class="bg-red-100 text-red-700 border border-red-700 rounded px-4 py-3 leading-normal mb-4">
+        Error sending message! HTTP Status: ${evt.detail.xhr.status}
+      </div>`;
+    evt.detail.target.appendChild(errAlert);
+    setTimeout(() => {
+      evt.detail.target.removeChild(errAlert);
+    }, 3000);
+  }
+
+  function scrollToElement(selector) {
+    const id = $(selector).find('span').last().text()
+    element = $('div.badge.badge-secondary').filter(function () { return $(this).text() == id })
+    console.log(`scrolling to ${id}`, element)
+    if (element) {
+      $('html, body').animate({
+        scrollTop: element.offset().top - 100
+      }, 1000);
+    }
+  }
+
+  function toggleFormUpload() {
+    $('#upform').slideToggle();$('#manageFormDoc>i').toggle();
+    $('div.container').scrollTop($('.card.bordered:first'));
+}
+function toggleFormSearch() {
+  $('#formSearch').slideToggle();$('#manageFormSearch>i').toggle();
+  $('div.container').scrollTop($('.card.bordered:first'));
+}
+
+  document.addEventListener('DOMContentLoaded', function () {
+    console.log("Document ready!");
+
+    $('#manageFormDoc').on('click', toggleFormUpload);
+    $('#manageFormSearch').on('click', toggleFormSearch);
+
+    $('#scrollToTop').click(function () {
+    $('html, body').animate({ scrollTop: 0 }, 'slow');
+    $('div.container').animate({ scrollTop: 0 }, 500);
+  });
+  $(function () {
+    $("#filer-weaviate-results").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#docs>div.card").filter(function () {
+        isToogle = $(this).text().toLowerCase().indexOf(value) > -1;
+        console.debug($(this)[0], " > find[" + value + "]>> ", isToogle);
+        if (isToogle) {
+          $(this).slideDown(500, 'swing');
+        } else {
+          $(this).slideUp(500, 'swing');
+        }
+      });
+    });
+
+    $('#menuItem2').on('click', function () {
+      $(this).text(function (index, currentvalue) {
+        console.debug('index:', index, 'currentvalue:', currentvalue)
+        if (currentvalue === '📄') {
+          $("#upform").slideDown();
+          return '❌';
+        } else {
+          $("#upform").slideUp();
+          return '📄';
+        }
+      })
+    });
+  });
+
+    $(document).on({
+    'htmx:afterRequest': function (e) {
+      console.log('afterRequest>>>>', e);
+      $("#spinner").addClass('hidden');
+      $("#data-container>div.card").filter(function () {
+        $(this).removeClass('skeleton');
+      });
+
+      console.log(`path: ${e.detail.requestConfig.path}\ntrigger: ${e.detail.requestConfig.headers["HX-Trigger"]}\ntarget: ${e.detail.requestConfig.headers["HX-Target"]}\nresponse: ${e.detail.xhr.responseText}\ntargetEl: ${e.detail.target}`)
+      if (e.detail.requestConfig.path.includes("suggest")) {
+        if (e.detail.xhr.status != 200) {
+          $("#results").html('ERROR'); // clear the results
+        }
+
+        console.log('suggestProcess()');
+        searchResultsProcess(e.detail.xhr);
+      }
+    },
+    'htmx:afterOnLoad': function (e) {
+      console.log('afterOnLoad>>>>>', e);
+    },
+    'htmx:afterSwap': function () {
+      console.log('afterSwap');
+    },
+    'htmx:beforeRequest': function (e) {
+      console.log('beforeRequest ------>', e);
+      if (e.detail.requestConfig.path != "/search") {
+        $("#spinner").removeClass('hidden');
+      }
+
+      $("#data-container div.card").filter(function () {
+        $(this).addClass('skeleton');
+      });
+    },
+    'htmx:beforeSwap': function (e) {
+      console.log('beforeSwap>>>>>>>>', e);
+    },
+    'htmx:configRequest': function (e) {
+      console.log('configRequest! DETAILS:>>>>', e.detail);
+      // add query params to the URL to get the search results on htmx:configRequest
+      if (e.detail.path.includes("/suggest")) {
+        e.detail.parameters.limit = $("#limit").val();
+      }
+      if (e.detail.path == "/search") {
+        const formSubm = e.detail.elt;
+        console.log('configRequest! ELEM:>>>>', formSubm);
+        const formSubmData = {
+          searchText: formSubm.searchText.value,
+          fields: Array.from(formSubm.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.name),
+          searchFields: [formSubm.searchFields.value],
+          sort: JSON.parse(formSubm.sort.value || "{}"),
+          limit: parseInt(formSubm.limit.value, 10)
+        };
+
+        console.log('parameters:', formSubmData);
+        e.detail.parameters = formSubmData;
+        e.detail.requestConfig.parameters = formSubmData;
+      }
+    },
+  });
+
+  });
+
+
+
+  let testJsonData = [
+    { "title": "FMC FAQ", "_additional": { "id": "7ae53ce2-d3e2-4990-b403-0f1db1acdb69" } },
+    { "title": "F.A.Q.", "_additional": { "id": "9f8c554c-0ad9-4ede-97db-dc3c739e9bce" } },
+    { "title": "SIP помилки", "_additional": { "id": "2d75b504-a09d-4273-849f-b6291c3c0b56" } }
+  ];
+  function searchResultsProcess(xhr) {
+    jsonData = JSON.parse(xhr.responseText);
+
+    let htmlString = '<ul>';
+    jsonData.map(item => {
+      htmlString += `<li onclick="scrollToElement(this)" class="hover:border-l-8 hover:p-1 border-accent cursor-pointer"><span class="text-md text-extrabold">${item.title}</span> <span class="badge badge-secondary">${item._additional.id}</span></li>`;
+    });
+    $('#results').html(htmlString + '</ul>');
+    xhr.response = htmlString + '</ul>';
+  }
+
+
+
+
+</script>

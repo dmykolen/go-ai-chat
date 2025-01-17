@@ -1,0 +1,15 @@
+[user]
+	name = Dmytro Mykolenko
+	email = dmytro.mykolenko@lifecell.com.ua
+[alias]
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	mylog = log --pretty=:'%h %s [%an]' --graph
+	hist = log --format=\"%h %ad | %s%d [%an]\" --graph --date=iso-strict --branches
+[color]
+	ui = true
+[core]
+	autocrlf = true
+[http]
+	sslVerify = false
+	postBuffer = 1048576000
+[url "git@gitlab.dev.ict:"] insteadOf = https://gitlab.dev.ict/

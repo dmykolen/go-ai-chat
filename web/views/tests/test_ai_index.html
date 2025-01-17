@@ -1,0 +1,707 @@
+<html lang="en" data-theme="dim">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AI Interface</title>
+    <link rel="icon" type="image/x-icon" href="../../static/img/favicon.ico">
+    <link rel="stylesheet" href="../../static/css/app.css">
+    <!-- <script src="https://kit.fontawesome.com/b8f9f217c7.js" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css">
+    <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-highlight/lib/index.umd.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css">
+    <script src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+</head>
+
+<body class="bg-[url('../../static/img/robot_image_3.png')] overscroll-y-none overscroll-none overscroll-x-none overflow-x-hidden scroll-smooth bg-cover bg-center h-screen">
+    <div class="min-h-12 h-1 absolute bg-gradient-to-r from-25% from-primary navbar to-35%">
+        <div class="flex-1">
+            <a id="typeBrand" href="" class="btn hover:scale-110 btn-ghost no-animation hover:bg-transparent normal-case text-2xl font-mono transition-all ease-in opacity-75 delay-100 text-base-100/50">Lifecell STT</a>
+        </div>
+        <div class="flex-none">
+            <div class="dropdown dropdown-left">
+                <label class="btn btn-ghost btn-circle avatar">
+                    <div class="w-auto rounded-full text-4xl">
+                        <label class="swap swap-flip">
+                            <input type="checkbox" name="" id="">
+                            <div class="swap-on">😎</div>
+                            <div class="swap-off">🥷🏽</div>
+                        </label>
+                    </div>
+                </label>
+                <ul class="shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-44 z-20">
+                    <li id="logout-li" class="">
+                        <a href="/logout" class="bg-gradient-to-b border-0 btn btn-outline btn-primary p-3 rounded-xl font-mono text-primary-content/60">
+                            Logout
+                            <span class="absolute flex hover:animate-bounce text-4xl w-full">🏃🏽‍♂️</span>
+                        </a>
+                    </li>
+                    <li id="login-li" style="display: none;">
+
+                        <button class="bg-gradient-to-b border-0 btn btn-outline btn-primary rounded-xl font-mono text-primary-content/60" id="showModal" hx-get="/login_form_only" hx-trigger="click[checkLoginSection()]" hx-target="#content" hx-swap="afterbegin transition:true settle:200ms">
+                            Login
+                            <span class="absolute flex inset-2 text-4xl w-full hover:rotate-45 duration-300 ease-in-out transform transition">👋</span>
+                        </button>
+                    </li>
+                    <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60" disabled="">Profile</button></li>
+                    <li><button class="border-0 btn btn-outline btn-primary font-mono rounded-xl text-primary-content/60" disabled="">Settings</button></li>
+                    <li class="divide-accent"></li>
+                    <li>
+                        <div class="dropdown dropdown-left flex justify-center p-0 hover:bg-base-100/0 btn btn-ghost">
+                            <button tabindex="0" role="button" class="btn mx-auto w-full bg-primary/25 ring-0 btn-circle ring-offset-1 ring-offset-primary shadow-lg shadow-pink-500/40" onclick="toggleHidden(this.nextElementSibling)">
+                                Theme
+                                <svg width="12px" height="12px" class="h-2 w-2 fill-current opacity-60 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+                                    <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                                </svg>
+                            </button>
+                            <div tabindex="0" id="dataThemeChanger" data-choose-theme="" data-key="admin-panel" class="join join-vertical dropdown-content hidden z-50 p-0 mt-2">
+
+                                <input type="radio" data-set-theme="dim" name="theme-buttons" class="btn theme-controller join-item" aria-label="dim" value="dim">
+                                <input type="radio" data-set-theme="forest" name="theme-buttons" class="btn theme-controller join-item" aria-label="forest" value="forest">
+                                <input type="radio" data-set-theme="bumblebee" name="theme-buttons" class="btn theme-controller join-item" aria-label="bumblebee" value="bumblebee">
+                                <input type="radio" data-set-theme="sunset" name="theme-buttons" class="btn theme-controller join-item" aria-label="sunset" value="sunset">
+                                <input type="radio" data-set-theme="mytheme" name="theme-buttons" class="btn theme-controller join-item" aria-label="mytheme" value="mytheme">
+                                <input type="radio" data-set-theme="cupcake" name="theme-buttons" class="btn theme-controller join-item" aria-label="cupcake" value="cupcake">
+                                <input type="radio" data-set-theme="cyberpunk" name="theme-buttons" class="btn theme-controller join-item" aria-label="Cyberpunk" value="cyberpunk">
+                                <input type="radio" data-set-theme="ua" name="theme-buttons" class="btn theme-controller join-item" aria-label="ua" value="ua">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleHidden(element) {
+            console.log("THIS:", this);
+            console.log("Element:", element);
+            element.classList.toggle("hidden");
+        }
+        function checkLoginSection() {
+            let isExists = document.getElementById('loginSection') && true || false;
+            console.log(`Check login section exists=[${isExists}]! Do HTMX request, If not exists`);
+            if (isExists) {
+
+
+                $('#loginModal').show();
+            }
+            return !isExists;
+        }
+    </script>
+    <div class="flex">
+        <input type="checkbox" id="drawer-toggle" class="relative sr-only peer">
+        <label for="drawer-toggle" id="drawer-toggle-label" class="absolute bg-transparent/40 duration-500 inline-block left-0 peer-checked:left-1/4 peer-checked:rotate-180 px-2 py-4 rounded-lg top-20 transition-all cursor-pointer hover:scale-125 hover:bg-gradient-to-b hover:from-yellow-400 hover:to-sky-600">
+            <div class="w-4 h-1 mb-1 -rotate-45 bg-white rounded-lg bg-black"></div>
+            <div class="w-4 h-1 rotate-45 bg-white rounded-lg bg-black"></div>
+        </label>
+        <div class="fixed top-0 left-0 z-20 w-1/4 h-full transition-all duration-500 transform -translate-x-full shadow-black shadow-lg peer-checked:translate-x-0">
+            <div class="px-6 py-4 bg-black">
+                <h2 class="text-2xl font-extrabold font-mono link-secondary leading-6">MENU</h2>
+                <p class="text-gray-500"></p>
+            </div>
+            <div class="bg-base-300 h-full">
+                <ul class="join join-vertical mx-auto px-4 py-6 space-y-2 text-sm w-full list-none">
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/">START PAGE</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/ai">AI WEB Interface</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/aidb">AI DB Assistant</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/voip">VoIP</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full" href="/vectordb-admin">VectorDB</a></li>
+                    <li class=""><a class="border-l-secondary-focus/50 btn font-semibold hover:border-l-4 hover:bg-primary hover:scale-110 hover:text-secondary-content join-item min-w-full">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <main id="content" class="h-dvh overflow-y-hidden">
+        <div class="my-1 text-center">
+            <h1 class="text-5xl font-bold"><span id="typed2" class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent/70 animate-gradient">VoIP</span></h1>
+        </div>
+
+        <div class="drawer">
+            <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content flex flex-col">
+              <!-- Navbar -->
+              <div class="navbar bg-base-300 w-full">
+                <div class="flex-none lg:hidden">
+                  <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      class="inline-block h-6 w-6 stroke-current">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                  </label>
+                </div>
+                <div class="mx-2 flex-1 px-2">Navbar Title</div>
+                <div class="hidden flex-none lg:block">
+                  <ul class="menu menu-horizontal">
+                    <!-- Navbar menu content here -->
+                    <li><a>Navbar Item 1</a></li>
+                    <li><a>Navbar Item 2</a></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Page content here -->
+              Content
+            </div>
+            <div class="drawer-side">
+              <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+              <ul class="menu bg-base-200 min-h-full w-80 p-4">
+                <!-- Sidebar content here -->
+                <li><a>Sidebar Item 1</a></li>
+                <li><a>Sidebar Item 2</a></li>
+              </ul>
+            </div>
+          </div>
+
+
+
+
+        <div id="chat-grid-tab-div" class="grid grid-cols-4 h-full pb-16">
+            <div id="chat-div" class="bg-accent-content/90 mockup-window border col-start-1 col-end-5 text-sm pt-1 mt-3 md:mt-4 mx-16 overflow-y-scroll" hx-ext="debug">
+                <div class="-mt-7 flex flex-col items-center justify-center px-4">
+                    <div class="grid grid-cols-3 w-full">
+
+                        <div class="join join-horizontal justify-self-center col-start-2 space-x-1">
+                            <div id="btn-new-chat" class="btn join-item btn-outline btn-xs w-28 text-slate-300 hover:scale-95">NEW CHAT</div>
+                            <div id="btn-hst" class="btn join-item btn-outline btn-xs w-28" hx-get="/api/v1/users/dmykolen/chats/shortinfo" hx-trigger="click[checkCondition()]" hx-target="#chat-hst-container" hx-swap="none">CHAT HISTORY</div>
+                        </div>
+                        <div id="btn-options" class="justify-self-end max-w-8">
+                            <label class="btn btn-outline border-0 text-white bg-transparent/50 btn-xs swap swap-rotate">
+
+                                <input type="checkbox">
+
+                                <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                    <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"></path>
+                                </svg>
+
+                                <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                    <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"></polygon>
+                                </svg>
+                            </label>
+                        </div>
+                    </div>
+
+                    <form hx-post="/api/v1/ask-ai-voip" hx-target="#chat-msg" hx-swap="none" hx-ext="json-enc" class="flex items-center form-control my-2 w-3/4">
+                        <input id="id-chat-input" type="text" name="chatID" value="" hidden="">
+                        <input id="msisdn-chat-input" type="text" name="msisdn" value="" hidden="">
+                        <div class="join join-horizontal w-full">
+                            <textarea id="chat-send-input" rows="1" type="search" name="userRequest" placeholder="Type here"
+                            class="textarea textarea-ghost border-0 bg-transparent/80 join-item text-xs tracking-tight p-1 font-mono resize-none m-0 hover:resize-y w-full min-h-12 max-h-40 focus:outline-0 focus:border-primary-focus link-accent focus:caret-indigo-600 focus:border-0 focus:ring-0">
+                        </textarea>
+                            <button id="chat-send" class="btn join-item bg-gradient-to-br btn-outline border-0 text-white from-primary via-black/10  via-70% to-accent transition-all duration-500 hover:translate-x-1 hover:shadow-lg hover:shadow-neutral-300/20">SEND</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div name="newR" class="rating">
+                    <input type="radio" name="chatRating" class="rating-hidden" aria-checked="true" />
+                    <input type="radio" name="chatRating" class="mask mask-star opacity-20" aria-checked="false" />
+                    <input type="radio" name="chatRating" class="mask mask-star opacity-20" aria-checked="false" />
+                    <input type="radio" name="chatRating" class="mask mask-star opacity-20" aria-checked="false" />
+                    <input type="radio" name="chatRating" class="mask mask-star opacity-20" aria-checked="false" />
+                    <input type="radio" name="chatRating" class="mask mask-star opacity-20" aria-checked="false" />
+                  </div>
+
+
+                <div class="overflow-scroll">
+                    <div id="chat-hst-container" class="overflow-y-scroll">
+                    </div>
+
+                    <div id="chat-msg" class="overflow-y-scroll">
+                        <div class="flex justify-center text-xs">
+                            <button id="chat-id-div" class="badge badge-xs badge-outline badge-secondary" onclick="my_modal_5.showModal()"></button>
+
+                        </div>
+
+                        <dialog id="my_modal_5" class="modal">
+                            <div class="modal-box px-4">
+                                <form method="dialog">
+                                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                </form>
+                                <h3 class="font-bold text-lg badge badge-warning animate-pulse">DEBUG</h3>
+                                <div class="mockup-code bg-primary text-primary-content">
+                                    <pre class="text-xs"><code class="font-mono leading-0 text-wrap tracking-tighter">{
+                            &#34;createdTime&#34;: 1721063858507,
+                            &#34;id&#34;: &#34;937bcc28-abcc-42e1-92a1-0000000&#34;,
+                            &#34;lastUpdateTime&#34;: 1721064125363,
+                            &#34;messages&#34;: [
+                                {
+                                    &#34;content&#34;: &#34;мені потрібен список твоїх можливостей&#34;,
+                                    &#34;role&#34;: &#34;user&#34;
+                                },
+                                {
+                                    &#34;content&#34;: &#34;Я можу допомогти вам з наступними завданнями:\n\n1. **Генерація SQL запитів для Oracle DB**:\n   - Я можу створювати SQL запити на основі вашого запиту або питання.\n   - Я можу допомогти з формуванням складних запитів, включаючи об&#39;єднання таблиць, фільтрацію, сортування, агрегацію тощо.\n\n2. **Виконання SQL запитів**:\n   - Я можу виконувати SQL запити на Oracle базі даних за допомогою інструменту SqlRunner.\n   - Я можу надати результати виконання запитів у зручному форматі.\n\n3. **Консультації з SQL**:\n   - Я можу пояснити, як працюють різні SQL команди та функції.\n   - Я можу допомогти з оптимізацією SQL запитів.\n\n4. **Робота з базою даних**:\n   - Я можу надати інформацію про структуру бази даних, включаючи таблиці, колонки, обмеження та зв&#39;язки між таблицями.\n\nЯкщо у вас є конкретне питання або завдання, будь ласка, уточніть, і я з радістю допоможу!&#34;,
+                                    &#34;rating&#34;: 1,
+                                    &#34;role&#34;: &#34;assistant&#34;
+                                },
+                                {
+                                    &#34;content&#34;: &#34;Я хочу знайти 20 останніх зареєстрованих клієнтів(код, дата, імʼя, вік)&#34;,
+                                    &#34;role&#34;: &#34;user&#34;
+                                },
+                                {
+                                    &#34;content&#34;: &#34;Для того, щоб знайти 20 останніх зареєстрованих клієнтів, нам потрібно отримати інформацію з таблиць `CM_CUSTOMER` та `CM_CUSTOMER_INDIVIDUAL`. Ми будемо використовувати колонку `ENTRY_DATE` для визначення останніх зареєстрованих клієнтів.\n\nОсь SQL запит, який виконає це завдання:\n\n```sql\nSELECT \n    c.CODE AS CUSTOMER_CODE,\n    c.ENTRY_DATE,\n    ci.FIRST_NAME,\n    ci.LAST_NAME,\n    ci.BIRTHDAY,\n    FLOOR(MONTHS_BETWEEN(SYSDATE, ci.BIRTHDAY) / 12) AS AGE\nFROM \n    CM_CUSTOMER c\nJOIN \n    CM_CUSTOMER_INDIVIDUAL ci ON c.CODE = ci.CODE\nORDER BY \n    c.ENTRY_DATE DESC\nFETCH FIRST 20 ROWS ONLY;\n```\n\nЦей запит:\n1. Об&#39;єднує таблиці `CM_CUSTOMER` та `CM_CUSTOMER_INDIVIDUAL` за допомогою `JOIN` на колонці `CODE`.\n2. Вибирає колонки `CUSTOMER_CODE`, `ENTRY_DATE`, `FIRST_NAME`, `LAST_NAME`, `BIRTHDAY` та обчислює вік клієнта на основі дати народження (`BIRTHDAY`).\n3. Сортує результати за датою реєстрації (`ENTRY_DATE`) у порядку спадання.\n4. Обмежує результати до перших 20 рядків.\n\nЧи бажаєте ви, щоб я виконав цей запит і надав результати?&#34;,
+                                    &#34;rating&#34;: 4,
+                                    &#34;role&#34;: &#34;assistant&#34;
+                                }
+                            ],
+                            &#34;name&#34;: &#34;&#34;
+                        }</code></pre>
+                                </div>
+                            </div>
+                            <form method="dialog" class="modal-backdrop">
+                                <button>close</button>
+                            </form>
+                        </dialog>
+
+                        <script>
+                            function evalHTMX_rating(e) {
+                                console.info('START /rating HTMX request! Evt =>', e)
+
+                                let chatEndElement = e.target.closest('.chat-end');
+
+
+                                if (!chatEndElement) {
+                                    return -1;
+                                }
+                                let allChatEnds = Array.from(document.querySelectorAll('.chat'));
+                                let index = allChatEnds.indexOf(chatEndElement);
+
+                                console.log(`Total 'chat-end' elements = ${allChatEnds.length}; IDX_CURRENT=${index}`)
+                                return index;
+                            }
+
+                        </script>
+                        <div class="chat chat-start">
+                            <div class="chat-image avatar">
+                                <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">user</div>
+                            <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">мені потрібен список твоїх можливостей</div>
+                        </div>
+                        <div class="chat chat-end">
+                            <div class="chat-image avatar">
+                                <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">assistant</div>
+                            <div class="chat-bubble p-2 whitespace-pre-wrap prose">Я можу допомогти вам з наступними завданнями:
+
+                        Якщо у вас є конкретне питання або завдання, будь ласка, уточніть, і я з радістю допоможу!</div>
+                            <div class="chat-footer opacity-75">
+                                <div class="rating rating-sm">
+                                    <input type="radio" name="chatRating" class="rating-hidden" aria-checked="true" />
+                                    <input type="radio" name="chatRating" class="mask mask-star bg-emerald-500" value="1" aria-checked="false" />
+                                    <input type="radio" name="chatRating" class="mask mask-star bg-emerald-500" value="2" aria-checked="false" />
+                                    <input type="radio" name="chatRating" class="mask mask-star bg-emerald-500" value="3" aria-checked="false" />
+                                    <input type="radio" name="chatRating" class="mask mask-star bg-emerald-500" value="4" aria-checked="false" />
+                                    <input type="radio" name="chatRating" class="mask mask-star bg-emerald-500" value="5" aria-checked="false" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="chat chat-start">
+                            <div class="chat-image avatar">
+                                <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">user</div>
+                            <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">мені потрібен список твоїх можливостей</div>
+                        </div>
+                        <div class="chat chat-end">
+                            <div class="chat-image avatar">
+                                <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">assistant</div>
+                            <div class="chat-bubble p-2 whitespace-pre-wrap prose">Я можу допомогти вам з наступними завданнями:
+----
+                        Якщо у вас є конкретне питання або завдання, будь ласка, уточніть, і я з радістю допоможу!</div>
+                            <div class="chat-footer">
+                                <div class="flex -space-x-1" onclick="starClick(this,'DIV.flex')">
+                                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-emerald-500/40 hover:bg-emerald-600" value="1" onclick="starClick(this,'INPUT.RADIO')" />
+                                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-emerald-500/40 hover:bg-emerald-600" value="2" onclick="starClick(this,'INPUT.RADIO')" />
+                                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-emerald-500/40 hover:bg-emerald-600" value="3" onclick="starClick(this,'INPUT.RADIO')" />
+                                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-emerald-500/40 hover:bg-emerald-600" value="4" onclick="starClick(this,'INPUT.RADIO')" />
+                                    <input type="radio" name="chatRating" class="btn btn-sm mask mask-star-2 bg-emerald-500/40 hover:bg-emerald-600" value="5" onclick="starClick(this,'INPUT.RADIO')" />
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            function starClick(e,n){
+                                console.log(n,e);
+                                console.log(n,$(e).siblings())
+                                console.log(n,$(e).index())
+                                console.log(n,$(e).prevAll())
+                                console.log(n,$(e).nextAll())
+                                $(e).prevAll().addClass('bg-emerald-600')
+                                $(e).nextAll().removeClass('bg-emerald-600')
+                            }
+                        </script>
+
+                        <div class="chat chat-start">
+                            <div class="chat-image avatar">
+                                <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">user</div>
+                            <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">мені потрібен список твоїх можливостей</div>
+                        </div>
+                        <div class="chat chat-end">
+                            <div class="chat-image avatar">
+                                <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">assistant</div>
+                            <div class="chat-bubble p-2 whitespace-pre-wrap prose">Я можу допомогти вам з наступними завданнями:
+
+                        Якщо у вас є конкретне питання або завдання, будь ласка, уточніть, і я з радістю допоможу!</div>
+                            <div class="chat-footer opacity-75">
+                                <div class="rating rating-sm">
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-emerald-500" value="1" aria-checked="true"/>
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-emerald-500" value="2" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-emerald-500" value="3" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-emerald-500" value="4" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-emerald-500" value="5" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chat chat-start">
+                            <div class="chat-image avatar">
+                                <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">user</div>
+                            <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">мені потрібен список твоїх можливостей</div>
+                        </div>
+                        <div class="chat chat-end">
+                            <div class="chat-image avatar">
+                                <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">assistant</div>
+                            <div class="chat-bubble p-2 whitespace-pre-wrap prose">Я можу допомогти вам з наступними завданнями:
+
+                        1. **Генерація SQL запитів для Oracle DB**:
+                           - Я можу створювати SQL запити на основі вашого запиту або питання.
+                           - Я можу допомогти з формуванням складних запитів, включаючи об&#39;єднання таблиць, фільтрацію, сортування, агрегацію тощо.
+
+                        2. **Виконання SQL запитів**:
+                           - Я можу виконувати SQL запити на Oracle базі даних за допомогою інструменту SqlRunner.
+                           - Я можу надати результати виконання запитів у зручному форматі.
+
+                        3. **Консультації з SQL**:
+                           - Я можу пояснити, як працюють різні SQL команди та функції.
+                           - Я можу допомогти з оптимізацією SQL запитів.
+
+                        4. **Робота з базою даних**:
+                           - Я можу надати інформацію про структуру бази даних, включаючи таблиці, колонки, обмеження та зв&#39;язки між таблицями.
+
+                        Якщо у вас є конкретне питання або завдання, будь ласка, уточніть, і я з радістю допоможу!</div>
+                            <div class="chat-footer opacity-75">
+                                <div class="rating rating-sm" hx-post="/rate" hx-include="[name=chatRating],#id-chat-input" hx-swap="none" hx-vals='js:{chatIdx: evalHTMX_rating(event)}' hx-ext='json-enc'>
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="1" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 border-2 border-green-500" value="2" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-orange-300 hover:scale-150 checked:scale-125 checked:bg-orange-600 checked:border-4" value="3" checked/>
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-orange-300 hover:scale-150" value="4" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-orange-300 hover:scale-150" value="5" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chat chat-start">
+                            <div class="chat-image avatar">
+                                <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">user</div>
+                            <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">Я хочу знайти 20 останніх зареєстрованих клієнтів(код, дата, імʼя, вік)</div>
+                        </div>
+                        <div class="chat chat-end">
+                            <div class="chat-image avatar">
+                                <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png" /></div>
+                            </div>
+                            <div class="chat-header font-bold text-base-content/50">assistant</div>
+                            <div class="chat-bubble p-2 whitespace-pre-wrap">Для того, щоб знайти 20 останніх зареєстрованих клієнтів, нам потрібно отримати інформацію з таблиць `CM_CUSTOMER` та `CM_CUSTOMER_INDIVIDUAL`. Ми будемо використовувати колонку `ENTRY_DATE` для визначення останніх зареєстрованих клієнтів.
+
+                        Ось SQL запит, який виконає це завдання:
+
+                        ```sql
+                        SELECT
+                            c.CODE AS CUSTOMER_CODE,
+                            c.ENTRY_DATE,
+                            ci.FIRST_NAME,
+                            ci.LAST_NAME,
+                            ci.BIRTHDAY,
+                            FLOOR(MONTHS_BETWEEN(SYSDATE, ci.BIRTHDAY) / 12) AS AGE
+                        FROM
+                            CM_CUSTOMER c
+                        JOIN
+                            CM_CUSTOMER_INDIVIDUAL ci ON c.CODE = ci.CODE
+                        ORDER BY
+                            c.ENTRY_DATE DESC
+                        FETCH FIRST 20 ROWS ONLY;
+                        ```
+
+                        Цей запит:
+                        1. Об&#39;єднує таблиці `CM_CUSTOMER` та `CM_CUSTOMER_INDIVIDUAL` за допомогою `JOIN` на колонці `CODE`.
+                        2. Вибирає колонки `CUSTOMER_CODE`, `ENTRY_DATE`, `FIRST_NAME`, `LAST_NAME`, `BIRTHDAY` та обчислює вік клієнта на основі дати народження (`BIRTHDAY`).
+                        3. Сортує результати за датою реєстрації (`ENTRY_DATE`) у порядку спадання.
+                        4. Обмежує результати до перших 20 рядків.
+
+                        Чи бажаєте ви, щоб я виконав цей запит і надав результати?</div>
+                            <div class="chat-footer opacity-75">
+                                <div class="rating" hx-post="/rate" hx-include="[name=chatRating],#id-chat-input" hx-swap="none" hx-vals='js:{chatIdx: evalHTMX_rating(event)}' hx-ext='json-enc'>
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="1" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="2" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="3" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="4" />
+                                    <input type="radio" name="chatRating" class="mask mask-star-2 bg-green-500" value="5" />
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            console.log(`FINISH load golang template CHAT. Total in chat Messages=${$('#chat-msg>.chat').length}`)
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="options-div" class="flex flex-col rounded-ss-box text-secondary overflow-y-scroll text-sm bg-black/80 h-[100%] p-3" style="display: none;">
+                <div class="artboard-demo flex flex-row input justify-around pl-1">
+                    <label for="msisdn" class="badge badge-accent label">MSISDN</label>
+
+
+                    <input id="msisdn" name="msisdn" type="text" class="border-0 input input-xs max-w-[55%] placeholder:italic placeholder:text-slate-400" hx-get="/ws/account" hx-indicator="#searchSpinner" hx-trigger="keyup[target.value.length > 11] changed delay:500ms" hx-target="#results" minlength="12" placeholder="Type here...">
+                    <span id="searchSpinner" class="htmx-indicator loading loading-spinner loading-sm text-secondary"></span>
+                </div>
+
+
+                <div id="results2" class="border mockup-phone mt-2 p-4 shadow-black shadow-lg overflow-y-scroll max-w-[100%] cursor-zoom-in" onclick="$(this).toggleClass('absolute overflow-y-scroll cursor-zoom-in cursor-zoom-out scale-125 top-[15%] left-[30%]').effect( 'slide', 300 )">
+                    <div class="camera"></div>
+                    <div class="display =">
+                        <div class="artboard overflow-scroll phone-2 pt-7 text-xs">
+                            <pre><code id="results" class="font-mono leading-0 text-wrap tracking-tighter"></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </main>
+
+
+    <script src="js/json-process.js"></script>
+
+    <script>
+        const username = "dmykolen";
+        const BtnText_HST = "CHAT HISTORY";
+        const fePathRegex = /\/fe\/users\/\w+\/chats\/\w+/;
+        let jsonObj = null;
+        let isPermitHTMXRequest = false;
+        function checkCondition() {
+            console.log(`checkCondition => btn-hst:text=[${$('#btn-hst').text()}] isPermitHtmxRequest=${isPermitHTMXRequest}`);
+            return isPermitHTMXRequest;
+        }
+
+        function newChatStart() {
+            $('#chat-hst-container').empty()
+            $('#chat-msg').empty()
+            $('#id-chat-input').val(null)
+        }
+
+        function chatBeautifull() {
+            $('.chat.chat-end>div.chat-bubble').each((i, v) => { v.innerHTML = mdParse(v.textContent) })
+        }
+
+        function chatJSONConvertToDataTable() {
+            $('.chat.chat-end>div.chat-bubble').each(function () {
+                if (isValidJSON($(this).text())) {
+                    console.log("isValidJSON = true")
+                    addTableToChatFromJSON($(this))
+                }
+            })
+        }
+
+        function toHtml(item) {
+            return `
+          <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+              <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/${username}/chats/${item.id}" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg"></i></div>
+              <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+                  <div class="text-sm font-bold">${item.id}</div>
+                  <div class="absolute right-2 badge badge-xs badge-warning">${item.createdTime}</div>
+              </div>
+          </div>`;
+        }
+
+        function addListener_rightSidebar() {
+            $("#options-div").hide("drop", { direction: "right" }, "fast");
+            let isOpenedOptions = false
+            $('#btn-options').on('click', function () {
+                console.log("btn-options clicked");
+
+                if (isOpenedOptions) {
+                    $("#options-div").hide("drop", { direction: "right" }, 200, function () {
+                        $('#chat-div').switchClass("mx-8 col-end-4", "mx-16 col-end-5");
+                        isOpenedOptions = false;
+                    });
+                } else {
+                    $('#chat-div').switchClass("mx-16 col-end-5", "mx-8 col-end-4", 200, "easeInOutQuad", function () {
+
+                        $("#options-div").show("slide", { direction: "right" }, 300);
+                        isOpenedOptions = true;
+                    });
+                }
+            });
+        }
+
+        function addListener_btn_history() {
+            $('#btn-hst').on('click', function () {
+                console.log("btn-hst clicked");
+                countClick(BtnText_HST);
+                $(this).text(function (index, currentvalue) {
+                    if (currentvalue === BtnText_HST) {
+                        isPermitHTMXRequest = true;
+                        $("#chat-msg").hide();
+                        $("#chat-hst-container").html(`<div class="toast toast-center toast-middle"><div class="alert alert-warning"><span>Loading...</span></div></div>`);
+                        return '❌'
+                    } else {
+                        isPermitHTMXRequest = false;
+                        $("#chat-hst-container").hide();
+                        $("#chat-msg").show('puff', 700);
+                        return BtnText_HST
+                    };
+                });
+            });
+        }
+
+        function addListener_htmx_settle(e) {
+            if (e.detail.pathInfo.requestPath.includes("account")) {
+                console.log(">>>htmx:afterSettle => TRIGGER::parse_account_json! EVT:", e);
+
+                e.target.innerHTML = hlJSON(JSONIndent(e.detail.xhr.responseText));
+            } else if (fePathRegex.test(e.detail.pathInfo.requestPath)) {
+                chatBeautifull();
+                chatJSONConvertToDataTable();
+                setTimeout(() => {
+                    addCopyBtnToCodeElems();
+                }, 100);
+            }
+        }
+
+        function addListener_htmx_history(e) {
+            if (e.detail.requestConfig.path.includes("/api/v1/users")) {
+                console.info('>>>htmx:afterRequest [/api/v1/users] TRIGGER history response parse');
+                if (e.detail.xhr.status != 200) {
+                    $("#chat-hst-container").html(`<div class="toast toast-center toast-middle"><div class="alert alert-error"><span>Http ERROR: ${e.detail.xhr.message}</span></div></div>`);
+                } else {
+                    jsonObj = JSON.parse(e.detail.xhr.responseText);
+                    console.log(`Got ${jsonObj?.data?.length ?? 'NULL'} chats`);
+                    let resultHTML = "";
+                    jsonObj.data?.forEach((item) => { resultHTML += toHtml(item); });
+                    console.debug(resultHTML);
+                    $("#chat-hst-container").html(`<div class="flex flex-col space-y-1 p-4 h-full w-full">` + resultHTML + `</div>`).show("drop", { direction: "up" }, "slow");
+                    htmx.process($("#chat-hst-container")[0]);
+                }
+            } else if (fePathRegex.test(e.detail.requestConfig.path)) {
+                $("#btn-hst").click();
+            }
+        }
+
+        function watchContinuasly_on_node() {
+
+            const targetNode = document.getElementById("chat-msg");
+
+
+            const config = { childList: true };
+
+
+            const callback = (mutationList, observer) => {
+                for (const mutation of mutationList) {
+                    console.log('Watch on[chat-msg] -> MUTATION:', mutation)
+                    if (mutation.type === "childList") {
+                        console.log("A child node has been added or removed.");
+                    } else if (mutation.type === "attributes") {
+                        console.log(`The ${mutation.attributeName} attribute was modified.`);
+                    }
+                }
+            };
+
+
+            const observer = new MutationObserver(callback);
+
+
+            observer.observe(targetNode, config);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("Document ready!");
+            addListener_rightSidebar();
+            addListener_btn_history();
+
+            $('#btn-new-chat').click(function () {
+                console.log('CLICKED #btn-new-chat')
+                newChatStart();
+            })
+
+            $(document).on({
+                'htmx:afterRequest': addListener_htmx_history,
+                'htmx:afterSettle': addListener_htmx_settle
+            });
+
+            watchContinuasly_on_node();
+
+            $("#chat-msg").on('DOMNodeInserted', function (e) {
+                console.debug("DOMNodeInserted => ", e.target);
+
+                if (event.target.nodeType === Node.ELEMENT_NODE) {
+                    console.debug('New HTML added to #chat-msg element:', event.target);
+                    let chatID = $(this).find('#chat-id-div').text();
+                    if (chatID !== "") {
+                        console.info('>>>> SET chat id=[%s]', chatID)
+                        $("#id-chat-input").val(chatID);
+                    }
+                }
+            });
+
+            $("#chat-btn").on('click', function () {
+                $(window).scrollTop($('#chat-div').offset().top);
+            });
+        });
+    </script>
+    <script src="js/app.js"></script>
+    <script defer="defer" src="js/htmx.js"></script>
+    <script src="js/typing_words.js"></script>
+    <script defer="defer">const pt_AWI = "AI Web Interface";
+
+        const pageTitle = "VoIP";
+        var es = null;
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(`Document ready! pageTitle=${pageTitle}`);
+            userAuthCheck(es);
+            sideBar();
+            controlTextArea();
+            addListener_btn_send();
+            if (pageTitle == pt_AWI) {
+                InitSTT();
+            }
+        })</script>
+
+    <script defer="defer" src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
+    <script defer="defer" src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1012 @@
+<script src="/node_modules/htmx.org/dist/htmx.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    #main-container {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+    .animate-gradient {
+        background-size: 200% 200%;
+        animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Animation classes */
+    .fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+
+<div id="global-loader" class="bg-black/50 fixed htmx-indicator left-24 right-24 top-0">
+    <!-- <div class="h-full w-1/3 bg-gradient-to-r from-violet-600 to-indigo-600 animate-[loading_1s_ease-in-out_infinite]"></div> -->
+    <progress class="h-4 progress"></progress>
+</div>
+
+<!-- Toast Notifications Container -->
+<div id="toast-container" class="toast toast-bottom toast-center z-50"></div>
+
+<div id="main-container" class="backdrop-blur-xl backdrop-brightness-50 bg-blend-hue h-dvh overflow-hidden p-4 pt-14 w-full">
+    <!-- <div class="duration-300 h-full mx-10 overflow-hidden rounded-2xl shadow-black/70 shadow-lg transition-all"> -->
+    <div class="duration-300 h-full mx-10 overflow-hidden rounded-2xl shadow-black/70 shadow-lg transition-all">
+        <div class="bg-black/50 border-b border-white/10 py-5 to-indigo-900/30">
+            <div class="grid grid-cols-6 items-center">
+                <h1 class="bg-clip-text bg-gradient-to-r text-center col-end-6 col-start-2 font-bold from-purple-400 text-3xl text-transparent to-pink-400">
+                    User Management System
+                </h1>
+                <div class="flex justify-end">
+                    <button class="btn btn-ghost btn-circle text-white/80 hover:text-white transition-all duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-ghost btn-circle text-white/80 hover:text-white transition-all duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gradient-to-b from-black/20 p-6 to-transparent">
+            <div id="tabs" class="flex gap-2 p-1 bg-black/30 rounded-2xl backdrop-blur-xl border border-white/5">
+                <button class="tab-link flex-1 px-6 py-4 text-white rounded-xl transition-all duration-300 hover:bg-white/10 flex items-center justify-center gap-3 btn-active" data-tab="users-tab" hx-get="/api/access/users" hx-target="#users-table" hx-trigger="click, userChanged from:body" hx-swap="innerHTML">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    Users
+                </button>
+
+                <button class="tab-link flex-1 px-6 py-4 text-white rounded-xl transition-all duration-300 hover:bg-white/10 flex items-center justify-center gap-3" data-tab="roles-tab" hx-get="/api/access/roles" hx-target="#roles-table" hx-swap="innerHTML">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                    </svg>
+                    Roles
+                </button>
+
+                <button class="tab-link flex-1 px-6 py-4 text-white rounded-xl transition-all duration-300 hover:bg-white/10 flex items-center justify-center gap-3" data-tab="groups-tab" hx-get="/api/access/groups" hx-target="#groups-table" hx-trigger="click, groupChanged from:body" hx-swap="innerHTML">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Groups
+                </button>
+
+                <button class="tab-link flex-1 px-6 py-4 text-white rounded-xl transition-all duration-300 hover:bg-white/10 flex items-center justify-center gap-3" data-tab="permissions-tab" hx-get="/api/access/permissions" hx-target="#permissions-table" hx-swap="innerHTML">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                    Permissions
+                </button>
+            </div>
+        </div>
+
+
+        <div id="am-tab-contents" class="h-full overflow-hidden px-10">
+            <div id="users-tab" class="tab-content-custom  h-full overflow-hidden" hx-get="/api/access/users" hx-trigger="load" hx-indicator="#users-loader" hx-target="#users-table" hx-swap="innerHTML" hx-ext="json-enc">
+
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                        Users
+                    </h2>
+                    <div class="flex gap-4">
+                        <div class="relative">
+                            <input id="search-input-u" type="text" placeholder="Filter..." class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50 pr-10 w-64 search-input" data-target="users-table">
+                            <svg class="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button class="btn-primary bg-gradient-to-r from-violet-600 to-indigo-600 border-none hover:from-violet-700 hover:to-indigo-700 text-white hidden">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add New User
+                    </button>
+                </div>
+                <style>
+                    /* hide 2nd column including header */
+                    /* #users-tab .table-pin-rows th:nth-child(2),
+                        #users-tab .table-pin-rows td:nth-child(2) {
+                            display: none;
+                        } */
+
+                    #users-tab .table-pin-rows th:nth-child(1),
+                    #users-tab .table-pin-rows td:nth-child(1) {
+                        background-color: #05050569;
+                    }
+
+                    tr.groupi::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        height: 100%;
+                        width: 0;
+                        background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+                        transition: width 0.3s ease;
+                    }
+
+                    tr.group:hover::after {
+                        width: 90%;
+                    }
+                </style>
+                <!-- <div class="bg-black/20 border-white/10 h-2/3 overflow-y-auto rounded-xl">
+                        <div id="users-loader" class="absolute htmx-indicator left-1/2 z-50">
+                            <div class="animate-spin border-b-2 border-b-4 border-violet-600 h-14 rounded-full w-14"></div>
+                        </div>
+                        <table class="table table-xs w-full table-pin-rows">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-violet-600/20 to-indigo-600/20 text-indigo-200 border-b border-white/10 uppercase">
+                                    <th class="text-center w-[3px]">ID</th>
+                                    <th class="pl-4 text-left"></th>
+                                    <th class="pl-4 text-left">Username</th>
+                                    <th class="pl-4 text-left">Email</th>
+                                    <th class="pl-4 text-left">Status</th>
+                                    <th class="pl-4 text-left">Roles</th>
+                                    <th class="pl-4 text-left">Groups</th>
+                                    <th class="pl-4 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table" class="divide-y divide-white/10 animate__animated animate__flipinx">
+                            </tbody>
+                        </table>
+                    </div> -->
+                <!-- Enhanced Table Section -->
+                <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl shadow-xl overflow-y-auto">
+                    <!-- Loading Indicator -->
+                    <div id="users-loader" class="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm htmx-indicator">
+                        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 shadow-lg shadow-purple-500/30"></div>
+                    </div>
+
+                    <table class="table table-xs table-pin-rows w-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-black/20 via-purple-600 animate-gradient text-slate-200 uppercase tracking-wider">
+                                <th class="text-center w-[60px] py-4"></th>
+                                <th class="py-4">User</th>
+                                <th class="py-4">Email</th>
+                                <th class="py-4">Status</th>
+                                <th class="py-4">Roles</th>
+                                <th class="py-4">Groups</th>
+                                <th class="py-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table" class="divide-y divide-slate-700/50 animate__animated animate__flipinx">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <div class="text-white/60 text-sm invisible">
+                        Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">10</span> of <span class="font-medium text-white">20</span> entries
+                    </div>
+                    <div class="join">
+                        <button class="join-item btn btn-sm bg-black/20 border-white/10 text-white hover:bg-white/10">Previous</button>
+                        <button class="join-item btn btn-sm bg-white/10 border-white/10 text-white">1</button>
+                        <button class="join-item btn btn-sm bg-black/20 border-white/10 text-white hover:bg-white/10 hidden">2</button>
+                        <button class="join-item btn btn-sm bg-black/20 border-white/10 text-white hover:bg-white/10">Next</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="roles-tab" class="tab-content-custom animate-fadeIn h-full overflow-hidden hidden" hx-get="/api/access/roles" hx-trigger="load" hx-target="#roles-table" hx-swap="innerHTML">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                        Role Management
+                    </h2>
+                    <div class="flex gap-4">
+                        <div class="relative">
+                            <input id="search-input-r" type="text" placeholder="Filter..." class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50 pr-10 w-64 search-input" data-target="roles-table">
+                            <svg class="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary bg-gradient-to-r from-emerald-500 to-teal-500 border-none hover:from-emerald-600 hover:to-teal-600 text-white" id="new-role-button" onclick="showNewRoleForm()">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        New Role
+                    </button>
+                </div>
+
+                <div id="new-role-form" class="hidden mb-6">
+                    <div class="glass-card p-6 rounded-xl">
+                        <form id="create-role-form" class="space-y-4" hx-ext="json-enc" hx-post="/api/access/roles" hx-target="#roles-table" hx-swap="beforeend">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text text-white">Role Name</span>
+                                    </label>
+                                    <input type="text" id="role-name" name="name" class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50" placeholder="Enter role name">
+                                </div>
+                                <div class="form-control">
+                                    <label class="label" for="role-code">
+                                        <span class="label-text text-white peer-invalid:text-pink-600">Role Code</span>
+                                    </label>
+                                    <input type="text" id="role-code" name="code" class="peer input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50 uppercase invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" placeholder="Enter role code" pattern="[a-zA-Z_]{3,12}">
+                                    <p class="mt-2 -mb-4 invisible peer-invalid:visible text-pink-600 text-xs">
+                                        only uppercase letters and underscore (2-12)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text text-white">Description</span>
+                                </label>
+                                <textarea id="role-description" name="description" class="textarea textarea-bordered bg-black/20 border-white/10 text-white placeholder-white/50 h-24" placeholder="Enter role description"></textarea>
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text text-white">Permissions</span>
+                                </label>
+                                <select multiple="" id="role-permissions" name="permissions" class="select select-bordered bg-black/20 border-white/10 text-white min-h-[120px]"></select>
+                            </div>
+                            <div class="flex justify-end gap-3">
+                                <button type="button" class="btn btn-ghost text-white hover:bg-white/10" onclick="$('#create-role-form').trigger('reset');$('#role-permissions').empty();$('#new-role-form').hide(500)">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary bg-gradient-to-r from-emerald-500 to-teal-500 border-none hover:from-emerald-600 hover:to-teal-600 text-white">
+                                    Create Role
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto bg-black/20 border-white/10 h-2/3 overflow-y-auto rounded-xl">
+                    <table class="overflow-y-auto table table-xs w-full table-pin-rows animate__animated animate__flipinx">
+                        <thead>
+                            <!-- <tr class="bg-gradient-to-r from-emerald-600/20 to-teal-600/20 text-white border-b border-white/10 h-8 uppercase"> -->
+                            <tr class="bg-gradient-to-r from-emerald-600/20  to-teal-500 animate-gradient text-white border-b border-white/10 uppercase">
+                                <th class="pl-4">ID</th>
+                                <th class="pl-4">Name</th>
+                                <th class="pl-4">Code</th>
+                                <th class="pl-4">Description</th>
+                                <th class="pl-4">Permissions</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roles-table" class="divide-y divide-white/10">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div id="groups-tab" class="tab-content-custom animate-fadeIn h-full overflow-hidden hidden" hx-get="/api/access/groups" hx-trigger="load" hx-target="#groups-table" hx-swap="innerHTML">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                        Group Management
+                    </h2>
+                    <div class="flex gap-4">
+                        <div class="relative">
+                            <input id="search-input-g" type="text" placeholder="Filter..." class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50 pr-10 w-64 search-input" data-target="groups-table">
+                            <svg class="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button class="btn-primary bg-gradient-to-r from-blue-500 to-indigo-500 border-none hover:from-blue-600 hover:to-indigo-600 text-white hidden">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        New Group
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto bg-black/20 border-white/10 h-2/3 overflow-y-auto rounded-xl">
+                    <table class="overflow-y-auto table table-xs w-full table-pin-rows animate__animated animate__flipinx">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 text-white border-b border-white/10 uppercase h-8">
+                                <th class="pl-4">ID</th>
+                                <th class="pl-4">Name</th>
+                                <th class="pl-4">Description</th>
+                                <th class="pl-4">Roles</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="groups-table" class="divide-y divide-white/10" style="">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div id="permissions-tab" class="tab-content-custom animate-fadeIn h-full overflow-hidden hidden" hx-get="/api/access/permissions" hx-trigger="load" hx-target="#permissions-table" hx-swap="innerHTML">
+
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                        Permissions
+                    </h2>
+                    <div class="flex gap-4">
+                        <div class="relative">
+                            <input id="search-input-p" type="text" placeholder="Filter..." class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50 pr-10 w-64 search-input" data-target="permissions-table">
+                            <svg class="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary bg-gradient-to-r from-pink-500 to-rose-500 border-none hover:from-pink-600 hover:to-rose-600 text-white" onclick="$('#new-permission-form').show(500)">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        New Permission
+                    </button>
+                </div>
+
+                <div id="new-permission-form" class="hidden mb-6">
+                    <div class="glass-card p-6 rounded-xl">
+                        <form id="permission-form" hx-post="/api/access/permissions" hx-ext="json-enc" hx-target="#permissions-table" hx-swap="beforeend" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text text-white">Permission Name</span>
+                                    </label>
+                                    <input type="text" id="name" name="name" class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50" placeholder="Enter permission name" required="">
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text text-white">Permission Code</span>
+                                    </label>
+                                    <input type="text" id="code" name="code" class="input input-bordered bg-black/20 border-white/10 text-white placeholder-white/50" placeholder="Enter permission code" required="">
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-3">
+                                <button type="button" class="btn btn-ghost text-white hover:bg-white/10" onclick="$('#new-permission-form').hide(500)">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary bg-gradient-to-r from-pink-500 to-rose-500 border-none hover:from-pink-600 hover:to-rose-600 text-white">
+                                    Create Permission
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="bg-black/20 border-white/10 h-2/3 overflow-y-auto rounded-xl">
+                    <table class="overflow-y-auto table table-pin-rows table-xs animate__animated animate__flipinx">
+                        <thead class="border-b-2 border-b-white/20">
+                            <tr class="bg-gradient-to-r text-white to-rose-600/20 uppercase font-extrabold h-10">
+                                <th class="text-center w-[2px]">ID</th>
+                                <th class="pl-4">Name</th>
+                                <th class="pl-4">Code</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="permissions-table" class="divide-white/10 divide-y font-medium text-gray-300">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script defer>
+    const msgSuccessTemplDel = `<div id="delete-message" class="absolute bg-black/40 left-1/3 p-1 rounded-md shadow-lg text-center text-success top-1/2 w-64">%s</div>`;
+    const msgSuccessDel = msgSuccessTemplDel.replace('%s', 'deleted successfully');
+
+    window.onload = initHTMX;
+    document.addEventListener("DOMNodeInserted", initHTMX);
+
+    function isHtmxReady() {
+        return typeof htmx !== 'undefined' && htmx.on !== undefined;
+    }
+
+    function htmxBeforeSwapHandler(evt) {
+            $(evt.detail.target).fadeOut(500);
+
+            console.log('Before Swap:', event.detail);
+            const method = event.detail.requestConfig ? event.detail.requestConfig.verb : null;
+            if (method === "delete") {
+                console.log('processing for delete requests...');
+                if (event.detail.xhr.status == 200) {
+                    let resp = tryJSONParse(event.detail.xhr.responseText)
+                    console.log(`[resp && resp.message]=${resp && resp.message}; resp:`, resp)
+                    event.detail.shouldSwap = false;
+                    showToast(resp?.message || 'Deleted successfully');
+                }
+                return; // Skip processing for delete requests
+            } else if (method === "post" || method === "put") {
+                event.detail.shouldSwap = method === "post";
+                console.log('processing for post/put requests... shouldSwap:', event.detail.shouldSwap);
+
+                let respObj = tryJSONParse(event.detail.xhr.responseText)
+                console.log(`[resp && resp.message]=${respObj?.message}; resp:`, respObj);
+
+                switch (event.detail.xhr.status) {
+                    case 200:
+                    case 201:
+                        showToast(respObj?.message || 'Operation successful');
+                        if (method === "put") return;
+                        break;
+                    case 400:
+                        showToast(respObj?.error || respObj?.message || 'Operation failed', 'error');
+                        return;
+                    default:
+                        showToast('Request failed', 'error');
+                        break;
+                }
+            }
+
+
+            const targetId = event.detail.target.id;
+            const objName = targetId.split('-')[0];
+            let resp;
+            try {
+                resp = [200, 201].includes(event.detail.xhr.status) ? JSON.parse(event.detail.xhr.responseText) : (isDev ? testData[objName] : []);
+            } catch (error) {
+                console.error('Failed to parse response JSON:', error);
+                resp = [];
+            }
+            console.log(`Before Swap: targetId: ${targetId}; Method: ${method}; objName: ${objName};`, 'Response:', resp);
+
+            if (event && event.detail.xhr.status === 200 && (targetId === 'users-table' || targetId === 'roles-table' || targetId === 'groups-table' || targetId === 'permissions-table')) {
+                window.localStorage.setItem(targetId, JSON.stringify(resp));
+            }
+
+            switch (targetId) {
+                case 'users-table': processUserData(event, resp); break;
+                case 'roles-table': processRoleData(event, resp); break;
+                case 'groups-table': processGroupData(event, resp); break;
+                case 'permissions-table': processPermissionData(event, resp); break;
+            }
+        }
+
+    function initHTMX() {
+        console.log('Initializing HTMX... isReady =>', isHtmxReady());
+        // HTMX Configuration
+        htmx.config.timeout = 10000;
+        htmx.config.historyEnabled = true;
+        htmx.config.historyCacheSize = 10;
+        htmx.config.defaultPrompt = 'Are you sure? maza faka';
+        htmx.config.globalIndicator = '#global-loader';
+
+        htmx.config.defaultSettleDelay = 0;
+htmx.config.defaultSwapStyle = 'none';
+
+
+        htmx.on('htmx:beforeRequest', (event) => {
+            const target = event.detail.target;
+            target.classList.add('opacity-50');
+
+            // Log request body for PUT and POST requests
+            const method = event.detail.requestConfig.verb;
+            if (method === 'put' || method === 'post') {
+                const body = event.detail.requestConfig.parameters;
+                console.log(`${method} Request Body:`, body);
+            }
+        });
+
+        htmx.on('htmx:afterRequest', (event) => {
+            const target = event.detail.target;
+            target.classList.remove('opacity-50');
+        });
+
+        htmx.on('htmx:timeout', (event) => {
+            console.error('Request Timeout:', event.detail);
+            event.detail.shouldSwap = true;
+            event.detail.isError = true;
+            showToast('Request timed out. Please try again.', 'error');
+        });
+
+        htmx.on('htmx:responseError', (event) => {
+            console.debug('Response Error:', event.detail);
+            details = event.detail.error ? `<div class="bg-error/10 text-slate-500 rounded-b-lg p-2 text-xs">${event.detail.error}</div>` : '';
+            showToast(`An error occurred while processing your request.${details}`, 'error');
+        });
+
+        // htmx.on("htmx:beforeSwap", htmxBeforeSwapHandler);
+
+        htmx.on("htmx:afterSwap", function (evt) {
+            $(evt.detail.target).fadeIn(500);
+
+            if ($("#delete-message").length) {
+                console.log("Element with ID 'delete-message' - exists!");
+                $("#delete-message").delay(1000).fadeOut(1000, function () { $(this).remove(); });
+            }
+        });
+    }
+
+    function showNewRoleForm() {
+        if (!$("#new-role-form").is(":hidden")) {
+            return;
+        }
+        console.log('SHOW new role form')
+        const permissions = JSON.parse(localStorage.getItem('permissions-table')) || [];
+        const options = permissions.map(perm => `<option value="${perm.code}">${perm.name}</option>`).join('');
+        console.log(options)
+        $('#role-permissions').append(options)
+        $('#new-role-form').show(500);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initHTMX();
+
+        document.addEventListener("htmx:beforeSwap", htmxBeforeSwapHandler);
+
+        document.addEventListener("htmx:afterSettle", function (evt) {
+            $(evt.detail.target).fadeIn(500);
+        });
+
+
+
+
+
+        // Tab Switching with animations
+        $('#tabs button').on('click', function () {
+            const $this = $(this);
+
+            $('#role-permissions').empty();
+            $('#create-role-form, #permission-form').trigger('reset');
+            $('#new-role-form, #new-permission-form').hide(500);
+
+            // Animate out current tab
+            $('.tab-content-custom:visible').fadeOut(200, function () {
+                $(`#${$this.data('tab')}`).fadeIn(200);
+            });
+
+            // Update active state with smooth transition
+            $this.addClass('btn-active').siblings().removeClass('btn-active');
+        });
+
+        // Smooth form transitions
+        $('.edit-btn').click(function () {
+            const row = $(this).closest('tr');
+            row.find('.editable').each(function () {
+                const value = $(this).text();
+                $(this).fadeOut(200, function () {
+                    $(this).html(`<input type="text" class="input input-bordered input-sm bg-black/20 border-white/10 text-white" value="${value}">`).fadeIn(200);
+                });
+            });
+        });
+
+        // Form validation with visual feedback
+        $('form').on('submit', function (e) {
+            console.log('Form submitted:', this);
+            const requiredFields = $(this).find('[required]');
+            let isValid = true;
+
+            requiredFields.each(function () {
+                if (!$(this).val()) {
+                    isValid = false;
+                    $(this).addClass('input-error')
+                        .siblings('.error-message')
+                        .fadeIn(200);
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Real-time search filtering
+        $('.search-input').on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+            const targetTable = $(this).data('target');
+
+            $(`#${targetTable} tr`).each(function () {
+                const text = $(this).text().toLowerCase();
+                $(this).toggle(text.includes(searchTerm));
+            });
+        });
+    });
+
+
+    // JavaScript
+    // -------------------------------------------------------------------
+    // -------------------------------------------------------------------
+
+    // Toast notification function
+    function showToast(message, type = 'success') {
+        console.debug(`showToast: msg=[${message}] type=(${type})`);
+        const toast = $(`<div class="bg-transparent/50 mb-1 shadow-md font-medium rounded-lg border-0 animate__animated animate__backInRight"><p class="p-2 text-sm">${message}</p></div>`);
+
+        switch (type) {
+            case 'error': toast.addClass('shadow-red-500/90 text-red-500/70 border-pink-500/30'); break;
+            case 'success': toast.addClass('shadow-green-500/90 text-green-500/70 border-green-500/30'); break;
+            case 'warning': toast.addClass('shadow-amber-500/90 text-amber-500/70 border-amber-500/30'); break;
+            case 'info': toast.addClass('shadow-blue-500/90 text-blue-500/70 border-blue-500/30'); break;
+        }
+        $('#toast-container').append(toast);
+
+        setTimeout(() => {
+            toast.removeClass('animate__backInRight').addClass('animate__backOutRight');
+            setTimeout(() => toast.remove(), 1000);
+        }, 3000);
+    }
+
+    // Form validation
+    function validateForm(event) {
+        const form = event.detail.elt;
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            showToast('Please fill all required fields correctly', 'error');
+            return false;
+        }
+        return true;
+    }
+
+    // Response handler
+    function handleResponse(event) {
+        const response = event.detail.xhr.response;
+        try {
+            const data = JSON.parse(response);
+            if (data.success) {
+                showToast(data.message || 'Operation successful');
+                htmx.trigger('body', 'userChanged');
+            } else {
+                showToast(data.error || 'Operation failed', 'error');
+            }
+        } catch (e) {
+            showToast('An unexpected error occurred', 'error');
+        }
+    }
+
+    window.onerror = function (msg, url, line) {
+        console.info('An error occurred:', msg, 'line:', line, 'url:', url);
+        showToast(`An error occurred: ${msg}; line=${line}; url=${url}`, 'error');
+        return false;
+    };
+    // -------------------------------------------------------------------
+    // -------------------------------------------------------------------
+
+    function tryJSONParse(data) {
+        try {
+            return JSON.parse(data);
+        } catch (error) {
+            console.debug('Failed to parse JSON:', error, 'Original data:', data);
+            return null;
+        }
+    }
+
+    // Function to process user data
+    function processUserData(event, data) {
+        console.log('Processing user data...', data);
+        event.detail.serverResponse = renderTableUsers(data);
+
+        $('#users-table').on('click', '.save-btn', saveUser);
+        $('#users-table').off('click', '.edit-btn', editUser);
+        $('#users-table').on('click', '.edit-btn', editUser);
+        $('#users-table').on('click', '.cancel-btn', cancelUser);
+    }
+
+    // Function to process role data
+    function processRoleData(event, data) {
+        console.log('Processing role data...', data);
+        event.detail.serverResponse = renderTableRoles(data);
+
+    }
+
+    // Function to process group data
+    function processGroupData(event, data) {
+        console.log('Processing group data...', data);
+        event.detail.serverResponse = renderTableGroups(data);
+
+        // Bind event handlers for group actions
+        $('#groups-table').on('click', '.save-group-btn', saveGroup);
+        $('#groups-table').off('click', '.edit-group-btn', editGroup);
+        $('#groups-table').on('click', '.edit-group-btn', editGroup);
+        $('#groups-table').on('click', '.cancel-group-btn', cancelGroup);
+    }
+
+    // Function to process permission data
+    function processPermissionData(event, data) {
+        console.log('Processing permission data...', data);
+        event.detail.serverResponse = renderTablePermissions(data);
+    }
+
+    // Render the user data into the table
+    function renderTableUsers(data) {
+        console.log(`Rendering user data... TYPE=${typeof data} DATA=${JSON.stringify(data)}`);
+        /* let rows = `<tr class="duration-200 h-32 hover:bg-white/5 text-gray-100 transition-colors" id="user-1">
+                        <td class="text-sm font-medium"><div class="avatar"><div class="duration-200 ease-in-out grayscale hover:grayscale-0 hover:translate-x-2 lg:w-10 md:hover:scale-150 transition-all w-8"><img class="duration-500 hover:rotate-[360deg] mask mask-diamond mask-half-2" src="Dimon4ik.png" /></div></div></td>
+                        <td class="p-4"><span class="font-medium text-white" data-field="username">dmykolen</span></td>
+                        <td class="p-4"><span class="text-gray-300" data-field="email">DIma@gmail.com</span></td>
+                        <td class="p-4"><span class="badge badge-success badge-xs font-medium" data-field="status">active</span></td>
+                        <td class="px-2"><span data-field="roles"><span class="font-medium badge badge-sm badge-outline badge-error bg-red-500/20 text-pink-500">ADMIN_VOIP</span> <span class="font-medium badge badge-sm badge-outline badge-error bg-red-500/20 text-pink-500">VECTORDATABASE_ADMIN</span></span></td>
+                        <td class="px-2">
+                            <span data-field="groups" class="flex flex-col max-h-24 overflow-y-auto space-y-0.5">
+                                <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">TESTDEVAD_Admins</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">APIGWUI_manager</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">O365LicenseAdd</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">Group_3c3f7507-9400-41aa-8923-dae58c3fbb61</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">Group_f91ff597-f385-4336-bc40-294d295edb3f</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">oplata_devs</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">ICT-DEV-PD-SI</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">!SPS_ICT-DEV-PD-SI_SG</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">!windows_subsystem_linux</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">!VMWARE_DEV_DS</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">!SPS_RITM_SG</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">Printing-access</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">!ICT-DEV_LAN_AG</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">BPM_allUsers_AG</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">!ICT_LAN_AG</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">ELFUI_manager</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">iui_dev</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">IDR_MANAGER</span> <span class="badge badge-xs border-0 bg-cyan-500/20 font-medium py-2 text-cyan-400 tracking-tighter">Astelit Groupnet Users</span>
+                            </span>
+                        </td>
+                        <td class="">
+                            <div class="flex flex-col justify-center lg:flex-row lg:scale-110 opacity-80 gap-2">
+                                <button class="bg-amber-500/20 border-0 btn btn-sm btn-square duration-300 edit-btn hover:bg-amber-500/30 hover:opacity-100 hover:scale-125 self-center text-amber-400 transform transition-all" data-id="1"><span class="material-symbols-outlined">edit_square</span></button>
+                                <button class="bg-rose-500/20 border-0 btn btn-sm btn-square delete-btn duration-300 ease-in-out hover:bg-rose-500/30 hover:opacity-100 hover:scale-125 self-center text-rose-500 transition-all" hx-delete="/api/access/users/1" hx-confirm="Are you sure?" hx-target="#user-1" hx-swap="outerHTML"><span class="material-symbols-outlined">delete_forever</span></button>
+                            </div>
+                        </td>
+                    </tr>`; */
+        let rows = '';
+        data.forEach(user => {
+            const roles = user.roles ? user.roles.map(role => `<span class="badge p-1 rounded-md cursor-pointer ${getBadgeClass(role)}">${role}</span>`).join(' ') : '';
+            const groups = user.groups ? user.groups.map(group => `<span class="badge badge-xs border-0 bg-cyan-500/20 py-2 text-cyan-400 cursor-pointer select-all">${group}</span>`).join(' ') : '';
+            rows += `
+                        <tr class="group text-gray-100 hover:bg-white/5 transition-colors duration-200" id="user-${user.id}">
+                            <td class="text-sm font-medium"><div class="avatar"><div class="duration-200 ease-in-out grayscale group-hover:grayscale-0 group-hover:translate-x-2 lg:w-10 md:group-hover:scale-150 transition-all w-8"><img class="duration-500 group-hover:rotate-[360deg] mask mask-diamond mask-half-2" src="/api/v1/users/photo/${user.id}" /></div></div></td>
+                            <td class=""><span class="font-medium text-white" data-field="username">${user.username}</span></td>
+                            <td class="p-4"><span class="text-gray-300" data-field="email">${user.email}</span></td>
+                            <td class="p-4"><span class="badge badge-xs font-medium ${user.status == 'active' ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400' : 'bg-amber-500/20 border-amber-500/30 text-amber-400'}" data-field="status">${user.status}</span></td>
+                            <td class="min-w-48 px-4"><span data-field="roles" class="flex flex-wrap font-medium gap-1 max-h-12 overflow-y-auto">${roles}</span></td>
+                            <td class="px-4"><span data-field="groups" class="flex flex-wrap font-medium gap-1 max-h-12 overflow-y-auto tracking-tighter">${groups}</span></td>
+                            <td class="">
+                                <div class="flex flex-col justify-center lg:flex-row lg:scale-110 opacity-80 gap-2">
+                                    <button class="bg-amber-500/20 border-0 btn btn-sm btn-square duration-300 edit-btn hover:bg-amber-500/30 hover:opacity-100 hover:scale-125 self-center text-amber-400 transform transition-all" data-id="${user.id}"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="bg-rose-500/20 border-0 btn btn-sm btn-square delete-btn duration-300 ease-in-out hover:bg-rose-500/30 hover:opacity-100 hover:scale-125 self-center text-rose-500 transition-all" hx-delete="/api/access/users/${user.id}" hx-confirm="Are you sure?" hx-target="#user-${user.id}" hx-swap="outerHTML"><span class="material-symbols-outlined">delete_forever</span></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+        });
+        console.log('IS_TABLE_ROWS_EMPTY:', rows === '');
+        return rows;
+    }
+
+    function getBadgeClass(role) {
+        let r = role.toLowerCase();
+        switch (true) {
+            case r.includes('admin'):
+                return 'bg-pink-500/20 border-pink-500/30 hover:bg-pink-500/30 text-pink-400';
+            case r.includes('voip'):
+                return 'bg-emerald-500/20 border-emerald-500/30 hover:bg-emerald-500/30 text-emerald-400';
+            case r.includes('user'):
+                return 'bg-blue-500/20 border-blue-500/30 hover:bg-blue-500/30 text-blue-400';
+            default:
+                return 'badge-neutral';
+        }
+    }
+
+    function renderTableRoles(data) {
+        console.log('Rendering role data... TYPE=${typeof data} DATA=${JSON.stringify(data)}');
+        let rows = '';
+        data.forEach(role => {
+            const permissionBadges = role.permissions?.map(perm =>
+                    `<span class="badge badge-sm ${getPermissionClass(perm)} mr-1 mb-1">${perm}</span>`
+                ).join('') || '';
+            rows += `<tr class="text-gray-100 hover:bg-white/5 transition-colors duration-200" id="role-${role.id}">
+                            <td class="p-4">${role.id}</td>
+                            <td class="p-4"><span data-field="name">${role.name}</span></td>
+                            <td class="p-4"><span data-field="code">${role.code}</span></td>
+                            <td class="p-4"><span data-field="description">${role.description}</span></td>
+                            <td class="p-4"><span data-field="permissions">${permissionBadges}</span></td>
+                            <td class="text-center">
+                                <button class="delete-btn btn btn-sm btn-error btn-outline duration-200 transition-all" hx-delete="/api/access/roles/${role.id}" hx-confirm="Are you sure?" hx-target="#role-${role.id}" hx-swap="outerHTML">Delete</button>
+                            </td>
+                        </tr>`;
+        });
+        console.log('IS_TABLE_ROWS_EMPTY:', rows === '');
+        return rows;
+    }
+
+    function getPermissionClass(perm) {
+            if (perm.startsWith('fe.')) {
+                return 'badge-info bg-blue-500/20 text-blue-400';
+            } else if (perm.startsWith('api.')) {
+                return 'badge-success bg-emerald-500/20 text-emerald-400';
+            } else if (perm.startsWith('vectordb.')) {
+                return 'badge-warning bg-orange-500/20 text-orange-400';
+            } else if (perm.includes('.manage') || perm.includes('.modify')) {
+                return 'badge-secondary bg-purple-500/20 text-purple-400';
+            } else if (perm.startsWith('ws_')) {
+                return 'badge-info bg-teal-500/20 text-teal-400';
+            } else {
+                return 'badge-neutral bg-gray-500/20 text-gray-400';
+            }
+        }
+
+    function renderTableGroups(data) {
+        console.log('Rendering group data...');
+        let rows = '';
+        data.forEach(group => {
+            const roles = group.roles ? group.roles.map(role => `<span class="font-medium badge badge-sm badge-outline cursor-pointer rounded-lg ${getBadgeClass(role)}">${role}</span>`).join(' ') : '';
+            rows += `
+            <tr class="hover:bg-white/5 transition-colors duration-200" id="group-${group.id}">
+                <td class="p-4">${group.id}</td>
+                <td class="p-4 editable" data-field="name">${group.name}</td>
+                <td class="p-4 editable" data-field="description">${group.description}</td>
+                <td class="p-4"><span data-field="roles">${roles}</span></td>
+                <td class="p-4 text-center">
+                    <button class="edit-group-btn btn btn-sm bg-amber-500/10 btn-outline btn-warning rounded-lg text-amber-300 duration-200 transition-all" data-id="${group.id}">Edit</button>
+                    <button class="delete-btn btn btn-sm btn-error btn-outline duration-200 transition-all" hx-delete="/api/access/groups/${group.id}" hx-confirm="Are you sure?" hx-target="#group-${group.id}" hx-swap="outerHTML">Delete</button>
+                </td>
+            </tr>`;
+        });
+        return rows;
+    }
+
+    function renderTablePermissions(data) {
+        console.log('Rendering permission data...');
+        let rows = '';
+        data.forEach(permission => {
+            rows += renderRowPermission(permission);
+        });
+        console.log('IS_TABLE_ROWS_EMPTY:', rows === '');
+        return rows;
+    }
+
+    function renderRowPermission(permission) {
+        return `<tr class="hover:bg-white/5 transition-colors duration-200" id="permission-${permission.id}">
+                        <td class="p-4 bg-transparent/20">${permission.id}</td>
+                        <td class="p-4"><span data-field="name">${permission.name}</span></td>
+                        <td class="p-4"><span data-field="code">${permission.code}</span></td>
+                        <td class="text-center">
+                            <button class="delete-btn btn btn-sm btn-error btn-outline duration-200 transition-all" hx-delete="/api/access/permissions/${permission.id}" hx-confirm="Are you sure?" hx-target="#permission-${permission.id}" hx-swap="outerHTML">Delete</button>
+                        </td>
+                    </tr>`;
+    }
+
+    function editUser() {
+        const userId = $(this).data('id');
+        const row = $(`#user-${userId}`);
+
+        console.log('Editing user with id:', userId, 'Row:', row);
+
+        // Switch to editable inputs
+        row.find('[data-field]').each(function () {
+            const field = $(this).data('field');
+            const value = $(this).text();
+            console.debug('Field:', field, 'Value:', value);
+
+            // Create editable inputs based on field type
+            if (field === 'status') {
+                $(this).replaceWith(`
+                            <select class="select select-sm bg-transparent/50" name="${field}">
+                                <option value="active" ${value === 'active' ? 'selected' : ''}>Active</option>
+                                <option value="inactive" ${value === 'inactive' ? 'selected' : ''}>Inactive</option>
+                                <option value="suspend" ${value === 'suspend' ? 'selected' : ''}>Suspend</option>
+                            </select>
+                        `).fadeIn(500);
+            } else if (field === 'roles') {
+                if (window.localStorage.getItem('roles-table')) {
+                    const roles = JSON.parse(window.localStorage.getItem('roles-table'));
+                    const options = roles.map(role => `<option value="${role.code}" ${value.includes(role.code) ? 'selected' : ''}>${role.name}</option>`).join('');
+                    $(this).html(`<select multiple class="bg-transparent/50 rounded-md p-0 text-center w-2/3 focus:outline-0" name="${field}">${options}</select>`).fadeIn(500);
+                }
+            } else if (field === 'groups') {
+                if (window.localStorage.getItem('groups-table')) {
+                    const groups = JSON.parse(window.localStorage.getItem('groups-table'));
+                    const options = groups.map(group => `<option value="${group.name}" ${value.includes(group.name) ? 'selected' : ''}>${group.name}</option>`).join('');
+                    $(this).html(`<select multiple class="bg-transparent/50 rounded-md p-0 text-center w-2/3 focus:outline-0" name="${field}">${options}</select>`).fadeIn(500);
+                }
+            } else {
+                $(this).html(`<input type="text" class="input input-sm input-bordered bg-transparent/50" name="${field}" value="${value}">`).fadeIn(500);
+            }
+        });
+
+        // Change Edit button to Save and add Cancel button
+        $(this).replaceWith(`
+                    <button class="bg-green-500 text-white px-4 py-2 rounded save-btn" data-id="${userId}" hx-put="/api/access/users/${userId}" hx-ext="json-enc" hx-include="#user-${userId} input, #user-${userId} select">Save</button>
+                    <button class="bg-gray-500 text-white px-4 py-2 rounded cancel-btn" data-id="${userId}">Cancel</button>
+                `);
+
+        htmx.process(row[0]);
+
+        // hide delete button
+        row.find('.delete-btn').hide();
+    }
+
+    function cancelUser() {
+        const users = JSON.parse(window.localStorage.getItem('users-table') || '[]');
+        $('#users-table').html(renderTableUsers(users));
+    }
+
+    function saveUser() {
+        const userId = $(this).data('id');
+        const row = $(`#user-${userId}`);
+        const updatedUser = {};
+
+        // Collect updated values
+        row.find('input, select').each(function () {
+            const field = $(this).attr('name');
+            if (field === 'roles' || field === 'groups') {
+                updatedUser[field] = $(this).val(); // Multi-select values
+            } else {
+                updatedUser[field] = $(this).val();
+            }
+        });
+
+        console.log(`Updated user with id=${userId}. UpdatedUSER:`, updatedUser);
+
+        htmx.trigger('body', 'userChanged');
+
+        row.find('.save-btn').replaceWith(`<button class="edit-btn bg-yellow-400 hover-animate text-black px-3 py-1 rounded shadow mr-2" data-id="${userId}">Edit</button>`);
+        row.find('.cancel-btn').remove();
+    }
+
+    function editGroup() {
+        const groupId = $(this).data('id');
+        const row = $(`#group-${groupId}`);
+
+        console.log('Editing group with id:', groupId);
+
+        // Switch to editable inputs only for roles column
+        row.find('[data-field="roles"]').each(function () {
+            if (window.localStorage.getItem('roles-table')) {
+                const roles = JSON.parse(window.localStorage.getItem('roles-table'));
+                const currentRoles = $(this).text().trim().split(' ');
+                const options = roles.map(role =>
+                    `<option value="${role.code}" ${currentRoles.includes(role.code) ? 'selected' : ''}>${role.name}</option>`
+                ).join('');
+                $(this).html(`<select multiple class="bg-transparent/50 rounded-md p-0 text-center w-2/3 focus:outline-0" name="roles">${options}</select>`);
+            }
+        });
+
+        row.find('.editable').each(function () {
+            const field = $(this).data('field');
+            const value = $(this).text();
+            $(this).fadeOut(200, function () {
+                // Changed from disabled to readonly
+                $(this).html(`<input type="text" class="input input-sm opacity-50" name="${field}" value="${value}" readonly>`).fadeIn(200);
+            });
+        });
+
+        // Change Edit button to Save/Cancel
+        $(this).replaceWith(`
+                <button class="save-group-btn btn btn-success btn-sm" data-id="${groupId}" hx-put="/api/access/groups/${groupId}" hx-ext="json-enc" hx-include="#group-${groupId} input, #group-${groupId} select">Save</button>
+                <button class="cancel-group-btn btn btn-ghost btn-sm" data-id="${groupId}">Cancel</button>
+            `);
+        htmx.process(row[0]);
+
+        // Hide delete button
+        row.find('.delete-btn').hide();
+    }
+
+    function saveGroup() {
+        const groupId = $(this).data('id');
+        const row = $(`#group-${groupId}`);
+        const updatedGroup = {
+            id: groupId,
+            name: row.find('input[name="name"]').val(),
+            description: row.find('input[name="description"]').val(),
+            roles: row.find('select[name="roles"]').val() || []
+        };
+
+        console.log('Saving group:', updatedGroup);
+
+        // Trigger refresh after save
+        htmx.trigger('body', 'groupChanged');
+    }
+
+    function cancelGroup() {
+        const groups = JSON.parse(window.localStorage.getItem('groups-table') || '[]');
+        $('#groups-table').html(renderTableGroups(groups));
+    }
+</script>

@@ -1,0 +1,15 @@
+<!doctype html><html lang="en" data-theme="ua"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Interface</title><link rel="icon" type="image/x-icon" href="img/favicon.ico"><script src="https://kit.fontawesome.com/b8f9f217c7.js" crossorigin="anonymous"></script><link rel="stylesheet" href="dist/tailwind.css">{{ if .EnvDev }}{{ template "partials/external_sources" }}{{ end }}<script defer="defer" src="dist/runtime.66f183f5c4c9fe1b1727.js"></script><script defer="defer" src="dist/main.c8fb0b980bec7ef46c13.js"></script><link href="dist/vendors.561e64fc84d039a9d867.css" rel="stylesheet"></head><body class="bg-[url('/img/robot_image_3.png')] bg-center bg-cover bg-scroll h-screen overflow-x-hidden overscroll-x-none">{{template "partials/nav" . }} {{ if ne .Title "Login" }}{{template "partials/sidebar" . }}{{end}} {{embed}} {{ if ne .Title "Login" }}<script src="js/app.js"></script><script defer="defer" src="js/htmx.js"></script><script src="js/typing_words.js"></script>{{ if eq .Title "AI Web Interface" }}<script src="js/audio.js"></script>{{end}}<script defer="defer">const pt_AWI = "AI Web Interface";
+
+        const pageProps = {{.}}; // page properties from BE
+        const pageTitle = "{{.Title}}";
+        var es = null; // EventSource object
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(`Document ready! pageTitle=${pageTitle}`);
+            userAuthCheck(es);
+            sideBar();
+            controlTextArea();
+            addListener_btn_send();
+            if (pageTitle == pt_AWI) {
+                InitSTT();
+            }
+        })</script>{{end}}<script defer="defer" src="dist/json-enc.js"></script></body></html>

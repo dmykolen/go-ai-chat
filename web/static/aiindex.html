@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.3.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+        .roboto-condensed-font {
+            font-family: "Roboto Condensed", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="container">
+        <div id="chat-grid-tab-div" class="grid grid-cols-4 h-full pb-16">
+            <div id="chat-div" class="bg-accent-content/90 mockup-window border col-start-1 col-end-5 text-sm pt-1 mt-3 md:mt-4 mx-16 overflow-y-scroll" hx-ext="debug">
+                <div class="-mt-7 flex flex-col items-center justify-center px-4">
+                    <div class="grid grid-cols-3 w-full">
+
+                        <div class="join join-horizontal justify-self-center col-start-2 space-x-1">
+                          <div id="btn-new-chat" class="btn join-item btn-outline btn-xs w-28">NEW CHAT</div>
+                          <div id="btn-hst" class="btn join-item btn-outline btn-xs w-28" hx-get="/api/v1/users/dmykolen/chats/shortinfo" hx-trigger="click[checkCondition()]" hx-target="#chat-hst-container" hx-swap="none">CHAT HISTORY</div>
+                        </div>
+                        <div id="btn-options" class="justify-self-end max-w-1/6">
+                            <label class="btn btn-secondary btn-xs swap swap-rotate">
+
+                                <input type="checkbox">
+
+                                <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                    <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"></path>
+                                </svg>
+
+                                <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                    <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"></polygon>
+                                </svg>
+                            </label>
+                        </div>
+                    </div>
+
+                    <form hx-post="/api/v1/ask-ai-voip" hx-target="#chat-msg" hx-swap="none" hx-ext="json-enc" class="flex items-center form-control my-2 w-3/4">
+                        <input id="id-chat-input" type="text" name="chatID" value="" hidden="">
+                        <input id="msisdn-chat-input" type="text" name="msisdn" value="" hidden="">
+                        <div class="join join-horizontal flex w-full">
+                            <textarea id="chat-send-input" rows="1" type="search" name="userRequest" placeholder="Type here" class="textarea join-item textarea-bordered text-xs tracking-tight p-1 font-mono resize-none m-0 hover:resize-y w-full min-h-12 max-h-40 focus:border-2 focus:outline-0 focus:border-primary-focus link-accent caret-blue-500 focus:caret-indigo-500" style="height: 0px;"></textarea>
+                            <button id="chat-send" class="btn join-item btn-primary">SEND</button>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="">
+                    <div id="chat-hst-container" class="h-full overflow-y-scroll" style="display: none;"><div class="flex flex-col space-y-1 p-4 h-full w-full">
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/ab482f19-6150-419d-9485-c5a3a039320b" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">ab482f19-6150-419d-9485-c5a3a039320b</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-04T19:31:59.501</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/c4310138-a502-4015-a252-dcf624f8eabe" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">c4310138-a502-4015-a252-dcf624f8eabe</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-04T20:52:11.864</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/77644d56-0077-4428-a1c2-285ceae408e4" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">77644d56-0077-4428-a1c2-285ceae408e4</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-04T20:52:26.441</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/fd4eb9f1-d62a-46a7-b8c4-774457b81c9a" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">fd4eb9f1-d62a-46a7-b8c4-774457b81c9a</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-04T20:52:33.000</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/7b9b267b-aabf-4129-bb6f-546909e3c43e" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">7b9b267b-aabf-4129-bb6f-546909e3c43e</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T14:54:45.293</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/4635df7c-69c8-4731-b414-381d32f05fd3" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">4635df7c-69c8-4731-b414-381d32f05fd3</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-07T22:34:39.892</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/5c4428e7-8e50-474e-bdcd-4cde04971526" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">5c4428e7-8e50-474e-bdcd-4cde04971526</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-09T22:42:14.017</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/6e01b62e-d982-4086-bed7-417cda07bb3e" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">6e01b62e-d982-4086-bed7-417cda07bb3e</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-09T22:42:26.775</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/cd54ff58-fcda-4509-8540-26d2955f9241" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">cd54ff58-fcda-4509-8540-26d2955f9241</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-11T16:48:35.341</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/45bebade-78b0-4d6f-91ed-53d30cd5b047" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">45bebade-78b0-4d6f-91ed-53d30cd5b047</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-12T18:26:03.871</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/4b402593-37ac-4303-b595-e24c5aeaeb80" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">4b402593-37ac-4303-b595-e24c5aeaeb80</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-12T19:40:09.506</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/5c4428e7-8e50-474e-bdcd-4cde04971526" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">5c4428e7-8e50-474e-bdcd-4cde04971526</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-09T22:42:14.017</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/a7bbc185-92f9-45f7-9010-3196a8a12596" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">a7bbc185-92f9-45f7-9010-3196a8a12596</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-04T19:31:59.503</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/3eb14e07-6702-4209-80e0-fa85fcbcd54f" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">3eb14e07-6702-4209-80e0-fa85fcbcd54f</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-16T14:21:16.984</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/e506618b-2007-4da5-a34c-8fe0ba78623e" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">e506618b-2007-4da5-a34c-8fe0ba78623e</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-16T19:33:34.944</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/aff04b86-2c61-4313-852e-fb53622a9dc0" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">aff04b86-2c61-4313-852e-fb53622a9dc0</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-16T19:40:10.291</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/42ee134b-3138-4b45-b1cb-744b147cf6c1" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">42ee134b-3138-4b45-b1cb-744b147cf6c1</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-04-07T22:34:24.501</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/21b13bd2-e690-48bb-a75f-a9562eec6cbf" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">21b13bd2-e690-48bb-a75f-a9562eec6cbf</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-27T14:06:48.717</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/92afd309-ad22-41a7-a8e2-ea109546929f" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">92afd309-ad22-41a7-a8e2-ea109546929f</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-27T14:25:50.578</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/6c96eb69-63fd-4867-bba7-3a98b077b618" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">6c96eb69-63fd-4867-bba7-3a98b077b618</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-27T18:23:57.880</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/283b9001-14e8-47a6-a9ff-c5b2d1b7bea2" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">283b9001-14e8-47a6-a9ff-c5b2d1b7bea2</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-27T18:26:58.572</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/3d886f5a-aa80-42a6-bc5d-228fe1c2c2f8" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">3d886f5a-aa80-42a6-bc5d-228fe1c2c2f8</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T13:40:42.426</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/54d5f7ee-528e-46f1-94a6-db6abaf6b0ce" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">54d5f7ee-528e-46f1-94a6-db6abaf6b0ce</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T14:02:59.852</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/95788a38-d470-4bfe-b9b0-bc07cca5c58c" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">95788a38-d470-4bfe-b9b0-bc07cca5c58c</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T14:09:56.977</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/b10a9b65-a815-4b1c-8322-cb2da21ef1cb" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">b10a9b65-a815-4b1c-8322-cb2da21ef1cb</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T14:38:53.263</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/ee0d7b80-2e79-4680-8c20-def64be4fc80" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">ee0d7b80-2e79-4680-8c20-def64be4fc80</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T14:49:24.010</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/f944b975-d570-4c60-87ad-ef5e9cafdc8b" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">f944b975-d570-4c60-87ad-ef5e9cafdc8b</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-29T03:27:34.918</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/543d0293-904f-4301-9e49-1d6580f06fef" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">543d0293-904f-4301-9e49-1d6580f06fef</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T19:33:00.818</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/4726d471-fc4a-409b-894a-57563c281852" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">4726d471-fc4a-409b-894a-57563c281852</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-29T03:38:59.928</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/1b4d973e-3483-4d28-813a-79d5571773af" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">1b4d973e-3483-4d28-813a-79d5571773af</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-29T04:03:59.958</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/bb956736-9378-4792-a38a-155e5598a0f6" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">bb956736-9378-4792-a38a-155e5598a0f6</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-28T14:50:36.687</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/62fffdb7-045f-4dc0-8a30-e536607c9064" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">62fffdb7-045f-4dc0-8a30-e536607c9064</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-29T04:15:26.620</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/7eb265f6-c701-49a0-a704-7965f7f8d170" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">7eb265f6-c701-49a0-a704-7965f7f8d170</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-29T04:24:22.817</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/183e2f3b-4f64-43a5-96b2-f1ffca5c50d6" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">183e2f3b-4f64-43a5-96b2-f1ffca5c50d6</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-05-29T04:27:58.090</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/52fc1c8d-ce27-46f5-a696-150764131277" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">52fc1c8d-ce27-46f5-a696-150764131277</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:17:55.491</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/55c0f30a-9019-4ef2-90e7-f9bcc2c9d7c0" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">55c0f30a-9019-4ef2-90e7-f9bcc2c9d7c0</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:18:30.095</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/897e04a2-42a6-4d89-89ed-5796565dabba" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">897e04a2-42a6-4d89-89ed-5796565dabba</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:18:58.747</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/f8c07dd8-b19d-466d-9919-1141d4e641f6" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">f8c07dd8-b19d-466d-9919-1141d4e641f6</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:19:42.529</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/75105bca-f5a6-4301-bce9-9c984a921d5a" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">75105bca-f5a6-4301-bce9-9c984a921d5a</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:30:30.317</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/39046ccc-1122-4b3d-bec3-0e2d6ae0133a" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">39046ccc-1122-4b3d-bec3-0e2d6ae0133a</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:34:57.684</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/f9225b01-fd34-47c6-b029-c133624d8b27" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">f9225b01-fd34-47c6-b029-c133624d8b27</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T19:10:39.463</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/983c1d80-eee1-4b21-ada7-6c1362101777" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">983c1d80-eee1-4b21-ada7-6c1362101777</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T02:50:51.971</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/1ef40b6c-6505-4481-94eb-309601857135" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">1ef40b6c-6505-4481-94eb-309601857135</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-03T17:26:31.884</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/4a950797-a6cc-436c-9e0b-742c590025ee" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">4a950797-a6cc-436c-9e0b-742c590025ee</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T06:24:08.499</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/6d139ed6-315d-4a87-8809-4c89bdc6fc4e" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">6d139ed6-315d-4a87-8809-4c89bdc6fc4e</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T04:37:37.766</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/ded354ae-89d0-405f-bb49-fd9cf2b4b2b8" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">ded354ae-89d0-405f-bb49-fd9cf2b4b2b8</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-03T15:43:24.877</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/8d35a566-d67f-406a-902d-ca0b24fb801c" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">8d35a566-d67f-406a-902d-ca0b24fb801c</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-03T16:15:33.916</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/18a09c25-5177-409d-a988-409128367d75" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">18a09c25-5177-409d-a988-409128367d75</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T06:22:50.060</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/f262c132-e55b-48a1-bcb1-8ff0fc74c9af" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">f262c132-e55b-48a1-bcb1-8ff0fc74c9af</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T12:57:00.043</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/b824d25a-408e-4086-b4d1-3ae8e171a16e" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">b824d25a-408e-4086-b4d1-3ae8e171a16e</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T13:13:54.108</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/51eb56d3-a4c6-407e-9df4-e6899728fdfd" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">51eb56d3-a4c6-407e-9df4-e6899728fdfd</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T13:14:31.069</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/dbb5b186-bca8-4f06-bcb0-2fa3fb61b279" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">dbb5b186-bca8-4f06-bcb0-2fa3fb61b279</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T16:44:03.051</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/4d17ff36-b710-47d4-8442-172619b17999" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">4d17ff36-b710-47d4-8442-172619b17999</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-12T16:53:13.492</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/727c081a-2552-41b8-bd79-b6da5bacf23a" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">727c081a-2552-41b8-bd79-b6da5bacf23a</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-14T17:52:41.336</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/219be7ba-f089-4601-bcea-394551ba9499" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">219be7ba-f089-4601-bcea-394551ba9499</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-04T21:18:13.326</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/6313fd00-dadb-4780-ad74-9b3d53d7dfa8" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">6313fd00-dadb-4780-ad74-9b3d53d7dfa8</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-05T12:03:42.078</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/366e6412-b6d9-4334-9f64-34e5e604b103" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">366e6412-b6d9-4334-9f64-34e5e604b103</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-09T06:34:23.587</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/73c74141-c3b0-4c8b-987f-c92fe2128dc8" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">73c74141-c3b0-4c8b-987f-c92fe2128dc8</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-09T06:38:28.386</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/3144f1ab-0dc1-49e2-ae91-e2567f108d58" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">3144f1ab-0dc1-49e2-ae91-e2567f108d58</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-09T06:57:55.418</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/2c0594a8-1289-4b82-bca2-9f0c6578f7b2" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">2c0594a8-1289-4b82-bca2-9f0c6578f7b2</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-20T16:19:00.527</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/f8a60bdc-c82b-433e-a709-09aa2d18eb2f" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">f8a60bdc-c82b-433e-a709-09aa2d18eb2f</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-09T06:46:23.758</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/192a38ba-e783-42dd-9561-587bb3f4bfcd" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">192a38ba-e783-42dd-9561-587bb3f4bfcd</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-09T06:47:03.940</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/6d3d208c-4fef-4ea7-9a7d-8b8e3e5f48e8" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">6d3d208c-4fef-4ea7-9a7d-8b8e3e5f48e8</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-07-09T06:54:34.874</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/aa603b79-240a-4bf7-b184-746506f7bd05" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">aa603b79-240a-4bf7-b184-746506f7bd05</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-20T17:45:07.430</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/2e2beadd-4e22-47d5-9daf-49906e6547b9" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">2e2beadd-4e22-47d5-9daf-49906e6547b9</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-26T20:36:24.380</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/3d54678c-27bb-405d-948a-a2cef833c3b4" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">3d54678c-27bb-405d-948a-a2cef833c3b4</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-26T20:35:18.616</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/04e96ae4-8233-44d5-b5b3-3e03c07485a5" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">04e96ae4-8233-44d5-b5b3-3e03c07485a5</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-26T20:35:51.839</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/0fcd453b-d60a-4719-ba42-bfbedcc3d676" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">0fcd453b-d60a-4719-ba42-bfbedcc3d676</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-26T20:34:45.968</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/159da453-686b-44e8-a587-d647e82826a5" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">159da453-686b-44e8-a587-d647e82826a5</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-29T16:20:00.536</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/facaece7-fb52-4273-85af-1acf90496d16" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">facaece7-fb52-4273-85af-1acf90496d16</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-29T16:32:48.116</div>
+          </div>
+      </div>
+      <div class="flex flex-row space-x-2 mx-auto w-2/3 justify-center">
+          <div class="btn btn-circle btn-outline btn-primary btn-sm w-10 h-10" hx-get="/fe/users/dmykolen/chats/aaa924be-9e9d-45f2-919c-c16d29d3106b" hx-trigger="click" hx-target="#chat-msg"><i class="fa-play fas scale-150 text-lg" aria-hidden="true"></i></div>
+          <div class="bg-base-200 rounded-lg p-2 relative w-[44%]">
+              <div class="text-sm font-bold">aaa924be-9e9d-45f2-919c-c16d29d3106b</div>
+              <div class="absolute right-2 badge badge-xs badge-warning">2024-06-29T18:45:30.454</div>
+          </div>
+      </div></div></div>
+
+                    <div id="chat-msg" class="h-full overflow-y-scroll" style=""><div class="flex justify-center text-xs">
+        <button id="chat-id-div" class="badge badge-xs badge-outline badge-secondary" onclick="my_modal_5.showModal()">0fcd453b-d60a-4719-ba42-bfbedcc3d676</button>
+
+    </div>
+
+    <dialog id="my_modal_5" class="modal">
+        <div class="modal-box px-4">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg badge badge-warning animate-pulse">DEBUG</h3>
+            <div class="mockup-code bg-primary text-primary-content">
+                <pre class="text-xs"><code class="font-mono leading-0 text-wrap tracking-tighter">{
+        "id": "0fcd453b-d60a-4719-ba42-bfbedcc3d676",
+        "name": "",
+        "createdTime": 1719423285968,
+        "messages": [
+            {
+                "role": "user",
+                "content": "Як запустити колайдер?"
+            },
+            {
+                "role": "assistant",
+                "content": "Вибачте, але я можу допомогти лише з питаннями, пов'язаними з підтримкою клієнтів Lifecell, телекомунікаціями або VoIP. Якщо у вас є питання щодо цих тем, будь ласка, дайте знати! 😊"
+            },
+            {
+                "role": "user",
+                "content": "Ок. А чому в мене помилка 409 на моєму номері? і скажи мої баланси 380930164453"
+            },
+            {
+                "role": "assistant",
+                "content": "Помилка 409 \"Not enough money\" вказує на те, що на балансах номера та контракту закінчились гроші. Для вирішення цієї проблеми вам необхідно поповнити рахунок або звернутись до свого менеджера для підвищення кредитного ліміту. 📉💳\n\nЩодо балансу вашого номера 380930164453:\n- Баланс основного рахунку: 0 грн\n- Баланс контракту: -278 грн\n- Кредитний ліміт: 500 грн\n\nВам необхідно поповнити рахунок, щоб уникнути подібних помилок у майбутньому. Якщо у вас виникнуть додаткові питання, будь ласка, зверніться до свого менеджера або до нашого кол-центру. 😊📞"
+            }
+        ]
+    }</code></pre>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <script>
+        function evalHTMX_rating(e) {
+            console.info('START /rating HTMX request! Evt =>', e)
+            return "XXXX"
+        }
+
+    </script>
+    <div class="chat chat-start">
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+        </div>
+        <div class="chat-header font-bold text-base-content/50">user</div>
+        <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">Як запустити колайдер?</div>
+
+    </div>
+    <div class="chat chat-end">
+        <div class="chat-image avatar">
+            <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png"></div>
+        </div>
+        <div class="chat-header font-bold text-base-content/50">assistant</div>
+        <div class="chat-bubble p-2 whitespace-pre-wrap"><p>Вибачте, але я можу допомогти лише з питаннями, пов'язаними з підтримкою клієнтів Lifecell, телекомунікаціями або VoIP. Якщо у вас є питання щодо цих тем, будь ласка, дайте знати! 😊</p>
+    </div>
+
+        <div class="chat-footer opacity-75">
+            <div class="rating" hx-post="/rate" hx-include="[name=rating-2]" hx-swap="none" hx-vals="js:{lastKey: evalHTMX_rating(event)}">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="1">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="2">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="3">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="4">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="5">
+            </div>
+        </div>
+    </div>
+
+    <div class="chat chat-start">
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full border-2 border-accent text-4xl">🥷🏽</div>
+        </div>
+        <div class="chat-header font-bold text-base-content/50">user</div>
+        <div class="chat-bubble chat-bubble-primary p-2 min-h-[2rem] whitespace-pre-wrap bg-gradient-to-r from-primary to-80% to-secondary/50">Ок. А чому в мене помилка 409 на моєму номері? і скажи мої баланси 380930164453</div>
+
+    </div>
+    <div class="chat chat-end">
+        <div class="chat-image avatar">
+            <div class="w-12 rounded-full border-2 border-accent text-4xl"><img src="/img/robot_image_3.png"></div>
+        </div>
+        <div class="chat-header font-bold text-base-content/50">assistant</div>
+        <div class="chat-bubble p-2 whitespace-pre-wrap roboto-condensed-font"><p>Помилка 409 "Not enough money" вказує на те, що на балансах номера та контракту закінчились гроші. Для вирішення цієї проблеми вам необхідно поповнити рахунок або звернутись до свого менеджера для підвищення кредитного ліміту. 📉💳</p>
+    <p>Щодо балансу вашого номера 380930164453:</p>
+    <ul>
+    <li>Баланс основного рахунку: 0 грн</li>
+    <li>Баланс контракту: -278 грн</li>
+    <li>Кредитний ліміт: 500 грн</li>
+    </ul>
+    <p>Вам необхідно поповнити рахунок, щоб уникнути подібних помилок у майбутньому. Якщо у вас виникнуть додаткові питання, будь ласка, зверніться до свого менеджера або до нашого кол-центру. 😊📞</p>
+    </div>
+
+        <div class="chat-footer opacity-75">
+            <div class="rating" hx-post="/rate" hx-include="[name=rating-2]" hx-swap="none" hx-vals="js:{lastKey: evalHTMX_rating(event)}">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="1">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="2">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="3">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="4">
+                <input type="radio" name="rating-2" class="mask mask-star-2 bg-green-500" value="5">
+            </div>
+        </div>
+    </div>
+    <script>
+        console.log('golang template CHAT was loaded')
+    </script></div>
+                </div>
+            </div>
+
+
+            <div id="options-div" class="flex flex-col rounded-ss-box text-secondary overflow-y-scroll text-sm bg-black/80 h-[100%] p-3" style="display: none;">
+                <div class="artboard-demo flex flex-row input justify-around pl-1">
+                    <label for="msisdn" class="badge badge-accent label">MSISDN</label>
+
+
+                    <input id="msisdn" name="msisdn" type="text" class="border-0 input input-xs max-w-[55%] placeholder:italic placeholder:text-slate-400" hx-get="/ws/account" hx-indicator="#searchSpinner" hx-trigger="keyup[target.value.length > 11] changed delay:500ms" hx-target="#results" hx-vals="js:{lastKey: event.key}" minlength="12" placeholder="Type here...">
+                    <span id="searchSpinner" class="htmx-indicator loading loading-spinner loading-sm text-secondary"></span>
+                </div>
+
+
+                <div id="results2" class="border mockup-phone mt-2 p-4 shadow-black shadow-lg overflow-y-scroll max-w-[100%] cursor-zoom-in" onclick="$(this).toggleClass('absolute overflow-y-scroll cursor-zoom-in cursor-zoom-out scale-125 top-[15%] left-[30%]').effect( 'slide', 300 )">
+                    <div class="camera"></div>
+                    <div class="display =">
+                        <div class="artboard overflow-scroll phone-2 pt-7 text-xs">
+                            <pre><code id="results" class="font-mono leading-0 text-wrap tracking-tighter"></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
