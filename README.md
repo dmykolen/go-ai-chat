@@ -57,7 +57,7 @@
       - [x] PDF
       - [x] WEB(HTML)
     - [x] Integration with OpenAI API
-    - [ ] AI logic
+    - [x] AI logic
   - [ ] FE
     - [x] Stage #1
       - [x] Vector DB Admin page
@@ -71,7 +71,7 @@
     - [ ] Stage #2
       - [ ] redesign history chats
     - [ ] Stage #3
-- [ ] VectorDB
+- [x] VectorDB
   - [x] Researching: Find the most powerful open source vector database(easy setup, maintain, configure + stable + development team continues to develop and continue to improve)
   - [x] Weaviate deploy
   - [x] Weaviate setup
@@ -125,7 +125,7 @@ System | URL | -
       <td><strong>CIM-WS</strong></td>
       <td>CIMWS_API_PASSWORD</td>
       <td>-cimws_p</td>
-      <td>"iguana"</td>
+      <td>"*****"</td>
       <td>CIM API password</td>
     </tr>
     <tr style="background-color: palegreen;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
@@ -160,7 +160,7 @@ System | URL | -
       <td><strong>OM-WS</strong></td>
       <td>OMWS_API_PASSWORD</td>
       <td>-omws_p</td>
-      <td>"P@ssw0rd"</td>
+      <td>"*****"</td>
       <td>OM API password</td>
     </tr>
     <tr style="background-color: palegreen;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
@@ -279,7 +279,7 @@ System | URL | -
       <td><strong>APP: Security</strong></td>
       <td>LDAP_ADM_PASS</td>
       <td>-</td>
-      <td>"E-YrH8S#XLT5"</td>
+      <td>"*****"</td>
       <td>LDAP admin password</td>
     </tr>
     <tr style="background-color: palegreen;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
@@ -410,15 +410,9 @@ System | URL | -
 
 ### `->` **Components**
 
-<details><summary><b style="color: yellow">Click to expand</b></summary>
-
 ![alt text](docs/GoAIApp.png)
 
-</details>
-
 ### `->` **SEQUENCE**
-
-<details><summary>Click to expand</summary>
 
 ```mermaid
 sequenceDiagram
@@ -462,16 +456,6 @@ sequenceDiagram
         end
     end
 ```
-
-</details>
-
-### `->` KnowledgeBase illustration example
-
-<details><summary>Click to expand</summary>
-
-![alt text](docs/KnowledgeBase_scheme1.png)
-
-</details>
 
 ## Weaviate + Prometheus + Grafana
 
